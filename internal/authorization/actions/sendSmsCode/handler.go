@@ -48,7 +48,7 @@ func (h *Handler) Run(m Message) error {
 
 	err = h.smsCodeService.Send(code.String(), phone)
 	if err != nil {
-		// todo: delete code from repository
+		_ = h.smsCodeRepository.DeleteLast(phone)
 		return err
 	}
 

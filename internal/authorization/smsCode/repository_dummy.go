@@ -47,3 +47,7 @@ func (r *RepositoryDummy) Count(phone *user.Phone) (int, error) {
 
 	return 0, nil
 }
+
+func (r *RepositoryDummy) DeleteLast(*user.Phone) error {
+	return nil
+}
