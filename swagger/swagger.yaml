@@ -86,7 +86,7 @@ paths:
       - application/json
       description: Get new refresh and access tokens
       parameters:
-      - description: body
+      - description: Body
         in: body
         name: input
         required: true
@@ -116,7 +116,7 @@ paths:
       - application/json
       description: Refresh user refresh and access tokens
       parameters:
-      - description: body
+      - description: Body
         in: body
         name: input
         required: true
@@ -146,7 +146,7 @@ paths:
       - application/json
       description: Send SMS code to user at authorization
       parameters:
-      - description: body
+      - description: Body
         in: body
         name: input
         required: true

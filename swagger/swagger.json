@@ -24,7 +24,7 @@
                 "summary": "User authorization",
                 "parameters": [
                     {
-                        "description": "body",
+                        "description": "Body",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -70,7 +70,7 @@
                 "summary": "Refresh jwt token",
                 "parameters": [
                     {
-                        "description": "body",
+                        "description": "Body",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -116,7 +116,7 @@
                 "summary": "Send SMS code",
                 "parameters": [
                     {
-                        "description": "body",
+                        "description": "Body",
                         "name": "input",
                         "in": "body",
                         "required": true,

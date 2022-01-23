@@ -18,7 +18,7 @@ type SmsCodeResponse struct {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        input  body      sendSmsCode.Message  true  "body"
+// @Param        input  body      sendSmsCode.Message  true  "Body"
 // @Success      200    {object}  SmsCodeResponse
 // @Failure      400    {object}  server.ResponseError  "Phone number is invalid"
 // @Failure      429    {object}  server.ResponseError  "Retry count of sms code requests exceeded"

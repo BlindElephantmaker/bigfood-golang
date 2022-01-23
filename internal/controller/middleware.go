@@ -20,6 +20,7 @@ var (
 )
 
 func (controller *Controller) userIdentity(c *gin.Context) {
+	// todo: how compare cases?
 	header := c.GetHeader(authorizationHeader)
 	if header == "" {
 		server.NewResponseError(c, http.StatusUnauthorized, ErrorEmptyAuthorizationHeader)

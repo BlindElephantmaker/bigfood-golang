@@ -38,7 +38,7 @@ var doc = `{
                 "summary": "User authorization",
                 "parameters": [
                     {
-                        "description": "body",
+                        "description": "Body",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -84,7 +84,7 @@ var doc = `{
                 "summary": "Refresh jwt token",
                 "parameters": [
                     {
-                        "description": "body",
+                        "description": "Body",
                         "name": "input",
                         "in": "body",
                         "required": true,
@@ -130,7 +130,7 @@ var doc = `{
                 "summary": "Send SMS code",
                 "parameters": [
                     {
-                        "description": "body",
+                        "description": "Body",
                         "name": "input",
                         "in": "body",
                         "required": true,
