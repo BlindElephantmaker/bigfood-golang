@@ -14,16 +14,21 @@ const (
 	UserId              = "UserId"
 )
 
+var (
+	ErrorEmptyAuthorizationHeader   = errors.New("empty authorization header")
+	ErrorInvalidAuthorizationHeader = errors.New("invalid authorization header")
+)
+
 func (controller *Controller) userIdentity(c *gin.Context) {
 	header := c.GetHeader(authorizationHeader)
 	if header == "" {
-		server.NewResponseError(c, http.StatusUnauthorized, errors.New("empty authorization header"))
+		server.NewResponseError(c, http.StatusUnauthorized, ErrorEmptyAuthorizationHeader)
 		return
 	}
 
 	headerParts := strings.Split(header, " ")
 	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
-		server.NewResponseError(c, http.StatusUnauthorized, errors.New("invalid authorization header"))
+		server.NewResponseError(c, http.StatusUnauthorized, ErrorInvalidAuthorizationHeader)
 		return
 	}
 

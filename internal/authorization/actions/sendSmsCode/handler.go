@@ -12,7 +12,7 @@ const (
 	ttl           = time.Minute * 30
 )
 
-var errorRetryCountExceeded = errors.New("retry count of sms code requests exceeded")
+var ErrorRetryCountExceeded = errors.New("retry count of sms code requests exceeded")
 
 type Handler struct {
 	smsCodeService    smsCode.Service
@@ -37,7 +37,7 @@ func (h *Handler) Run(m Message) error {
 		return err
 	}
 	if count >= maxRetryCount {
-		return errorRetryCountExceeded
+		return ErrorRetryCountExceeded
 	}
 
 	code := smsCode.New()

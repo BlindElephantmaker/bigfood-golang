@@ -16,7 +16,7 @@ const (
 	pattern = `^\d{4}$`
 )
 
-var errorSmsCodeIsInvalid = errors.New("sms code is invalid")
+var ErrorSmsCodeIsInvalid = errors.New("sms code is invalid")
 
 func New() *Code {
 	buf := make([]byte, length)
@@ -30,7 +30,7 @@ func New() *Code {
 func Parse(code string) (*Code, error) {
 	ok, _ := regexp.MatchString(pattern, code)
 	if !ok {
-		return nil, errorSmsCodeIsInvalid
+		return nil, ErrorSmsCodeIsInvalid
 	}
 
 	return &Code{code}, nil

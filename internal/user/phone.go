@@ -11,10 +11,12 @@ type Phone struct {
 
 const pattern = `^\+\d{11}$` // todo: phone number is not always 11 digits
 
+var ErrorPhoneNumberIsInvalid = errors.New("phone number is invalid")
+
 func NewPhone(phone string) (*Phone, error) {
 	ok, _ := regexp.MatchString(pattern, phone)
 	if !ok {
-		return nil, errors.New("phone number is invalid")
+		return nil, ErrorPhoneNumberIsInvalid
 	}
 
 	return &Phone{phone}, nil

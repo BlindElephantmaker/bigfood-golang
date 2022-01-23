@@ -14,7 +14,7 @@ type Handler struct {
 	tokenRepository   userToken.Repository
 }
 
-var errorSmsCodeNotConfirmed = errors.New("sms code not confirmed")
+var ErrorSmsCodeNotConfirmed = errors.New("sms code not confirmed")
 
 func New(smsCodeRepository smsCode.Repository, users user.Repository, tokens userToken.Repository) *Handler {
 	return &Handler{
@@ -61,7 +61,7 @@ func (handler *Handler) validateSmsCode(phone *user.Phone, code *smsCode.Code) e
 		return err
 	}
 	if !confirmCode.Compare(code) {
-		return errorSmsCodeNotConfirmed
+		return ErrorSmsCodeNotConfirmed
 	}
 
 	return nil
