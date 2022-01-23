@@ -1,8 +1,11 @@
 package userToken
 
 import (
+	"errors"
 	"github.com/google/uuid"
 )
+
+var errorInvalidRefreshTokenFormat = errors.New("invalid refresh token format")
 
 type RefreshToken struct {
 	value *uuid.UUID
@@ -16,7 +19,7 @@ func NewRefresh() *RefreshToken {
 func ParseRefresh(tokenValue string) (*RefreshToken, error) {
 	token, err := uuid.Parse(tokenValue)
 	if err != nil {
-		return nil, err
+		return nil, errorInvalidRefreshTokenFormat
 	}
 	return &RefreshToken{&token}, nil
 }
