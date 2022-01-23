@@ -9,7 +9,7 @@ import (
 
 type ResponseError struct {
 	Success bool   `json:"success" example:"false"`
-	Message string `json:"message"`
+	Message string `json:"message" example:"Error message"`
 }
 
 var ErrorParseJsonRequestToMessage = errors.New("failed parse json request to message")

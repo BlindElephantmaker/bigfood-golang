@@ -23,7 +23,7 @@ type AuthResponse struct {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        input  body      auth.Message  true  "json"
+// @Param        input  body      auth.Message  true  "body"
 // @Success      200    {object}  AuthResponse
 // @Failure      422    {object}  server.ResponseError  "SMS code not confirmed"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"

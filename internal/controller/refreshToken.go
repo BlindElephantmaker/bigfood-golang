@@ -21,7 +21,7 @@ type RefreshTokenResponse struct {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        input  body      refreshToken.Message  true  "json"
+// @Param        input  body      refreshToken.Message  true  "body"
 // @Success      200    {object}  RefreshTokenResponse
 // @Failure      400    {object}  server.ResponseError  "Invalid refresh token format"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
