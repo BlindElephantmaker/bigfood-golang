@@ -2,6 +2,7 @@ package controller
 
 import (
 	"bigfood/internal/authorization/actions/refreshToken"
+	"bigfood/internal/authorization/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -14,25 +15,28 @@ type RefreshTokenResponse struct {
 	Refresh string `json:"refresh" example:"UUID"`
 }
 
-// RefreshToken
-// todo: annotation
 func (controller *Controller) RefreshToken(c *gin.Context) {
 	var message refreshToken.Message
 	if err := c.BindJSON(&message); err != nil {
-		server.NewResponseError(c, http.StatusBadRequest, err)
+		// todo: message
+		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
 		return
 	}
 
-	userToken, err := controller.handlers.RefreshTokenHandler.Run(&message)
+	token, err := controller.handlers.RefreshTokenHandler.Run(&message)
+	if err == userToken.ErrorInvalidRefreshTokenFormat {
+		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		return
+	}
 	if err != nil {
-		server.NewResponseError(c, http.StatusInternalServerError, err) // todo: code response
+		server.NewResponseInternalServerError(c, err) // todo: annotation
 		return
 	}
 
 	c.JSON(http.StatusOK, &RefreshTokenResponse{
 		Success: true,
-		Id:      userToken.UserId.String(),
-		Access:  userToken.Access.String(),
-		Refresh: userToken.Refresh.String(),
+		Id:      token.UserId.String(),
+		Access:  token.Access.String(),
+		Refresh: token.Refresh.String(),
 	})
 }

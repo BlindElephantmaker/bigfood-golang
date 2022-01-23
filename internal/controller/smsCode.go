@@ -2,6 +2,7 @@ package controller
 
 import (
 	"bigfood/internal/authorization/actions/sendSmsCode"
+	"bigfood/internal/user"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -24,14 +25,22 @@ type SmsCodeResponse struct {
 func (controller *Controller) SmsCode(c *gin.Context) {
 	var message sendSmsCode.Message
 	if err := c.BindJSON(&message); err != nil {
+		// todo: message
 		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
 		return
 	}
 
 	err := controller.handlers.SendSmsCode.Run(message)
+	if err == user.ErrorPhoneNumberIsInvalid {
+		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		return
+	}
+	if err == sendSmsCode.ErrorRetryCountExceeded {
+		server.NewResponseError(c, http.StatusTooManyRequests, err) // todo: annotation
+		return
+	}
 	if err != nil {
-		// todo: how handle errors by type and user friendly messages?
-		server.NewResponseError(c, http.StatusInternalServerError, err) // todo: change code response
+		server.NewResponseInternalServerError(c, err) // todo: annotation
 		return
 	}
 

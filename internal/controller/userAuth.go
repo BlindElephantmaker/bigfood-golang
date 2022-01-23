@@ -2,6 +2,8 @@ package controller
 
 import (
 	"bigfood/internal/authorization/actions/auth"
+	"bigfood/internal/authorization/smsCode"
+	"bigfood/internal/user"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -15,18 +17,25 @@ type AuthResponse struct {
 	Refresh string `json:"refresh-token" example:"UUID"`
 }
 
-// Auth
-// todo: annotation
 func (controller *Controller) Auth(c *gin.Context) {
 	var message auth.Message
 	if err := c.BindJSON(&message); err != nil {
+		// todo: message
 		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
 		return
 	}
 
 	response, err := controller.handlers.UserAuthHandler.Run(&message)
+	if err == user.ErrorPhoneNumberIsInvalid || err == smsCode.ErrorSmsCodeIsInvalid {
+		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation two
+		return
+	}
+	if err == auth.ErrorSmsCodeNotConfirmed {
+		server.NewResponseError(c, http.StatusUnprocessableEntity, err) // todo: annotation
+		return
+	}
 	if err != nil {
-		server.NewResponseError(c, http.StatusInternalServerError, err) // todo: change code response
+		server.NewResponseInternalServerError(c, err) // todo: annotation
 		return
 	}
 
