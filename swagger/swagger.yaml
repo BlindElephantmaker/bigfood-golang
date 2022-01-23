@@ -1,10 +1,60 @@
 basePath: /
 definitions:
+  auth.Message:
+    properties:
+      phone:
+        example: "+71234567890"
+        type: string
+      sms-code:
+        example: "1234"
+        type: string
+    required:
+    - phone
+    - sms-code
+    type: object
+  controller.AuthResponse:
+    properties:
+      access-token:
+        type: string
+      is-new:
+        type: boolean
+      refresh-token:
+        example: UUID
+        type: string
+      success:
+        example: true
+        type: boolean
+      user-id:
+        example: UUID
+        type: string
+    type: object
+  controller.RefreshTokenResponse:
+    properties:
+      access:
+        type: string
+      id:
+        example: UUID
+        type: string
+      refresh:
+        example: UUID
+        type: string
+      success:
+        example: true
+        type: boolean
+    type: object
   controller.SmsCodeResponse:
     properties:
       success:
         example: true
         type: boolean
+    type: object
+  refreshToken.Message:
+    properties:
+      token:
+        example: UUID
+        type: string
+    required:
+    - token
     type: object
   sendSmsCode.Message:
     properties:
@@ -29,13 +79,73 @@ info:
   title: Bigfood
   version: "1.0"
 paths:
+  /auth:
+    post:
+      consumes:
+      - application/json
+      description: Get new refresh and access tokens
+      parameters:
+      - description: json
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/auth.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.AuthResponse'
+        "422":
+          description: SMS code not confirmed
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      summary: User authorization
+      tags:
+      - auth
+  /auth/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Refresh user refresh and access tokens
+      parameters:
+      - description: json
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/refreshToken.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.RefreshTokenResponse'
+        "400":
+          description: Invalid refresh token format
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      summary: Refresh jwt token
+      tags:
+      - auth
   /auth/sms-code:
     post:
       consumes:
       - application/json
       description: Send SMS code to user at authorization
       parameters:
-      - description: Phone number
+      - description: json
         in: body
         name: input
         required: true
@@ -48,6 +158,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/controller.SmsCodeResponse'
+        "400":
+          description: Phone number is invalid
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "429":
+          description: Retry count of sms code requests exceeded
+          schema:
+            $ref: '#/definitions/server.ResponseError'
         "500":
           description: Internal Server Error
           schema:

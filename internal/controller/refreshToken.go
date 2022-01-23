@@ -15,21 +15,32 @@ type RefreshTokenResponse struct {
 	Refresh string `json:"refresh" example:"UUID"`
 }
 
+// RefreshToken
+// @Summary      Refresh jwt token
+// @Description  Refresh user refresh and access tokens
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        input  body      refreshToken.Message  true  "json"
+// @Success      200    {object}  RefreshTokenResponse
+// @Failure      400    {object}  server.ResponseError  "Invalid refresh token format"
+// @Failure      500    {object}  server.ResponseError  "Internal Server Error"
+// @Router       /auth/refresh-token [post]
 func (controller *Controller) RefreshToken(c *gin.Context) {
 	var message refreshToken.Message
 	if err := c.BindJSON(&message); err != nil {
 		// todo: message
-		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	token, err := controller.handlers.RefreshTokenHandler.Run(&message)
 	if err == userToken.ErrorInvalidRefreshTokenFormat {
-		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
 	if err != nil {
-		server.NewResponseInternalServerError(c, err) // todo: annotation
+		server.NewResponseInternalServerError(c, err)
 		return
 	}
 

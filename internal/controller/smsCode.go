@@ -18,29 +18,31 @@ type SmsCodeResponse struct {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        input  body      sendSmsCode.Message  true  "Phone number"
+// @Param        input  body      sendSmsCode.Message  true  "json"
 // @Success      200    {object}  SmsCodeResponse
-// @Failure      500    {object}  server.ResponseError
+// @Failure      400    {object}  server.ResponseError  "Phone number is invalid"
+// @Failure      429    {object}  server.ResponseError  "Retry count of sms code requests exceeded"
+// @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /auth/sms-code [post]
 func (controller *Controller) SmsCode(c *gin.Context) {
 	var message sendSmsCode.Message
 	if err := c.BindJSON(&message); err != nil {
 		// todo: message
-		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	err := controller.handlers.SendSmsCode.Run(message)
 	if err == user.ErrorPhoneNumberIsInvalid {
-		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
 	if err == sendSmsCode.ErrorRetryCountExceeded {
-		server.NewResponseError(c, http.StatusTooManyRequests, err) // todo: annotation
+		server.NewResponseError(c, http.StatusTooManyRequests, err)
 		return
 	}
 	if err != nil {
-		server.NewResponseInternalServerError(c, err) // todo: annotation
+		server.NewResponseInternalServerError(c, err)
 		return
 	}
 

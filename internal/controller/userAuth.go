@@ -17,25 +17,36 @@ type AuthResponse struct {
 	Refresh string `json:"refresh-token" example:"UUID"`
 }
 
+// Auth
+// @Summary      User authorization
+// @Description  Get new refresh and access tokens
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        input  body      auth.Message  true  "json"
+// @Success      200    {object}  AuthResponse
+// @Failure      422    {object}  server.ResponseError  "SMS code not confirmed"
+// @Failure      500    {object}  server.ResponseError  "Internal Server Error"
+// @Router       /auth [post]
 func (controller *Controller) Auth(c *gin.Context) {
 	var message auth.Message
 	if err := c.BindJSON(&message); err != nil {
 		// todo: message
-		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation
+		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
 
 	response, err := controller.handlers.UserAuthHandler.Run(&message)
 	if err == user.ErrorPhoneNumberIsInvalid || err == smsCode.ErrorSmsCodeIsInvalid {
-		server.NewResponseError(c, http.StatusBadRequest, err) // todo: annotation two
+		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
 	if err == auth.ErrorSmsCodeNotConfirmed {
-		server.NewResponseError(c, http.StatusUnprocessableEntity, err) // todo: annotation
+		server.NewResponseError(c, http.StatusUnprocessableEntity, err)
 		return
 	}
 	if err != nil {
-		server.NewResponseInternalServerError(c, err) // todo: annotation
+		server.NewResponseInternalServerError(c, err)
 		return
 	}
 

@@ -14,7 +14,7 @@ migrate-down: # todo: pass parameter or 1 if not passed
 server-run:
 	go run cmd/app/main.go
 
-swag-init:
+swag-init: # todo: warning: failed to get package name in dir: ./, error: execute go list command, exit status 1, stdout:, stderr:no Go files in
 	swag init --generalInfo ./cmd/app/main.go --output ./swagger
 
 swag-fmt:
