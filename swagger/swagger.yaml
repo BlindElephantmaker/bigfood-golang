@@ -1,0 +1,63 @@
+basePath: /
+definitions:
+  controller.SmsCodeResponse:
+    properties:
+      success:
+        example: true
+        type: boolean
+    type: object
+  sendSmsCode.Message:
+    properties:
+      phone:
+        example: "+71234567890"
+        type: string
+    required:
+    - phone
+    type: object
+  server.ResponseError:
+    properties:
+      message:
+        type: string
+      success:
+        example: false
+        type: boolean
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: Internal API
+  title: Bigfood
+  version: "1.0"
+paths:
+  /auth/sms-code:
+    post:
+      consumes:
+      - application/json
+      description: Send SMS code to user at authorization
+      parameters:
+      - description: Phone number
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/sendSmsCode.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.SmsCodeResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      summary: Send SMS code
+      tags:
+      - auth
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

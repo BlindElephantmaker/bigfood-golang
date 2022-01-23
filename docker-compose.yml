@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  bigfood-postgres:
+    image: postgres:14.1-alpine
+    restart: "no"
+    environment:
+      POSTGRES_DB: bigfood
+      POSTGRES_USER: bigfood
+      POSTGRES_PASSWORD: bigfood
+    ports:
+      - "5431:5432"
