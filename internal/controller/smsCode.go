@@ -26,13 +26,12 @@ type SmsCodeResponse struct {
 // @Router       /auth/sms-code [post]
 func (controller *Controller) SmsCode(c *gin.Context) {
 	var message sendSmsCode.Message
-	if err := c.BindJSON(&message); err != nil {
-		// todo: message
-		server.NewResponseError(c, http.StatusBadRequest, err)
+	err := server.ParseJsonRequestToMessage(c, &message)
+	if err != nil {
 		return
 	}
 
-	err := controller.handlers.SendSmsCode.Run(message)
+	err = controller.handlers.SendSmsCode.Run(message)
 	if err == user.ErrorPhoneNumberIsInvalid {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return

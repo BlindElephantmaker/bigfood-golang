@@ -30,9 +30,8 @@ type AuthResponse struct {
 // @Router       /auth [post]
 func (controller *Controller) Auth(c *gin.Context) {
 	var message auth.Message
-	if err := c.BindJSON(&message); err != nil {
-		// todo: message
-		server.NewResponseError(c, http.StatusBadRequest, err)
+	err := server.ParseJsonRequestToMessage(c, &message)
+	if err != nil {
 		return
 	}
 

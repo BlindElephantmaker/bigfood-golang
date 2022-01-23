@@ -28,9 +28,8 @@ type RefreshTokenResponse struct {
 // @Router       /auth/refresh-token [post]
 func (controller *Controller) RefreshToken(c *gin.Context) {
 	var message refreshToken.Message
-	if err := c.BindJSON(&message); err != nil {
-		// todo: message
-		server.NewResponseError(c, http.StatusBadRequest, err)
+	err := server.ParseJsonRequestToMessage(c, &message)
+	if err != nil {
 		return
 	}
 
