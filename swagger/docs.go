@@ -70,7 +70,7 @@ var doc = `{
             }
         },
         "/auth/refresh-token": {
-            "post": {
+            "put": {
                 "description": "Refresh user refresh and access tokens",
                 "consumes": [
                     "application/json"
@@ -166,6 +166,57 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/user": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Edit user information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Edit user",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userEdit.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.UserEditResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid user data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -238,6 +289,15 @@ var doc = `{
                 }
             }
         },
+        "controller.UserEditResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
         "refreshToken.Message": {
             "type": "object",
             "required": [
@@ -272,6 +332,18 @@ var doc = `{
                 "success": {
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "userEdit.Message": {
+            "type": "object",
+            "required": [
+                "name"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "New user name"
                 }
             }
         }

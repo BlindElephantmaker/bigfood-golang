@@ -48,6 +48,12 @@ definitions:
         example: true
         type: boolean
     type: object
+  controller.UserEditResponse:
+    properties:
+      success:
+        example: true
+        type: boolean
+    type: object
   refreshToken.Message:
     properties:
       token:
@@ -72,6 +78,14 @@ definitions:
       success:
         example: false
         type: boolean
+    type: object
+  userEdit.Message:
+    properties:
+      name:
+        example: New user name
+        type: string
+    required:
+    - name
     type: object
 host: localhost:8000
 info:
@@ -111,7 +125,7 @@ paths:
       tags:
       - auth
   /auth/refresh-token:
-    post:
+    put:
       consumes:
       - application/json
       description: Refresh user refresh and access tokens
@@ -174,6 +188,38 @@ paths:
       summary: Send SMS code
       tags:
       - auth
+  /user:
+    put:
+      consumes:
+      - application/json
+      description: Edit user information
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/userEdit.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.UserEditResponse'
+        "400":
+          description: Invalid user data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Edit user
+      tags:
+      - user
 securityDefinitions:
   ApiKeyAuth:
     in: header

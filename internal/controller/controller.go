@@ -21,18 +21,18 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("", controller.Auth)
+		auth.POST("/", controller.Auth)
 		auth.POST("/sms-code", controller.SmsCode)
 		auth.PUT("/refresh-token", controller.RefreshToken)
 	}
 
-	//api := router.Group("/api", controller.userIdentity)
-	//{
-	//	apiUser := api.Group("/user")
-	//	{
-	//		// change name
-	//	}
-	//}
+	api := router.Group("/", controller.userIdentity)
+	{
+		apiUser := api.Group("user")
+		{
+			apiUser.PUT("/", controller.userEdit)
+		}
+	}
 
 	router.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 

@@ -4,12 +4,14 @@ import (
 	"bigfood/internal/authorization/actions/auth"
 	"bigfood/internal/authorization/actions/refreshToken"
 	"bigfood/internal/authorization/actions/sendSmsCode"
+	"bigfood/internal/user/actions/userEdit"
 )
 
 type Handlers struct {
 	SendSmsCode         *sendSmsCode.Handler
 	UserAuthHandler     *auth.Handler
 	RefreshTokenHandler *refreshToken.Handler
+	UserEditHandler     *userEdit.Handler
 }
 
 func NewHandlers(repositories *Repositories, services *Services) *Handlers {
@@ -25,6 +27,9 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		),
 		RefreshTokenHandler: refreshToken.New(
 			repositories.UserTokenRepository,
+		),
+		UserEditHandler: userEdit.New(
+			repositories.UserRepository,
 		),
 	}
 }

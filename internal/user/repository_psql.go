@@ -2,6 +2,7 @@ package user
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -28,6 +29,27 @@ func NewRepositoryPSQL(db *sqlx.DB) *RepositoryPSQL {
 func (repo *RepositoryPSQL) Add(u *User) error {
 	query := fmt.Sprintf("INSERT INTO %s (id, name, phone) VALUES ($1, $2, $3)", table)
 	_, err := repo.db.Exec(query, u.Id.String(), u.Name.String(), u.Phone.String())
+
+	return err
+}
+
+func (repo *RepositoryPSQL) Get(id *uuid.UUID) (*User, error) {
+	var userPSQL userPSQL
+	query := fmt.Sprintf("SELECT id, name, phone FROM %s WHERE id = $1", table)
+	err := repo.db.Get(&userPSQL, query, id.String())
+	if err != nil {
+		return nil, err
+	}
+
+	return userPSQL.castToUser()
+}
+
+func (repo *RepositoryPSQL) Update(u *User) error {
+	query := fmt.Sprintf("UPDATE %s SET name = :name WHERE id = :id", table)
+	_, err := repo.db.NamedExec(query, map[string]interface{}{
+		"id":   u.Id.String(),
+		"name": u.Name.String(),
+	})
 
 	return err
 }
