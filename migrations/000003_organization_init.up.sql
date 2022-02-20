@@ -4,27 +4,32 @@ CREATE TABLE organization
     created_at TIMESTAMP NOT NULL
 );
 
-CREATE TABLE role
+CREATE TABLE organization_role
 (
     name VARCHAR(32) PRIMARY KEY
 );
 
-CREATE TABLE user_organization
+CREATE TABLE organization_user
 (
     id              uuid PRIMARY KEY,
-    user_id         uuid      NOT NULL,
     organization_id uuid      NOT NULL,
+    user_id         uuid      NOT NULL,
     created_at      TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (organization_id) REFERENCES organization (id) ON DELETE CASCADE,
-    UNIQUE (user_id, organization_id)
+    UNIQUE (organization_id, user_id)
 );
 
-CREATE TABLE user_organization_role
+CREATE TABLE organization_user_role
 (
-    user_organization_id uuid NOT NULL,
-    role_reference VARCHAR(32) NOT NULL,
-    FOREIGN KEY (user_organization_id) REFERENCES user_organization (id) ON DELETE CASCADE,
-    FOREIGN KEY (role_reference) REFERENCES role (name) ON DELETE CASCADE,
-    UNIQUE (user_organization_id, role_reference)
+    organization_user_id uuid        NOT NULL,
+    role                 VARCHAR(32) NOT NULL,
+    FOREIGN KEY (organization_user_id) REFERENCES organization_user (id) ON DELETE CASCADE,
+    FOREIGN KEY (role) REFERENCES organization_role (name) ON DELETE CASCADE,
+    UNIQUE (organization_user_id, role)
 );
+
+INSERT INTO organization_role (name)
+VALUES ('owner'),
+       ('admin'),
+       ('hostess');

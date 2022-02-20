@@ -33,6 +33,11 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		{
 			apiUser.PUT("/", controller.userEdit)
 		}
+
+		apiOrganization := api.Group("organization", controller.userIdentity)
+		{
+			apiOrganization.POST("/", controller.organizationCreate)
+		}
 	}
 
 	router.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

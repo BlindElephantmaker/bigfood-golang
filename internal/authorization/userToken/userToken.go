@@ -20,7 +20,7 @@ type UserToken struct {
 }
 
 func New(userId *uuid.UUID) (*UserToken, error) {
-	now := time.Now()
+	now := timeHelper.Now()
 	expiresAt := now.Add(refreshTTL)
 
 	access, err := NewAccess(userId, &now, accessTTL)

@@ -25,6 +25,12 @@ definitions:
         example: UUID
         type: string
     type: object
+  controller.OrganizationCreateResponse:
+    properties:
+      id:
+        example: uuid created organization
+        type: string
+    type: object
   controller.RefreshTokenResponse:
     properties:
       access:
@@ -203,6 +209,25 @@ paths:
       summary: Send SMS code
       tags:
       - auth
+  /organization:
+    post:
+      description: Create new organization
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/controller.OrganizationCreateResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create organization
+      tags:
+      - organization
   /user:
     put:
       consumes:

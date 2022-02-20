@@ -5,15 +5,17 @@ import (
 	"bigfood/internal/authorization/actions/refreshToken"
 	"bigfood/internal/authorization/actions/sendSmsCode"
 	"bigfood/internal/authorization/actions/userLogout"
+	"bigfood/internal/organization/actions/createOrganization"
 	"bigfood/internal/user/actions/userEdit"
 )
 
 type Handlers struct {
-	SendSmsCode         *sendSmsCode.Handler
-	UserAuthHandler     *auth.Handler
-	RefreshTokenHandler *refreshToken.Handler
-	UserLogoutHandler   *userLogout.Handler
-	UserEditHandler     *userEdit.Handler
+	SendSmsCode               *sendSmsCode.Handler
+	UserAuthHandler           *auth.Handler
+	RefreshTokenHandler       *refreshToken.Handler
+	UserLogoutHandler         *userLogout.Handler
+	UserEditHandler           *userEdit.Handler
+	OrganizationCreateHandler *createOrganization.Handler
 }
 
 func NewHandlers(repositories *Repositories, services *Services) *Handlers {
@@ -35,6 +37,9 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		),
 		UserEditHandler: userEdit.New(
 			repositories.UserRepository,
+		),
+		OrganizationCreateHandler: createOrganization.New(
+			repositories.OrganizationRepository,
 		),
 	}
 }

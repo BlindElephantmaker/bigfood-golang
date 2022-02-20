@@ -5,7 +5,6 @@ import (
 	"bigfood/internal/user/actions/userEdit"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 )
 
@@ -28,8 +27,7 @@ func (controller *Controller) userEdit(c *gin.Context) {
 		return
 	}
 
-	id, _ := c.Get(UserId)
-	message.Id = id.(*uuid.UUID)
+	message.Id = getUserId(c)
 
 	err = controller.handlers.UserEditHandler.Run(&message)
 	if err == user.ErrorUsernameIsTooShort || err == user.ErrorUsernameIsTooLong || err == userEdit.ErrorUserNameIsEmpty {

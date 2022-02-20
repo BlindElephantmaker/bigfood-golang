@@ -5,6 +5,7 @@ import (
 	"bigfood/pkg/server"
 	"errors"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"net/http"
 	"strings"
 )
@@ -40,4 +41,9 @@ func (controller *Controller) userIdentity(c *gin.Context) {
 	}
 
 	c.Set(UserId, id)
+}
+
+func getUserId(c *gin.Context) *uuid.UUID {
+	id, _ := c.Get(UserId)
+	return id.(*uuid.UUID)
 }

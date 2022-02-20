@@ -5,7 +5,6 @@ import (
 	"bigfood/internal/authorization/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 )
 
@@ -29,8 +28,7 @@ func (controller *Controller) logout(c *gin.Context) {
 		return
 	}
 
-	id, _ := c.Get(UserId)
-	message.UserId = id.(*uuid.UUID)
+	message.UserId = getUserId(c)
 
 	err = controller.handlers.UserLogoutHandler.Run(&message)
 	if err == userToken.ErrorInvalidRefreshTokenFormat {
