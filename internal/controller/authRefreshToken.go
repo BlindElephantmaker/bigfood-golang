@@ -9,24 +9,23 @@ import (
 )
 
 type RefreshTokenResponse struct {
-	Success bool   `json:"success" example:"true"`
 	Id      string `json:"id" example:"UUID"`
 	Access  string `json:"access"`
 	Refresh string `json:"refresh" example:"UUID"`
 }
 
-// RefreshToken
+// refreshToken
 // @Summary      Refresh jwt token
 // @Description  Refresh user refresh and access tokens
 // @Tags         auth
 // @Accept       json
 // @Produce      json
 // @Param        input  body      refreshToken.Message  true  "Body"
-// @Success      200    {object}  RefreshTokenResponse
+// @Success      200    {object}  RefreshTokenResponse  "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid refresh token format"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /auth/refresh-token [put]
-func (controller *Controller) RefreshToken(c *gin.Context) {
+func (controller *Controller) refreshToken(c *gin.Context) {
 	var message refreshToken.Message
 	err := server.ParseJsonRequestToMessage(c, &message)
 	if err != nil {
@@ -44,7 +43,6 @@ func (controller *Controller) RefreshToken(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, &RefreshTokenResponse{
-		Success: true,
 		Id:      token.UserId.String(),
 		Access:  token.Access.String(),
 		Refresh: token.Refresh.String(),

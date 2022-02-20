@@ -21,10 +21,10 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/", controller.Auth)
-		auth.POST("/sms-code", controller.SmsCode)
-		auth.PUT("/refresh-token", controller.RefreshToken)
-		auth.DELETE("/logout", controller.userIdentity, controller.Logout)
+		auth.POST("/", controller.auth)
+		auth.POST("/sms-code", controller.smsCode)
+		auth.PUT("/refresh-token", controller.refreshToken)
+		auth.DELETE("/logout", controller.userIdentity, controller.logout)
 	}
 
 	api := router.Group("/", controller.userIdentity)

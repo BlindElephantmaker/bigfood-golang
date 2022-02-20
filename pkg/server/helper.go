@@ -8,7 +8,6 @@ import (
 )
 
 type ResponseError struct {
-	Success bool   `json:"success" example:"false"`
 	Message string `json:"message" example:"Error message"`
 }
 
@@ -17,13 +16,12 @@ var ErrorParseJsonRequestToMessage = errors.New("failed parse json request to me
 func NewResponseError(c *gin.Context, code int, err error) {
 	message := err.Error()
 	logrus.Error(message)
-	c.AbortWithStatusJSON(code, ResponseError{false, message})
+	c.AbortWithStatusJSON(code, ResponseError{message})
 }
 
 func NewResponseInternalServerError(c *gin.Context, err error) {
 	logrus.Error(err.Error())
 	c.AbortWithStatusJSON(http.StatusInternalServerError, ResponseError{
-		Success: false,
 		Message: "Internal Server Error",
 	})
 }

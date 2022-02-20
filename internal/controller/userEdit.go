@@ -9,10 +9,6 @@ import (
 	"net/http"
 )
 
-type UserEditResponse struct {
-	Success bool `json:"success" example:"true"`
-}
-
 // userEdit
 // @Summary      Edit user
 // @Security     ApiKeyAuth
@@ -20,8 +16,8 @@ type UserEditResponse struct {
 // @Tags         user
 // @Accept       json
 // @Produce      json
-// @Param        input  body      userEdit.Message  true  "Body"
-// @Success      200    {object}  UserEditResponse
+// @Param        input  body  userEdit.Message  true  "Body"
+// @Success      200    "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid user data"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /user [put]
@@ -45,7 +41,5 @@ func (controller *Controller) userEdit(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &UserEditResponse{
-		Success: true,
-	})
+	c.AbortWithStatus(http.StatusOK)
 }

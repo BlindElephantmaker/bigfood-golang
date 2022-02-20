@@ -12,12 +12,6 @@ definitions:
     - phone
     - sms-code
     type: object
-  controller.AuthLogoutResponse:
-    properties:
-      success:
-        example: true
-        type: boolean
-    type: object
   controller.AuthResponse:
     properties:
       access-token:
@@ -27,9 +21,6 @@ definitions:
       refresh-token:
         example: UUID
         type: string
-      success:
-        example: true
-        type: boolean
       user-id:
         example: UUID
         type: string
@@ -44,21 +35,6 @@ definitions:
       refresh:
         example: UUID
         type: string
-      success:
-        example: true
-        type: boolean
-    type: object
-  controller.SmsCodeResponse:
-    properties:
-      success:
-        example: true
-        type: boolean
-    type: object
-  controller.UserEditResponse:
-    properties:
-      success:
-        example: true
-        type: boolean
     type: object
   refreshToken.Message:
     properties:
@@ -81,9 +57,6 @@ definitions:
       message:
         example: Error message
         type: string
-      success:
-        example: false
-        type: boolean
     type: object
   userEdit.Message:
     properties:
@@ -124,7 +97,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Success
           schema:
             $ref: '#/definitions/controller.AuthResponse'
         "422":
@@ -154,9 +127,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/controller.AuthLogoutResponse'
+          description: Success
         "400":
           description: Invalid refresh token
           schema:
@@ -186,7 +157,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Success
           schema:
             $ref: '#/definitions/controller.RefreshTokenResponse'
         "400":
@@ -216,9 +187,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/controller.SmsCodeResponse'
+          description: Success
         "400":
           description: Phone number is invalid
           schema:
@@ -250,9 +219,7 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/controller.UserEditResponse'
+          description: Success
         "400":
           description: Invalid user data
           schema:

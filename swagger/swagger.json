@@ -35,7 +35,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/controller.AuthResponse"
                         }
@@ -86,10 +86,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.AuthLogoutResponse"
-                        }
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Invalid refresh token",
@@ -132,7 +129,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/controller.RefreshTokenResponse"
                         }
@@ -178,10 +175,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.SmsCodeResponse"
-                        }
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Phone number is invalid",
@@ -235,10 +229,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.UserEditResponse"
-                        }
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Invalid user data",
@@ -274,15 +265,6 @@
                 }
             }
         },
-        "controller.AuthLogoutResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "controller.AuthResponse": {
             "type": "object",
             "properties": {
@@ -295,10 +277,6 @@
                 "refresh-token": {
                     "type": "string",
                     "example": "UUID"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
                 },
                 "user-id": {
                     "type": "string",
@@ -319,28 +297,6 @@
                 "refresh": {
                     "type": "string",
                     "example": "UUID"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "controller.SmsCodeResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "controller.UserEditResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean",
-                    "example": true
                 }
             }
         },
@@ -374,10 +330,6 @@
                 "message": {
                     "type": "string",
                     "example": "Error message"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": false
                 }
             }
         },

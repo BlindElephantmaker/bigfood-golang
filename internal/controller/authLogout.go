@@ -9,23 +9,19 @@ import (
 	"net/http"
 )
 
-type AuthLogoutResponse struct {
-	Success bool `json:"success" example:"true"`
-}
-
-// Logout
+// logout
 // @Summary      User logout
 // @Security     ApiKeyAuth
 // @Description  Delete user refresh token
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        input  body      userLogout.Message  true  "Body"
-// @Success      200    {object}  AuthLogoutResponse
+// @Param        input  body  userLogout.Message  true  "Body"
+// @Success      200    "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid refresh token"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /auth/logout [delete]
-func (controller *Controller) Logout(c *gin.Context) {
+func (controller *Controller) logout(c *gin.Context) {
 	var message userLogout.Message
 	err := server.ParseJsonRequestToMessage(c, &message)
 	if err != nil {
@@ -44,7 +40,5 @@ func (controller *Controller) Logout(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &AuthLogoutResponse{
-		Success: true,
-	})
+	c.AbortWithStatus(http.StatusOK)
 }

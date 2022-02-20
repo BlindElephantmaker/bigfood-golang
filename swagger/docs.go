@@ -49,7 +49,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/controller.AuthResponse"
                         }
@@ -100,10 +100,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.AuthLogoutResponse"
-                        }
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Invalid refresh token",
@@ -146,7 +143,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/controller.RefreshTokenResponse"
                         }
@@ -192,10 +189,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.SmsCodeResponse"
-                        }
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Phone number is invalid",
@@ -249,10 +243,7 @@ var doc = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/controller.UserEditResponse"
-                        }
+                        "description": "Success"
                     },
                     "400": {
                         "description": "Invalid user data",
@@ -288,15 +279,6 @@ var doc = `{
                 }
             }
         },
-        "controller.AuthLogoutResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
         "controller.AuthResponse": {
             "type": "object",
             "properties": {
@@ -309,10 +291,6 @@ var doc = `{
                 "refresh-token": {
                     "type": "string",
                     "example": "UUID"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
                 },
                 "user-id": {
                     "type": "string",
@@ -333,28 +311,6 @@ var doc = `{
                 "refresh": {
                     "type": "string",
                     "example": "UUID"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "controller.SmsCodeResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean",
-                    "example": true
-                }
-            }
-        },
-        "controller.UserEditResponse": {
-            "type": "object",
-            "properties": {
-                "success": {
-                    "type": "boolean",
-                    "example": true
                 }
             }
         },
@@ -388,10 +344,6 @@ var doc = `{
                 "message": {
                     "type": "string",
                     "example": "Error message"
-                },
-                "success": {
-                    "type": "boolean",
-                    "example": false
                 }
             }
         },
