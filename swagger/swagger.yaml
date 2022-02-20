@@ -115,7 +115,7 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Delete user refresh token
+      description: Any reason to do this?
       parameters:
       - description: Body
         in: body
@@ -138,7 +138,7 @@ paths:
             $ref: '#/definitions/server.ResponseError'
       security:
       - ApiKeyAuth: []
-      summary: User logout
+      summary: User logout (Deprecated)
       tags:
       - auth
   /auth/refresh-token:

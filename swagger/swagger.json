@@ -62,7 +62,7 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete user refresh token",
+                "description": "Any reason to do this?",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,7 +72,7 @@
                 "tags": [
                     "auth"
                 ],
-                "summary": "User logout",
+                "summary": "User logout (Deprecated)",
                 "parameters": [
                     {
                         "description": "Body",

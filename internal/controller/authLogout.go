@@ -10,9 +10,10 @@ import (
 )
 
 // logout
-// @Summary      User logout
+// todo: Deprecated. Any reason to do this?
+// @Summary      User logout (Deprecated)
 // @Security     ApiKeyAuth
-// @Description  Delete user refresh token
+// @Description  Any reason to do this?
 // @Tags         auth
 // @Accept       json
 // @Produce      json

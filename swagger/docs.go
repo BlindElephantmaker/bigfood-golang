@@ -76,7 +76,7 @@ var doc = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete user refresh token",
+                "description": "Any reason to do this?",
                 "consumes": [
                     "application/json"
                 ],
@@ -86,7 +86,7 @@ var doc = `{
                 "tags": [
                     "auth"
                 ],
-                "summary": "User logout",
+                "summary": "User logout (Deprecated)",
                 "parameters": [
                     {
                         "description": "Body",
