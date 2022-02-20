@@ -62,6 +62,8 @@ func main() {
 	if err := s.Run(); err != nil {
 		logrus.Fatalf("error occured while running server server: %s", err.Error())
 	}
+
+	// todo: add shutdown handler
 }
 
 // todo: it is use global. How move to local?
