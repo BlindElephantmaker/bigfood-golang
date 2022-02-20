@@ -12,6 +12,12 @@ definitions:
     - phone
     - sms-code
     type: object
+  controller.AuthLogoutResponse:
+    properties:
+      success:
+        example: true
+        type: boolean
+    type: object
   controller.AuthResponse:
     properties:
       access-token:
@@ -87,6 +93,14 @@ definitions:
     required:
     - name
     type: object
+  userLogout.Message:
+    properties:
+      token:
+        example: uuid
+        type: string
+    required:
+    - token
+    type: object
 host: localhost:8000
 info:
   contact: {}
@@ -122,6 +136,38 @@ paths:
           schema:
             $ref: '#/definitions/server.ResponseError'
       summary: User authorization
+      tags:
+      - auth
+  /auth/logout:
+    delete:
+      consumes:
+      - application/json
+      description: Delete user refresh token
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/userLogout.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controller.AuthLogoutResponse'
+        "400":
+          description: Invalid refresh token
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: User logout
       tags:
       - auth
   /auth/refresh-token:

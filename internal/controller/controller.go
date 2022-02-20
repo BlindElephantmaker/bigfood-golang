@@ -24,6 +24,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		auth.POST("/", controller.Auth)
 		auth.POST("/sms-code", controller.SmsCode)
 		auth.PUT("/refresh-token", controller.RefreshToken)
+		auth.DELETE("/logout", controller.userIdentity, controller.Logout)
 	}
 
 	api := router.Group("/", controller.userIdentity)

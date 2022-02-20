@@ -69,6 +69,57 @@ var doc = `{
                 }
             }
         },
+        "/auth/logout": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete user refresh token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "auth"
+                ],
+                "summary": "User logout",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/userLogout.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/controller.AuthLogoutResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid refresh token",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/auth/refresh-token": {
             "put": {
                 "description": "Refresh user refresh and access tokens",
@@ -237,6 +288,15 @@ var doc = `{
                 }
             }
         },
+        "controller.AuthLogoutResponse": {
+            "type": "object",
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
         "controller.AuthResponse": {
             "type": "object",
             "properties": {
@@ -344,6 +404,18 @@ var doc = `{
                 "name": {
                     "type": "string",
                     "example": "New user name"
+                }
+            }
+        },
+        "userLogout.Message": {
+            "type": "object",
+            "required": [
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         }

@@ -2,6 +2,7 @@ package userToken
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -42,6 +43,16 @@ func (r *RepositoryPSQL) Get(refreshToken *RefreshToken) (*UserToken, error) {
 	}
 
 	return tokenPSQL.castToUserToken()
+}
+
+func (r *RepositoryPSQL) Delete(token *RefreshToken, userId *uuid.UUID) error {
+	query := fmt.Sprintf("DELETE FROM %s WHERE refresh_token = :refresh_token AND user_id = :user_id", table)
+	_, err := r.db.NamedExec(query, map[string]interface{}{
+		"refresh_token": token.String(),
+		"user_id":       userId.String(),
+	})
+
+	return err
 }
 
 func (r *RepositoryPSQL) Refresh(newToken, oldToken *UserToken) error {
