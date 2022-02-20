@@ -41,5 +41,5 @@ func (c *Code) String() string {
 }
 
 func (c *Code) Compare(another *Code) bool {
-	return c.String() != another.String()
+	return c.String() == another.String()
 }

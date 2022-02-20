@@ -23,7 +23,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 	{
 		auth.POST("", controller.Auth)
 		auth.POST("/sms-code", controller.SmsCode)
-		auth.POST("/refresh-token", controller.RefreshToken)
+		auth.PUT("/refresh-token", controller.RefreshToken)
 	}
 
 	//api := router.Group("/api", controller.userIdentity)

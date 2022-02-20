@@ -25,7 +25,7 @@ type RefreshTokenResponse struct {
 // @Success      200    {object}  RefreshTokenResponse
 // @Failure      400    {object}  server.ResponseError  "Invalid refresh token format"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
-// @Router       /auth/refresh-token [post]
+// @Router       /auth/refresh-token [put]
 func (controller *Controller) RefreshToken(c *gin.Context) {
 	var message refreshToken.Message
 	err := server.ParseJsonRequestToMessage(c, &message)
