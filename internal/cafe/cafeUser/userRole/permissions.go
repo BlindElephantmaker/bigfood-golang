@@ -4,6 +4,7 @@ import (
 	"bigfood/internal/helpers"
 )
 
+// todo: maybe move to authorization
 type CafePermissions struct {
 	Roles Roles
 }
