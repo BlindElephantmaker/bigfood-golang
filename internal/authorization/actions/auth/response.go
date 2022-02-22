@@ -1,6 +1,8 @@
 package auth
 
-import "bigfood/internal/authorization/userToken"
+import (
+	"bigfood/internal/user/userToken"
+)
 
 type Response struct {
 	UserToken *userToken.UserToken

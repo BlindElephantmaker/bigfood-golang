@@ -14,7 +14,6 @@ import (
 // @Description  Edit user information
 // @Tags         user
 // @Accept       json
-// @Produce      json
 // @Param        input  body  userEdit.Message  true  "Body"
 // @Success      200    "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid user data"

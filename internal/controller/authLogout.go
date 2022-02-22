@@ -2,7 +2,7 @@ package controller
 
 import (
 	"bigfood/internal/authorization/actions/userLogout"
-	"bigfood/internal/authorization/userToken"
+	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"

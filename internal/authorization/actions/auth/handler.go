@@ -2,29 +2,37 @@ package auth
 
 import (
 	"bigfood/internal/authorization/smsCode"
-	"bigfood/internal/authorization/userToken"
+	"bigfood/internal/cafe/cafeUser"
 	"bigfood/internal/user"
+	"bigfood/internal/user/userToken"
 	"errors"
 	"github.com/google/uuid"
 )
 
 type Handler struct {
-	smsCodeRepository smsCode.Repository
-	userRepository    user.Repository
-	tokenRepository   userToken.Repository
+	smsCodeRepository  smsCode.Repository
+	userRepository     user.Repository
+	tokenRepository    userToken.Repository
+	cafeUserRepository cafeUser.Repository
 }
 
 var ErrorSmsCodeNotConfirmed = errors.New("sms code not confirmed")
 
-func New(smsCodeRepository smsCode.Repository, users user.Repository, tokens userToken.Repository) *Handler {
+func New(
+	smsCodeRepository smsCode.Repository,
+	users user.Repository,
+	tokens userToken.Repository,
+	cafeUsers cafeUser.Repository,
+) *Handler {
 	return &Handler{
-		smsCodeRepository: smsCodeRepository,
-		userRepository:    users,
-		tokenRepository:   tokens,
+		smsCodeRepository:  smsCodeRepository,
+		userRepository:     users,
+		tokenRepository:    tokens,
+		cafeUserRepository: cafeUsers,
 	}
 }
 
-func (handler *Handler) Run(message *Message) (*Response, error) {
+func (h *Handler) Run(message *Message) (*Response, error) {
 	phone, err := user.NewPhone(message.Phone)
 	if err != nil {
 		return nil, err
@@ -34,17 +42,17 @@ func (handler *Handler) Run(message *Message) (*Response, error) {
 		return nil, err
 	}
 
-	err = handler.validateSmsCode(phone, code)
+	err = h.validateSmsCode(phone, code)
 	if err != nil {
 		return nil, err
 	}
 
-	u, err := handler.getUser(phone)
+	u, err := h.getUser(phone)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := handler.getToken(u.Id)
+	token, err := h.createToken(u.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -55,8 +63,8 @@ func (handler *Handler) Run(message *Message) (*Response, error) {
 	}, nil
 }
 
-func (handler *Handler) validateSmsCode(phone *user.Phone, code *smsCode.Code) error {
-	confirmCode, err := handler.smsCodeRepository.Get(phone)
+func (h *Handler) validateSmsCode(phone *user.Phone, code *smsCode.Code) error {
+	confirmCode, err := h.smsCodeRepository.Get(phone)
 	if err != nil {
 		return err
 	}
@@ -67,30 +75,35 @@ func (handler *Handler) validateSmsCode(phone *user.Phone, code *smsCode.Code) e
 	return nil
 }
 
-func (handler *Handler) getUser(phone *user.Phone) (*user.User, error) {
-	isExist, err := handler.userRepository.IsExistByPhone(phone)
+func (h *Handler) getUser(phone *user.Phone) (*user.User, error) {
+	isExist, err := h.userRepository.IsExistByPhone(phone)
 	if err != nil {
 		return nil, err
 	}
 
 	if isExist {
-		return handler.userRepository.GetByPhone(phone)
+		return h.userRepository.GetByPhone(phone)
 	}
 
 	emptyName, _ := user.NewName("")
 	id := uuid.New()
 	newUser := user.New(&id, emptyName, phone)
 
-	return newUser, handler.userRepository.Add(newUser)
+	return newUser, h.userRepository.Add(newUser)
 }
 
-func (handler *Handler) getToken(id *uuid.UUID) (*userToken.UserToken, error) {
-	token, err := userToken.New(id)
+func (h *Handler) createToken(id *uuid.UUID) (*userToken.UserToken, error) {
+	permissions, err := h.cafeUserRepository.GetUserPermissions(id)
 	if err != nil {
 		return nil, err
 	}
 
-	err = handler.tokenRepository.Add(token)
+	token, err := userToken.NewUserToken(permissions)
+	if err != nil {
+		return nil, err
+	}
+
+	err = h.tokenRepository.Add(token)
 	if err != nil {
 		return nil, err
 	}

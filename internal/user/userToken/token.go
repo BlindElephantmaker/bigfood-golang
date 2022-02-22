@@ -1,7 +1,8 @@
 package userToken
 
 import (
-	"bigfood/internal/helpers/timeHelper"
+	"bigfood/internal/cafe/cafeUser/userRole"
+	"bigfood/internal/helpers"
 	"github.com/google/uuid"
 	"time"
 )
@@ -19,11 +20,11 @@ type UserToken struct {
 	ExpiresAt *time.Time
 }
 
-func New(userId *uuid.UUID) (*UserToken, error) {
-	now := timeHelper.Now()
+func NewUserToken(permissions *userRole.Permissions) (*UserToken, error) {
+	now := helpers.Now()
 	expiresAt := now.Add(refreshTTL)
 
-	access, err := NewAccess(userId, &now, accessTTL)
+	access, err := NewAccess(permissions, &now, accessTTL)
 	if err != nil {
 		return nil, err
 	}
@@ -33,8 +34,13 @@ func New(userId *uuid.UUID) (*UserToken, error) {
 		return nil, err
 	}
 
+	userId, err := uuid.Parse(string(permissions.UserId))
+	if err != nil {
+		return nil, err
+	}
+
 	return &UserToken{
-		UserId:    userId,
+		UserId:    &userId,
 		Access:    access,
 		Refresh:   refresh,
 		ExpiresAt: &expiresAt,
@@ -50,7 +56,7 @@ func Parse(userIdValue, refreshValue, expiresAtValue string) (*UserToken, error)
 	if err != nil {
 		return nil, err
 	}
-	expiresAt, err := timeHelper.Parse(expiresAtValue)
+	expiresAt, err := helpers.ParseTime(expiresAtValue)
 	if err != nil {
 		return nil, err
 	}

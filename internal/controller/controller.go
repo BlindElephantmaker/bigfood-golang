@@ -34,9 +34,9 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 			apiUser.PUT("/", controller.userEdit)
 		}
 
-		apiOrganization := api.Group("organization", controller.userIdentity)
+		apiCafe := api.Group("cafe", controller.userIdentity)
 		{
-			apiOrganization.POST("/", controller.organizationCreate)
+			apiCafe.POST("/", controller.cafeCreate)
 		}
 	}
 

@@ -212,26 +212,26 @@ var doc = `{
                 }
             }
         },
-        "/organization": {
+        "/cafe": {
             "post": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Create new organization",
+                "description": "Create new cafe",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "organization"
+                    "cafe"
                 ],
-                "summary": "Create organization",
+                "summary": "Create cafe",
                 "responses": {
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.OrganizationCreateResponse"
+                            "$ref": "#/definitions/controller.CafeCreateResponse"
                         }
                     },
                     "500": {
@@ -252,9 +252,6 @@ var doc = `{
                 ],
                 "description": "Edit user information",
                 "consumes": [
-                    "application/json"
-                ],
-                "produces": [
                     "application/json"
                 ],
                 "tags": [
@@ -329,12 +326,12 @@ var doc = `{
                 }
             }
         },
-        "controller.OrganizationCreateResponse": {
+        "controller.CafeCreateResponse": {
             "type": "object",
             "properties": {
                 "id": {
                     "type": "string",
-                    "example": "uuid created organization"
+                    "example": "uuid created cafe"
                 }
             }
         },

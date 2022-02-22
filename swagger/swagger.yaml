@@ -25,10 +25,10 @@ definitions:
         example: UUID
         type: string
     type: object
-  controller.OrganizationCreateResponse:
+  controller.CafeCreateResponse:
     properties:
       id:
-        example: uuid created organization
+        example: uuid created cafe
         type: string
     type: object
   controller.RefreshTokenResponse:
@@ -209,25 +209,25 @@ paths:
       summary: Send SMS code
       tags:
       - auth
-  /organization:
+  /cafe:
     post:
-      description: Create new organization
+      description: Create new cafe
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.OrganizationCreateResponse'
+            $ref: '#/definitions/controller.CafeCreateResponse'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ResponseError'
       security:
       - ApiKeyAuth: []
-      summary: Create organization
+      summary: Create cafe
       tags:
-      - organization
+      - cafe
   /user:
     put:
       consumes:
@@ -240,8 +240,6 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/userEdit.Message'
-      produces:
-      - application/json
       responses:
         "200":
           description: Success

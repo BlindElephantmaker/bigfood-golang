@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"bigfood/internal/authorization/userToken"
+	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"net/http"
@@ -12,13 +13,24 @@ import (
 
 const (
 	authorizationHeader = "Authorization"
-	UserId              = "UserId"
+	claims              = "claims"
 )
 
 var (
 	ErrorEmptyAuthorizationHeader   = errors.New("empty authorization header")
 	ErrorInvalidAuthorizationHeader = errors.New("invalid authorization header")
 )
+
+func getClaims(c *gin.Context) *userToken.UserClaims {
+	permissions, _ := c.Get(claims)
+	return permissions.(*userToken.UserClaims)
+}
+
+func getUserId(c *gin.Context) *uuid.UUID {
+	claims := getClaims(c)
+	userId, _ := uuid.Parse(fmt.Sprint(claims.Permissions.UserId)) // todo: change it to helper
+	return &userId
+}
 
 func (controller *Controller) userIdentity(c *gin.Context) {
 	// todo: how compare cases?
@@ -34,16 +46,11 @@ func (controller *Controller) userIdentity(c *gin.Context) {
 		return
 	}
 
-	id, err := userToken.ParseAccess(headerParts[1])
+	userClaims, err := userToken.ParseAccess(headerParts[1])
 	if err != nil {
 		server.NewResponseError(c, http.StatusUnauthorized, err)
 		return
 	}
 
-	c.Set(UserId, id)
-}
-
-func getUserId(c *gin.Context) *uuid.UUID {
-	id, _ := c.Get(UserId)
-	return id.(*uuid.UUID)
+	c.Set(claims, userClaims)
 }
