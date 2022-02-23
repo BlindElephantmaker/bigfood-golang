@@ -42,6 +42,13 @@ definitions:
         example: UUID
         type: string
     type: object
+  controller.TableCreateMassResponse:
+    properties:
+      tables:
+        items:
+          $ref: '#/definitions/table.Table'
+        type: array
+    type: object
   createMass.Message:
     properties:
       cafe-id:
@@ -276,9 +283,7 @@ paths:
         "200":
           description: Success
           schema:
-            items:
-              $ref: '#/definitions/table.Table'
-            type: array
+            $ref: '#/definitions/controller.TableCreateMassResponse'
         "400":
           description: Invalid data
           schema:

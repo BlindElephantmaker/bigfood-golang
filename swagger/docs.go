@@ -276,10 +276,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/table.Table"
-                            }
+                            "$ref": "#/definitions/controller.TableCreateMassResponse"
                         }
                     },
                     "400": {
@@ -402,6 +399,17 @@ var doc = `{
                 "refresh": {
                     "type": "string",
                     "example": "UUID"
+                }
+            }
+        },
+        "controller.TableCreateMassResponse": {
+            "type": "object",
+            "properties": {
+                "tables": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/table.Table"
+                    }
                 }
             }
         },
