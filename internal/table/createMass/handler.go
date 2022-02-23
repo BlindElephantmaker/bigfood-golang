@@ -10,7 +10,7 @@ import (
 var ErrorQuantityIsTooLow = errors.New("quantity of tables must be greater than 0")
 var ErrorQuantityIsTooHigh = errors.New("quantity of tables must be less than 100")
 
-func (h *Handler) Run(message *Message) ([]helpers.Uuid, error) {
+func (h *Handler) Run(message *Message) ([]*table.Table, error) {
 	if message.Quantity < 1 {
 		return nil, ErrorQuantityIsTooLow
 	}
@@ -29,12 +29,7 @@ func (h *Handler) Run(message *Message) ([]helpers.Uuid, error) {
 		return nil, err
 	}
 
-	var tableIds []helpers.Uuid
-	for _, t := range tables {
-		tableIds = append(tableIds, t.Id)
-	}
-
-	return tableIds, nil
+	return tables, nil
 }
 
 type Handler struct {

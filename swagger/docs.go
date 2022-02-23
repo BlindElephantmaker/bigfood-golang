@@ -276,7 +276,10 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.TableMassCreateResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/table.Table"
+                            }
                         }
                     },
                     "400": {
@@ -402,20 +405,6 @@ var doc = `{
                 }
             }
         },
-        "controller.TableMassCreateResponse": {
-            "type": "object",
-            "properties": {
-                "tables": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "list of table ids"
-                    ]
-                }
-            }
-        },
         "createMass.Message": {
             "type": "object",
             "required": [
@@ -429,7 +418,7 @@ var doc = `{
                 },
                 "quantity": {
                     "type": "integer",
-                    "example": 20
+                    "example": 10
                 }
             }
         },
@@ -463,6 +452,31 @@ var doc = `{
                 "message": {
                     "type": "string",
                     "example": "Error message"
+                }
+            }
+        },
+        "table.Table": {
+            "type": "object",
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "comment": {
+                    "type": "string",
+                    "example": "comment"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "seats": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "title": {
+                    "type": "string",
+                    "example": "serial number"
                 }
             }
         },

@@ -1,16 +1,11 @@
 package controller
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table/createMass"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
-
-type TableMassCreateResponse struct {
-	TableIds []helpers.Uuid `json:"tables" example:"list of table ids"`
-}
 
 // tableCreateMass
 // @Summary      Mass creation
@@ -19,10 +14,10 @@ type TableMassCreateResponse struct {
 // @Tags         table
 // @Accept       json
 // @Produce      json
-// @Param        input  body      createMass.Message       true  "Body"
-// @Success      200    {object}  TableMassCreateResponse  "Success"
-// @Failure      400    {object}  server.ResponseError     "Invalid data"
-// @Failure      500    {object}  server.ResponseError     "Internal Server Error"
+// @Param        input  body      createMass.Message    true  "Body"
+// @Success      200    {array}   table.Table           "Success"
+// @Failure      400    {object}  server.ResponseError  "Invalid data"
+// @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /table/mass-create [post]
 func (controller *Controller) tableCreateMass(c *gin.Context) {
 	var message createMass.Message
@@ -34,7 +29,7 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 		server.AccessDenied(c)
 	}
 
-	tableIds, err := controller.handlers.TableCreateMassHandler.Run(&message)
+	tables, err := controller.handlers.TableCreateMassHandler.Run(&message)
 	if err == createMass.ErrorQuantityIsTooLow || err == createMass.ErrorQuantityIsTooHigh {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
@@ -44,5 +39,5 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &TableMassCreateResponse{tableIds})
+	c.JSON(http.StatusOK, tables)
 }
