@@ -44,7 +44,9 @@ definitions:
     type: object
   controller.TableMassCreateResponse:
     properties:
-      tableIds:
+      tables:
+        example:
+        - list of table ids
         items:
           type: string
         type: array

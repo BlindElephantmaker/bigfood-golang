@@ -9,7 +9,7 @@ import (
 )
 
 type TableMassCreateResponse struct {
-	TableIds []helpers.Uuid
+	TableIds []helpers.Uuid `json:"tables" example:"list of table ids"`
 }
 
 // tableCreateMass

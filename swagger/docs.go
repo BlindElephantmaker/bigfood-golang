@@ -405,11 +405,14 @@ var doc = `{
         "controller.TableMassCreateResponse": {
             "type": "object",
             "properties": {
-                "tableIds": {
+                "tables": {
                     "type": "array",
                     "items": {
                         "type": "string"
-                    }
+                    },
+                    "example": [
+                        "list of table ids"
+                    ]
                 }
             }
         },
