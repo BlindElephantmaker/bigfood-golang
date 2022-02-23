@@ -276,7 +276,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.TableCreateMassResponse"
+                            "$ref": "#/definitions/controller.TableListResponse"
                         }
                     },
                     "400": {
@@ -402,7 +402,7 @@ var doc = `{
                 }
             }
         },
-        "controller.TableCreateMassResponse": {
+        "controller.TableListResponse": {
             "type": "object",
             "properties": {
                 "tables": {

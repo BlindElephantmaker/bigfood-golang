@@ -1,16 +1,11 @@
 package controller
 
 import (
-	"bigfood/internal/table"
 	"bigfood/internal/table/createMass"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
-
-type TableCreateMassResponse struct {
-	Tables []*table.Table `json:"tables"`
-}
 
 // tableCreateMass
 // @Summary      Mass creation
@@ -19,10 +14,10 @@ type TableCreateMassResponse struct {
 // @Tags         table
 // @Accept       json
 // @Produce      json
-// @Param        input  body      createMass.Message       true  "Body"
-// @Success      200    {object}  TableCreateMassResponse  "Success"
-// @Failure      400    {object}  server.ResponseError     "Invalid data"
-// @Failure      500    {object}  server.ResponseError     "Internal Server Error"
+// @Param        input  body      createMass.Message    true  "Body"
+// @Success      200    {object}  TableListResponse     "Success"
+// @Failure      400    {object}  server.ResponseError  "Invalid data"
+// @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /table/mass-create [post]
 func (controller *Controller) tableCreateMass(c *gin.Context) {
 	var message createMass.Message
@@ -44,5 +39,5 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, &TableCreateMassResponse{tables})
+	c.JSON(http.StatusOK, &TableListResponse{tables})
 }

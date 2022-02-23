@@ -262,7 +262,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.TableCreateMassResponse"
+                            "$ref": "#/definitions/controller.TableListResponse"
                         }
                     },
                     "400": {
@@ -388,7 +388,7 @@
                 }
             }
         },
-        "controller.TableCreateMassResponse": {
+        "controller.TableListResponse": {
             "type": "object",
             "properties": {
                 "tables": {

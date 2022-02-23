@@ -42,7 +42,7 @@ definitions:
         example: UUID
         type: string
     type: object
-  controller.TableCreateMassResponse:
+  controller.TableListResponse:
     properties:
       tables:
         items:
@@ -283,7 +283,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.TableCreateMassResponse'
+            $ref: '#/definitions/controller.TableListResponse'
         "400":
           description: Invalid data
           schema:
