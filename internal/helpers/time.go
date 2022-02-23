@@ -2,10 +2,10 @@ package helpers
 
 import "time"
 
-func Now() time.Time {
+func TimeNow() time.Time {
 	return time.Now()
 }
 
-func ParseTime(value string) (time.Time, error) {
+func TimeParse(value string) (time.Time, error) {
 	return time.Parse(time.RFC3339, value)
 }

@@ -243,6 +243,57 @@ var doc = `{
                 }
             }
         },
+        "/table/mass-create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create N-quantity of tables",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Mass creation",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/createMass.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/controller.TableMassCreateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "put": {
                 "security": [
@@ -348,6 +399,34 @@ var doc = `{
                 "refresh": {
                     "type": "string",
                     "example": "UUID"
+                }
+            }
+        },
+        "controller.TableMassCreateResponse": {
+            "type": "object",
+            "properties": {
+                "tableIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "createMass.Message": {
+            "type": "object",
+            "required": [
+                "cafe-id",
+                "quantity"
+            ],
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "example": 20
                 }
             }
         },

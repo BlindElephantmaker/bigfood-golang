@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"bigfood/internal/cafe/cafeUser/userRole"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"errors"
@@ -53,4 +55,9 @@ func (controller *Controller) userIdentity(c *gin.Context) {
 	}
 
 	c.Set(claims, userClaims)
+}
+
+func isAdmin(c *gin.Context, cafeId helpers.Uuid) bool {
+	claims := getClaims(c)
+	return claims.Permissions.HasRole(cafeId, userRole.Admin)
 }

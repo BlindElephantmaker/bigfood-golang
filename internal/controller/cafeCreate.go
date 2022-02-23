@@ -24,7 +24,7 @@ func (controller *Controller) cafeCreate(c *gin.Context) {
 
 	cafeId, err := controller.handlers.CafeCreateHandler.Run(id)
 	if err != nil {
-		server.NewResponseInternalServerError(c, err)
+		server.InternalServerError(c, err)
 		return
 	}
 

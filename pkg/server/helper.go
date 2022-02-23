@@ -19,10 +19,16 @@ func NewResponseError(c *gin.Context, code int, err error) {
 	c.AbortWithStatusJSON(code, ResponseError{message})
 }
 
-func NewResponseInternalServerError(c *gin.Context, err error) {
+func InternalServerError(c *gin.Context, err error) {
 	logrus.Error(err.Error())
 	c.AbortWithStatusJSON(http.StatusInternalServerError, ResponseError{
 		Message: "Internal Server Error",
+	})
+}
+
+func AccessDenied(c *gin.Context) {
+	c.AbortWithStatusJSON(http.StatusUnauthorized, ResponseError{
+		Message: "Access Denied",
 	})
 }
 

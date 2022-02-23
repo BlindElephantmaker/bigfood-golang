@@ -36,6 +36,20 @@ func (p *Permissions) CreateCafePerm(cafeId helpers.Uuid) {
 	}
 }
 
+func (p *Permissions) HasRole(cafeId helpers.Uuid, role Role) bool {
+	cafePerm, ok := p.Cafes[cafeId]
+	if !ok {
+		return false
+	}
+
+	for _, r := range cafePerm.Roles {
+		if role == r {
+			return true
+		}
+	}
+	return false
+}
+
 func CreateEmptyPermission(userId helpers.Uuid) *Permissions {
 	return &Permissions{
 		UserId: userId,

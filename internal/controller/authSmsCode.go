@@ -37,7 +37,7 @@ func (controller *Controller) smsCode(c *gin.Context) {
 		return
 	}
 	if err != nil {
-		server.NewResponseInternalServerError(c, err)
+		server.InternalServerError(c, err)
 		return
 	}
 

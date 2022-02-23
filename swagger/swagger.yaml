@@ -42,6 +42,25 @@ definitions:
         example: UUID
         type: string
     type: object
+  controller.TableMassCreateResponse:
+    properties:
+      tableIds:
+        items:
+          type: string
+        type: array
+    type: object
+  createMass.Message:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+      quantity:
+        example: 20
+        type: integer
+    required:
+    - cafe-id
+    - quantity
+    type: object
   refreshToken.Message:
     properties:
       token:
@@ -228,6 +247,38 @@ paths:
       summary: Create cafe
       tags:
       - cafe
+  /table/mass-create:
+    post:
+      consumes:
+      - application/json
+      description: Create N-quantity of tables
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/createMass.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/controller.TableMassCreateResponse'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Mass creation
+      tags:
+      - table
   /user:
     put:
       consumes:

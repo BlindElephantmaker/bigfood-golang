@@ -21,7 +21,7 @@ type UserToken struct {
 }
 
 func NewUserToken(permissions *userRole.Permissions) (*UserToken, error) {
-	now := helpers.Now()
+	now := helpers.TimeNow()
 	expiresAt := now.Add(refreshTTL)
 
 	access, err := NewAccess(permissions, &now, accessTTL)
@@ -56,7 +56,7 @@ func Parse(userIdValue, refreshValue, expiresAtValue string) (*UserToken, error)
 	if err != nil {
 		return nil, err
 	}
-	expiresAt, err := helpers.ParseTime(expiresAtValue)
+	expiresAt, err := helpers.TimeParse(expiresAtValue)
 	if err != nil {
 		return nil, err
 	}

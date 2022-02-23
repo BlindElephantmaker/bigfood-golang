@@ -20,7 +20,7 @@ func New(cafes cafe.Repository) *Handler {
 func (h *Handler) Run(userId *uuid.UUID) (*uuid.UUID, error) {
 	newCafe := cafe.New()
 	newCafeUser := cafeUser.NewCafeUser(newCafe.Id, userId)
-	now := helpers.Now()
+	now := helpers.TimeNow()
 	err := h.cafeRepository.Add(newCafe, newCafeUser, &now)
 	if err != nil {
 		return nil, err

@@ -38,6 +38,11 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		{
 			apiCafe.POST("/", controller.cafeCreate)
 		}
+
+		apiTable := api.Group("table")
+		{
+			apiTable.POST("/create-mass", controller.tableCreateMass)
+		}
 	}
 
 	router.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

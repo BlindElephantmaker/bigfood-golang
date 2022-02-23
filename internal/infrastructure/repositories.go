@@ -4,6 +4,7 @@ import (
 	"bigfood/internal/authorization/smsCode"
 	"bigfood/internal/cafe"
 	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/table"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"github.com/jmoiron/sqlx"
@@ -15,6 +16,7 @@ type Repositories struct {
 	UserTokenRepository userToken.Repository
 	CafeRepository      cafe.Repository
 	CafeUserRepository  cafeUser.Repository
+	TableRepository     table.Repository
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
@@ -26,5 +28,6 @@ func NewRepositories(db *sqlx.DB) *Repositories {
 		UserTokenRepository: userToken.NewRepositoryPSQL(db),
 		CafeRepository:      cafe.NewRepositoryPSQL(db, cafeUserRepository),
 		CafeUserRepository:  cafeUserRepository,
+		TableRepository:     table.NewRepositoryPSQL(db),
 	}
 }

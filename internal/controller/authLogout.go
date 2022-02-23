@@ -35,7 +35,7 @@ func (controller *Controller) logout(c *gin.Context) {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 	}
 	if err != nil {
-		server.NewResponseInternalServerError(c, err)
+		server.InternalServerError(c, err)
 		return
 	}
 
