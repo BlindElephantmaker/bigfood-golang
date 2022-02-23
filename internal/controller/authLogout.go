@@ -15,7 +15,6 @@ import (
 // @Description  Any reason to do this?
 // @Tags         auth
 // @Accept       json
-// @Produce      json
 // @Param        input  body  userLogout.Message  true  "Body"
 // @Success      200    "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid refresh token"

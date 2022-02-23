@@ -11,5 +11,5 @@ func New(tables table.Repository) *Handler {
 }
 
 func (h *Handler) Run(message *Message) ([]*table.Table, error) {
-	return h.TableRepository.Get(message.CafeId)
+	return h.TableRepository.GetByCafe(message.CafeId)
 }

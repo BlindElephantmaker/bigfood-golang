@@ -41,8 +41,9 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 
 		apiTable := api.Group("table")
 		{
-			apiTable.POST("/create-mass", controller.tableCreateMass)
 			apiTable.GET("/list", controller.tableGetList)
+			apiTable.PUT("/", controller.tableEdit)
+			apiTable.POST("/create-mass", controller.tableCreateMass)
 		}
 	}
 

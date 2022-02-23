@@ -7,5 +7,7 @@ import (
 
 type Repository interface {
 	Add(tables []*Table, createdAt time.Time) error
-	Get(cafeId helpers.Uuid) ([]*Table, error)
+	Get(tableId helpers.Uuid) (*Table, error)
+	Update(*Table) error
+	GetByCafe(cafeId helpers.Uuid) ([]*Table, error)
 }

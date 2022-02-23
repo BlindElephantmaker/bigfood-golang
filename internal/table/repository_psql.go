@@ -62,7 +62,30 @@ func createInsertQuery(batchSize int) string {
 	return query
 }
 
-func (r *RepositoryPSQL) Get(cafeId helpers.Uuid) ([]*Table, error) {
+func (r *RepositoryPSQL) Get(tableId helpers.Uuid) (*Table, error) {
+	var t Table
+	query := fmt.Sprintf("SELECT id, cafe_id, title, comment, seats FROM %s WHERE id = $1", table)
+	err := r.db.Get(&t, query, tableId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &t, nil
+}
+
+func (r *RepositoryPSQL) Update(t *Table) error {
+	query := fmt.Sprintf("UPDATE %s SET title = :title, comment = :comment, seats = :seats WHERE id = :id", table)
+	_, err := r.db.NamedExec(query, map[string]interface{}{
+		"id":      t.Id,
+		"title":   t.Title,
+		"comment": t.Comment,
+		"seats":   t.Seats,
+	})
+
+	return err
+}
+
+func (r *RepositoryPSQL) GetByCafe(cafeId helpers.Uuid) ([]*Table, error) {
 	var tables []*Table
 	query := fmt.Sprintf("SELECT id, cafe_id, title, comment, seats FROM %s WHERE cafe_id = $1 ORDER BY title", table)
 	err := r.db.Select(&tables, query, cafeId)

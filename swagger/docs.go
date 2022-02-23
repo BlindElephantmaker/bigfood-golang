@@ -80,9 +80,6 @@ var doc = `{
                 "consumes": [
                     "application/json"
                 ],
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "auth"
                 ],
@@ -232,6 +229,57 @@ var doc = `{
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/controller.CafeCreateResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/table": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Edit table",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Edit table",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tableEdit.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
                         }
                     },
                     "500": {
@@ -560,6 +608,28 @@ var doc = `{
                 "title": {
                     "type": "string",
                     "example": "serial number"
+                }
+            }
+        },
+        "tableEdit.Message": {
+            "type": "object",
+            "required": [
+                "table-id"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "seats": {
+                    "type": "integer"
+                },
+                "table-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "title": {
+                    "description": "todo: check *",
+                    "type": "string"
                 }
             }
         },
