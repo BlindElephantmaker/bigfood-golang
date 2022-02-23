@@ -6,9 +6,9 @@ import (
 	"bigfood/internal/authorization/actions/sendSmsCode"
 	"bigfood/internal/authorization/actions/userLogout"
 	"bigfood/internal/cafe/actions/create"
-	"bigfood/internal/table/createMass"
-	"bigfood/internal/table/getList"
-	"bigfood/internal/table/tableEdit"
+	"bigfood/internal/table/actions/createMass"
+	"bigfood/internal/table/actions/getList"
+	"bigfood/internal/table/actions/tableEdit"
 	"bigfood/internal/user/actions/userEdit"
 )
 
