@@ -42,6 +42,11 @@ definitions:
         example: UUID
         type: string
     type: object
+  controller.TableCreateResponse:
+    properties:
+      table:
+        $ref: '#/definitions/table.Table'
+    type: object
   controller.TableListResponse:
     properties:
       tables:
@@ -108,6 +113,20 @@ definitions:
       title:
         example: serial number
         type: string
+    type: object
+  tableCreate.Message:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+      comment:
+        type: string
+      seats:
+        type: integer
+      title:
+        type: string
+    required:
+    - cafe-id
     type: object
   tableDelete.Message:
     properties:
@@ -332,6 +351,41 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Delete table
+      tags:
+      - table
+    post:
+      consumes:
+      - application/json
+      description: Create table
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/tableCreate.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/controller.TableCreateResponse'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create table
       tags:
       - table
     put:

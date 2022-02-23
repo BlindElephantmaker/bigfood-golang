@@ -24,21 +24,21 @@ func (h *Handler) Run(message *Message) error {
 	}
 
 	if message.Title != nil {
-		title, err := table.NewTitle(*message.Title)
+		title, err := table.ParseTitle(*message.Title)
 		if err != nil {
 			return err
 		}
 		t.Title = title
 	}
 	if message.Comment != nil {
-		comment, err := table.NewComment(*message.Comment)
+		comment, err := table.ParseComment(*message.Comment)
 		if err != nil {
 			return err
 		}
 		t.Comment = comment
 	}
 	if message.Seats != nil {
-		seats, err := table.NewSeats(*message.Seats)
+		seats, err := table.ParseSeats(*message.Seats)
 		if err != nil {
 			return err
 		}

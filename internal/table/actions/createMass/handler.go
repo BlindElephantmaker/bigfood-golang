@@ -25,11 +25,11 @@ func (h *Handler) Run(message *Message) ([]*table.Table, error) {
 
 	var tables []*table.Table
 	for i := 1; i <= message.Quantity; i++ {
-		title, _ := table.NewTitle(fmt.Sprint(i))
+		title, _ := table.ParseTitle(fmt.Sprint(i))
 		tables = append(tables, table.NewTable(cafeId, title))
 	}
 
-	err = h.TableRepository.Add(tables, helpers.TimeNow())
+	err = h.TableRepository.AddSlice(tables, helpers.TimeNow())
 	if err != nil {
 		return nil, err
 	}

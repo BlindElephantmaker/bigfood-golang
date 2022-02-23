@@ -18,7 +18,7 @@ func NewRepositoryPSQL(db *sqlx.DB) *RepositoryPSQL {
 
 const table = "tables"
 
-func (r *RepositoryPSQL) Add(tables []*Table, createdAt time.Time) error {
+func (r *RepositoryPSQL) AddSlice(tables []*Table, createdAt time.Time) error {
 	params := []interface{}{}
 
 	for _, table := range tables {

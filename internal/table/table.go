@@ -11,12 +11,12 @@ type Table struct {
 }
 
 func NewTable(cafeId helpers.Uuid, title Title) *Table {
-	comment, _ := NewComment("")
+	comment, _ := ParseComment("")
 	return &Table{
 		Id:      helpers.UuidGenerate(),
 		CafeId:  cafeId,
 		Title:   title,
 		Comment: comment,
-		Seats:   4,
+		Seats:   NewSeats(),
 	}
 }

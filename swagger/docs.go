@@ -290,6 +290,61 @@ var doc = `{
                     }
                 }
             },
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create table",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Create table",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tableCreate.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/controller.TableCreateResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "security": [
                     {
@@ -613,6 +668,14 @@ var doc = `{
                 }
             }
         },
+        "controller.TableCreateResponse": {
+            "type": "object",
+            "properties": {
+                "table": {
+                    "$ref": "#/definitions/table.Table"
+                }
+            }
+        },
         "controller.TableListResponse": {
             "type": "object",
             "properties": {
@@ -708,6 +771,27 @@ var doc = `{
                 "title": {
                     "type": "string",
                     "example": "serial number"
+                }
+            }
+        },
+        "tableCreate.Message": {
+            "type": "object",
+            "required": [
+                "cafe-id"
+            ],
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "seats": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
                 }
             }
         },
