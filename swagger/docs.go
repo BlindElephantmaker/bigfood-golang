@@ -340,6 +340,57 @@ var doc = `{
                 }
             }
         },
+        "/table/delete-all": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete all tables",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Delete all tables",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tableDeleteAll.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/table/list": {
             "get": {
                 "security": [
@@ -667,6 +718,18 @@ var doc = `{
             ],
             "properties": {
                 "table-id": {
+                    "type": "string",
+                    "example": "uuid"
+                }
+            }
+        },
+        "tableDeleteAll.Message": {
+            "type": "object",
+            "required": [
+                "cafe-id"
+            ],
+            "properties": {
+                "cafe-id": {
                     "type": "string",
                     "example": "uuid"
                 }

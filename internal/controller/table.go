@@ -33,14 +33,18 @@ func (controller *Controller) tableGetList(c *gin.Context) {
 	}
 	if !userCanViewTable(c, message.CafeId) {
 		server.AccessDenied(c)
+		return
 	}
 
 	tables, err := controller.handlers.TableGetListHandler.Run(&message)
+	if err == helpers.ErrorInvalidUuid {
+		server.NewResponseError(c, http.StatusBadRequest, err)
+		return
+	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return
 	}
-
 	c.JSON(http.StatusOK, &TableListResponse{tables})
 }
 
@@ -102,10 +106,13 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	}
 	if !userCanEditTable(c, message.CafeId) {
 		server.AccessDenied(c)
+		return
 	}
 
 	tables, err := controller.handlers.TableCreateMassHandler.Run(&message)
-	if err == createMass.ErrorQuantityIsTooLow || err == createMass.ErrorQuantityIsTooHigh {
+	if err == createMass.ErrorQuantityIsTooLow ||
+		err == createMass.ErrorQuantityIsTooHigh ||
+		err == helpers.ErrorInvalidUuid {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}
@@ -121,10 +128,11 @@ type TableListResponse struct {
 	Tables []*table.Table `json:"tables"`
 }
 
-func userCanEditTable(c *gin.Context, cafeId helpers.Uuid) bool {
-	return userHasRole(c, cafeId, role.Admin)
+func userCanEditTable(c *gin.Context, cafeId string) bool {
+	return userHasRole(c, helpers.Uuid(cafeId), role.Admin)
 }
 
-func userCanViewTable(c *gin.Context, cafeId helpers.Uuid) bool {
-	return userHasRole(c, cafeId, role.Admin) || userHasRole(c, cafeId, role.Hostess)
+func userCanViewTable(c *gin.Context, cafeId string) bool {
+	return userHasRole(c, helpers.Uuid(cafeId), role.Admin) ||
+		userHasRole(c, helpers.Uuid(cafeId), role.Hostess)
 }

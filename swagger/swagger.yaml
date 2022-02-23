@@ -117,6 +117,14 @@ definitions:
     required:
     - table-id
     type: object
+  tableDeleteAll.Message:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+    required:
+    - cafe-id
+    type: object
   tableEdit.Message:
     properties:
       comment:
@@ -355,6 +363,38 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Edit table
+      tags:
+      - table
+  /table/delete-all:
+    delete:
+      consumes:
+      - application/json
+      description: Delete all tables
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/tableDeleteAll.Message'
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete all tables
       tags:
       - table
   /table/list:

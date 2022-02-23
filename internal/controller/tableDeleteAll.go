@@ -2,33 +2,40 @@ package controller
 
 import (
 	"bigfood/internal/helpers"
-	"bigfood/internal/table/actions/tableDelete"
+	"bigfood/internal/table/actions/tableDeleteAll"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-// tableDelete
-// @Summary      Delete table
+type TableDeleteAllResponse struct {
+	Success bool `json:"success" example:"true"`
+}
+
+// tableDeleteAll
+// @Summary      Delete all tables
 // @Security     ApiKeyAuth
-// @Description  Delete table
+// @Description  Delete all tables
 // @Tags         table
 // @Accept       json
-// @Param        input  body  tableDelete.Message  true  "Body"
+// @Param        input  body  tableDeleteAll.Message  true  "Body"
 // @Success      200    "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid data"
 // @Failure      401    {object}  server.ResponseError  "Access Denied"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
-// @Router       /table [delete]
-func (controller *Controller) tableDelete(c *gin.Context) {
-	var message tableDelete.Message
+// @Router       /table/delete-all [delete]
+func (controller *Controller) tableDeleteAll(c *gin.Context) {
+	var message tableDeleteAll.Message
 	err := server.ParseJsonRequestToMessage(c, &message)
 	if err != nil {
 		return
 	}
-	// todo: permission Admin and table id
+	if !userCanEditTable(c, message.CafeId) {
+		server.AccessDenied(c)
+		return
+	}
 
-	err = controller.handlers.TableDeleteHandler.Run(&message)
+	err = controller.handlers.TableDeleteAllHandler.Run(&message)
 	if err == helpers.ErrorInvalidUuid {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return

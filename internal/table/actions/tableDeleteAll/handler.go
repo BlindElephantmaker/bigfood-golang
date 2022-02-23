@@ -1,4 +1,4 @@
-package getList
+package tableDeleteAll
 
 import (
 	"bigfood/internal/helpers"
@@ -13,19 +13,10 @@ func New(tables table.Repository) *Handler {
 	return &Handler{tables}
 }
 
-func (h *Handler) Run(message *Message) ([]*table.Table, error) {
+func (h *Handler) Run(message *Message) error {
 	cafeId, err := helpers.UuidParse(message.CafeId)
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	tables, err := h.TableRepository.GetByCafe(cafeId)
-	if err != nil {
-		return nil, err
-	}
-	if len(tables) == 0 {
-		tables = []*table.Table{}
-	}
-
-	return tables, nil
+	return h.TableRepository.DeleteAll(cafeId)
 }

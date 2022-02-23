@@ -96,6 +96,17 @@ func (r *RepositoryPSQL) Delete(tableId helpers.Uuid) error {
 	return err
 }
 
+func (r *RepositoryPSQL) DeleteAll(cafeId helpers.Uuid) error {
+	now := helpers.TimeNow()
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND cafe_id = :cafe_id", table)
+	_, err := r.db.NamedExec(query, map[string]interface{}{
+		"cafe_id":    cafeId,
+		"deleted_at": now,
+	})
+
+	return err
+}
+
 func (r *RepositoryPSQL) GetByCafe(cafeId helpers.Uuid) ([]*Table, error) {
 	var tables []*Table
 	query := fmt.Sprintf(

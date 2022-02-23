@@ -10,5 +10,6 @@ type Repository interface {
 	Get(tableId helpers.Uuid) (*Table, error)
 	Update(*Table) error
 	Delete(tableId helpers.Uuid) error
+	DeleteAll(cafeId helpers.Uuid) error
 	GetByCafe(cafeId helpers.Uuid) ([]*Table, error)
 }

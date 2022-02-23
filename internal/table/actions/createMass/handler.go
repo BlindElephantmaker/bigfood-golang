@@ -18,13 +18,18 @@ func (h *Handler) Run(message *Message) ([]*table.Table, error) {
 		return nil, ErrorQuantityIsTooHigh
 	}
 
+	cafeId, err := helpers.UuidParse(message.CafeId)
+	if err != nil {
+		return nil, err
+	}
+
 	var tables []*table.Table
 	for i := 1; i <= message.Quantity; i++ {
 		title, _ := table.NewTitle(fmt.Sprint(i))
-		tables = append(tables, table.NewTable(message.CafeId, title))
+		tables = append(tables, table.NewTable(cafeId, title))
 	}
 
-	err := h.TableRepository.Add(tables, helpers.TimeNow())
+	err = h.TableRepository.Add(tables, helpers.TimeNow())
 	if err != nil {
 		return nil, err
 	}

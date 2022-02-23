@@ -45,6 +45,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 			apiTable.PUT("/", controller.tableEdit)
 			apiTable.POST("/create-mass", controller.tableCreateMass)
 			apiTable.DELETE("/", controller.tableDelete)
+			apiTable.DELETE("/delete-all", controller.tableDeleteAll)
 		}
 	}
 
