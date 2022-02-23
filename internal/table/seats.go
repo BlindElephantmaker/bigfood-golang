@@ -4,10 +4,12 @@ import "errors"
 
 type Seats int
 
+const defaultSeatsValue = Seats(4)
+
 var ErrorTableSeatsInvalidValue = errors.New("table seats has invalid value")
 
 func NewSeats() Seats {
-	return 4
+	return defaultSeatsValue
 }
 
 func ParseSeats(seats int) (Seats, error) {
