@@ -1,4 +1,4 @@
-package userRole
+package role
 
 import (
 	"bigfood/internal/helpers"

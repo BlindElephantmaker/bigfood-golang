@@ -1,6 +1,7 @@
 package table
 
 import (
+	"bigfood/internal/helpers"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"strings"
@@ -59,4 +60,15 @@ func createInsertQuery(batchSize int) string {
 	)
 
 	return query
+}
+
+func (r *RepositoryPSQL) Get(cafeId helpers.Uuid) ([]*Table, error) {
+	var tables []*Table
+	query := fmt.Sprintf("SELECT id, cafe_id, title, comment, seats FROM %s WHERE cafe_id = $1 ORDER BY title", table)
+	err := r.db.Select(&tables, query, cafeId)
+	if err != nil {
+		return nil, err
+	}
+
+	return tables, nil
 }

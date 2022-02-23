@@ -61,6 +61,14 @@ definitions:
     - cafe-id
     - quantity
     type: object
+  getList.Message:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+    required:
+    - cafe-id
+    type: object
   refreshToken.Message:
     properties:
       token:
@@ -265,6 +273,42 @@ paths:
       summary: Create cafe
       tags:
       - cafe
+  /table/list:
+    get:
+      consumes:
+      - application/json
+      description: Get table list of cafe
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/getList.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/controller.TableListResponse'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get table list
+      tags:
+      - table
   /table/mass-create:
     post:
       consumes:
@@ -286,6 +330,10 @@ paths:
             $ref: '#/definitions/controller.TableListResponse'
         "400":
           description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
           schema:
             $ref: '#/definitions/server.ResponseError'
         "500":

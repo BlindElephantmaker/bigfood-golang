@@ -17,6 +17,7 @@ import (
 // @Param        input  body      createMass.Message    true  "Body"
 // @Success      200    {object}  TableListResponse     "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid data"
+// @Failure      401    {object}  server.ResponseError  "Access Denied"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
 // @Router       /table/mass-create [post]
 func (controller *Controller) tableCreateMass(c *gin.Context) {
@@ -25,7 +26,7 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !isAdmin(c, message.CafeId) {
+	if !userCanEditTable(c, message.CafeId) {
 		server.AccessDenied(c)
 	}
 

@@ -6,11 +6,11 @@ import (
 )
 
 type Table struct {
-	Id      helpers.Uuid `json:"id" example:"uuid"`
-	CafeId  helpers.Uuid `json:"cafe-id" example:"uuid"`
-	Title   Title        `json:"title" example:"serial number"`
-	Comment Comment      `json:"comment" example:"comment"`
-	Seats   int          `json:"seats" example:"4"`
+	Id      helpers.Uuid `json:"id" example:"uuid" db:"id"`
+	CafeId  helpers.Uuid `json:"cafe-id" example:"uuid" db:"cafe_id"`
+	Title   Title        `json:"title" example:"serial number" db:"title"`
+	Comment Comment      `json:"comment" example:"comment" db:"comment"`
+	Seats   int          `json:"seats" example:"4" db:"seats"`
 }
 
 func NewTable(cafeId helpers.Uuid, title Title) *Table {

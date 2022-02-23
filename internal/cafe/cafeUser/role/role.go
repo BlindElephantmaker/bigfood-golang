@@ -1,4 +1,4 @@
-package userRole
+package role
 
 type Role string
 

@@ -42,10 +42,11 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		apiTable := api.Group("table")
 		{
 			apiTable.POST("/create-mass", controller.tableCreateMass)
+			apiTable.GET("/list", controller.tableGetList)
 		}
 	}
 
-	router.GET("/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	router.GET("/api/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }

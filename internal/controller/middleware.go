@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/cafe/cafeUser/userRole"
+	"bigfood/internal/cafe/cafeUser/role"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
@@ -22,17 +22,6 @@ var (
 	ErrorEmptyAuthorizationHeader   = errors.New("empty authorization header")
 	ErrorInvalidAuthorizationHeader = errors.New("invalid authorization header")
 )
-
-func getClaims(c *gin.Context) *userToken.UserClaims {
-	permissions, _ := c.Get(claims)
-	return permissions.(*userToken.UserClaims)
-}
-
-func getUserId(c *gin.Context) *uuid.UUID {
-	claims := getClaims(c)
-	userId, _ := uuid.Parse(fmt.Sprint(claims.Permissions.UserId)) // todo: change it to helper
-	return &userId
-}
 
 func (controller *Controller) userIdentity(c *gin.Context) {
 	// todo: how compare cases?
@@ -57,7 +46,18 @@ func (controller *Controller) userIdentity(c *gin.Context) {
 	c.Set(claims, userClaims)
 }
 
-func isAdmin(c *gin.Context, cafeId helpers.Uuid) bool {
+func getClaims(c *gin.Context) *userToken.UserClaims {
+	permissions, _ := c.Get(claims)
+	return permissions.(*userToken.UserClaims)
+}
+
+func getUserId(c *gin.Context) *uuid.UUID {
 	claims := getClaims(c)
-	return claims.Permissions.HasRole(cafeId, userRole.Admin)
+	userId, _ := uuid.Parse(fmt.Sprint(claims.Permissions.UserId)) // todo: change it to helper
+	return &userId
+}
+
+func userHasRole(c *gin.Context, cafeId helpers.Uuid, role role.Role) bool {
+	claims := getClaims(c)
+	return claims.Permissions.HasRole(cafeId, role)
 }

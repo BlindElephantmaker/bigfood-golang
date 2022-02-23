@@ -243,6 +243,63 @@ var doc = `{
                 }
             }
         },
+        "/table/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get table list of cafe",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Get table list",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/getList.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/controller.TableListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/table/mass-create": {
             "post": {
                 "security": [
@@ -281,6 +338,12 @@ var doc = `{
                     },
                     "400": {
                         "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseError"
                         }
@@ -427,6 +490,18 @@ var doc = `{
                 "quantity": {
                     "type": "integer",
                     "example": 10
+                }
+            }
+        },
+        "getList.Message": {
+            "type": "object",
+            "required": [
+                "cafe-id"
+            ],
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         },

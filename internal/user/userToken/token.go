@@ -1,7 +1,7 @@
 package userToken
 
 import (
-	"bigfood/internal/cafe/cafeUser/userRole"
+	"bigfood/internal/cafe/cafeUser/role"
 	"bigfood/internal/helpers"
 	"github.com/google/uuid"
 	"time"
@@ -20,7 +20,7 @@ type UserToken struct {
 	ExpiresAt *time.Time
 }
 
-func NewUserToken(permissions *userRole.Permissions) (*UserToken, error) {
+func NewUserToken(permissions *role.Permissions) (*UserToken, error) {
 	now := helpers.TimeNow()
 	expiresAt := now.Add(refreshTTL)
 

@@ -1,7 +1,7 @@
 package cafeUser
 
 import (
-	"bigfood/internal/cafe/cafeUser/userRole"
+	"bigfood/internal/cafe/cafeUser/role"
 	"bigfood/internal/helpers"
 	"database/sql"
 	"fmt"
@@ -30,21 +30,21 @@ type permissionValues struct {
 	Role   sql.NullString `db:"role"`
 }
 
-func castToPermissions(userId *uuid.UUID, values *[]permissionValues) (*userRole.Permissions, error) {
-	permissions := userRole.CreateEmptyPermission(helpers.Uuid(userId.String()))
+func castToPermissions(userId *uuid.UUID, values *[]permissionValues) (*role.Permissions, error) {
+	permissions := role.CreateEmptyPermission(helpers.Uuid(userId.String()))
 
 	for _, value := range *values {
 		permissions.CreateCafePerm(value.CafeId)
 
 		if value.Role.Valid {
-			permissions.AppendRole(value.CafeId, userRole.Role(value.Role.String))
+			permissions.AppendRole(value.CafeId, role.Role(value.Role.String))
 		}
 	}
 
 	return permissions, nil
 }
 
-func (r *RepositoryPSQL) GetUserPermissions(userId *uuid.UUID) (*userRole.Permissions, error) {
+func (r *RepositoryPSQL) GetUserPermissions(userId *uuid.UUID) (*role.Permissions, error) {
 	query := fmt.Sprintf(`
 SELECT id, cafe_id, user_id, role
 FROM %s cu
@@ -70,8 +70,8 @@ func (r *RepositoryPSQL) AddTx(tx *sql.Tx, cafeUser *User, createAt *time.Time) 
 	}
 
 	queryCafeUserRole := fmt.Sprintf("INSERT INTO %s (cafe_user_id, role) VALUES ($1, $2)", cafeUserRoleTable)
-	for _, role := range cafeUser.Roles {
-		_, err = tx.Exec(queryCafeUserRole, cafeUser.Id.String(), role)
+	for _, userRole := range cafeUser.Roles {
+		_, err = tx.Exec(queryCafeUserRole, cafeUser.Id.String(), userRole)
 		if err != nil {
 			return err
 		}

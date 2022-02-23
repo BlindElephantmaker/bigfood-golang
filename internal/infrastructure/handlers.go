@@ -7,6 +7,7 @@ import (
 	"bigfood/internal/authorization/actions/userLogout"
 	"bigfood/internal/cafe/actions/create"
 	"bigfood/internal/table/createMass"
+	"bigfood/internal/table/getList"
 	"bigfood/internal/user/actions/userEdit"
 )
 
@@ -18,6 +19,7 @@ type Handlers struct {
 	UserEditHandler        *userEdit.Handler
 	CafeCreateHandler      *createCafe.Handler
 	TableCreateMassHandler *createMass.Handler
+	TableGetListHandler    *getList.Handler
 }
 
 func NewHandlers(repositories *Repositories, services *Services) *Handlers {
@@ -46,6 +48,9 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 			repositories.CafeRepository,
 		),
 		TableCreateMassHandler: createMass.New(
+			repositories.TableRepository,
+		),
+		TableGetListHandler: getList.New(
 			repositories.TableRepository,
 		),
 	}
