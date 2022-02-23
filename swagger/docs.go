@@ -289,6 +289,55 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete table",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Delete table",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/tableDelete.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
             }
         },
         "/table/list": {
@@ -608,6 +657,18 @@ var doc = `{
                 "title": {
                     "type": "string",
                     "example": "serial number"
+                }
+            }
+        },
+        "tableDelete.Message": {
+            "type": "object",
+            "required": [
+                "table-id"
+            ],
+            "properties": {
+                "table-id": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         },

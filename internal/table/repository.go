@@ -9,5 +9,6 @@ type Repository interface {
 	Add(tables []*Table, createdAt time.Time) error
 	Get(tableId helpers.Uuid) (*Table, error)
 	Update(*Table) error
+	Delete(tableId helpers.Uuid) error
 	GetByCafe(cafeId helpers.Uuid) ([]*Table, error)
 }

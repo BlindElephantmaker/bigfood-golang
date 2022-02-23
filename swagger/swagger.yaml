@@ -109,6 +109,14 @@ definitions:
         example: serial number
         type: string
     type: object
+  tableDelete.Message:
+    properties:
+      table-id:
+        example: uuid
+        type: string
+    required:
+    - table-id
+    type: object
   tableEdit.Message:
     properties:
       comment:
@@ -287,6 +295,37 @@ paths:
       tags:
       - cafe
   /table:
+    delete:
+      consumes:
+      - application/json
+      description: Delete table
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/tableDelete.Message'
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete table
+      tags:
+      - table
     put:
       consumes:
       - application/json
