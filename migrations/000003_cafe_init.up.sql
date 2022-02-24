@@ -7,9 +7,10 @@ CREATE TABLE cafe
 CREATE TABLE cafe_user
 (
     id         uuid PRIMARY KEY,
-    cafe_id    uuid      NOT NULL,
-    user_id    uuid      NOT NULL,
-    created_at TIMESTAMP NOT NULL,
+    cafe_id    uuid        NOT NULL,
+    user_id    uuid        NOT NULL,
+    comment    VARCHAR(32) NOT NULL,
+    created_at TIMESTAMP   NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (cafe_id) REFERENCES cafe (id) ON DELETE CASCADE,
     UNIQUE (cafe_id, user_id)

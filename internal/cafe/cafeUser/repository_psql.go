@@ -62,9 +62,9 @@ WHERE user_id = $1
 }
 
 func (r *RepositoryPSQL) AddTx(tx *sql.Tx, cafeUser *User, createAt *time.Time) error {
-	queryCafeUser := fmt.Sprintf("INSERT INTO %s (id, cafe_id, user_id, created_at) VALUES ($1, $2, $3, $4)",
+	queryCafeUser := fmt.Sprintf("INSERT INTO %s (id, cafe_id, user_id, comment, created_at) VALUES ($1, $2, $3, $4, $5)",
 		cafeUserTable)
-	_, err := tx.Exec(queryCafeUser, cafeUser.Id.String(), cafeUser.CafeId.String(), cafeUser.UserId.String(), createAt)
+	_, err := tx.Exec(queryCafeUser, cafeUser.Id.String(), cafeUser.CafeId.String(), cafeUser.UserId.String(), cafeUser.Comment, createAt)
 	if err != nil {
 		return err
 	}
