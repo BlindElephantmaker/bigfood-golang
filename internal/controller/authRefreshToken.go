@@ -2,6 +2,7 @@ package controller
 
 import (
 	"bigfood/internal/authorization/actions/refreshToken"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -9,9 +10,9 @@ import (
 )
 
 type RefreshTokenResponse struct {
-	Id      string `json:"id" example:"UUID"`
-	Access  string `json:"access"`
-	Refresh string `json:"refresh" example:"UUID"`
+	Id      helpers.Uuid           `json:"id" example:"UUID"`
+	Access  userToken.AccessToken  `json:"access"`
+	Refresh userToken.RefreshToken `json:"refresh" example:"UUID"`
 }
 
 // refreshToken
@@ -43,8 +44,8 @@ func (controller *Controller) refreshToken(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, &RefreshTokenResponse{
-		Id:      token.UserId.String(),
-		Access:  token.Access.String(),
-		Refresh: token.Refresh.String(),
+		Id:      token.UserId,
+		Access:  *token.Access,
+		Refresh: token.Refresh,
 	})
 }

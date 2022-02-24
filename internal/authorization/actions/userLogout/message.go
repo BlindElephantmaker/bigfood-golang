@@ -1,8 +1,10 @@
 package userLogout
 
-import "github.com/google/uuid"
+import (
+	"bigfood/internal/helpers"
+)
 
 type Message struct {
-	UserId *uuid.UUID `swaggerignore:"true"`
-	Token  string     `json:"token" binding:"required" example:"uuid"`
+	UserId helpers.Uuid `swaggerignore:"true"`
+	Token  string       `json:"token" binding:"required" example:"uuid"`
 }

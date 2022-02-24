@@ -8,26 +8,26 @@ import (
 // todo: code it or replace to redis
 
 type RepositoryDummy struct {
-	memory map[string]*dummy
+	memory map[user.Phone]*dummy
 }
 
 type dummy struct {
-	code  string
+	code  Code
 	count int
 }
 
 func NewRepositoryDummy() *RepositoryDummy {
-	return &RepositoryDummy{make(map[string]*dummy)}
+	return &RepositoryDummy{make(map[user.Phone]*dummy)}
 }
 
-func (r *RepositoryDummy) Add(code *Code, phone *user.Phone, ttl time.Duration) error {
-	d := r.memory[phone.String()]
+func (r *RepositoryDummy) Add(code Code, phone user.Phone, ttl time.Duration) error {
+	d := r.memory[phone]
 	if d != nil {
-		d.code = code.String()
+		d.code = code
 		d.count++
 	} else {
-		r.memory[phone.String()] = &dummy{
-			code:  code.String(),
+		r.memory[phone] = &dummy{
+			code:  code,
 			count: 1,
 		}
 	}
@@ -35,12 +35,12 @@ func (r *RepositoryDummy) Add(code *Code, phone *user.Phone, ttl time.Duration) 
 	return nil
 }
 
-func (r *RepositoryDummy) Get(phone *user.Phone) (*Code, error) {
+func (r *RepositoryDummy) Get(phone user.Phone) (Code, error) {
 	return Parse("1234")
 }
 
-func (r *RepositoryDummy) Count(phone *user.Phone) (int, error) {
-	d := r.memory[phone.String()]
+func (r *RepositoryDummy) Count(phone user.Phone) (int, error) {
+	d := r.memory[phone]
 	if d != nil {
 		return d.count, nil
 	}
@@ -48,6 +48,6 @@ func (r *RepositoryDummy) Count(phone *user.Phone) (int, error) {
 	return 0, nil
 }
 
-func (r *RepositoryDummy) DeleteLast(*user.Phone) error {
+func (r *RepositoryDummy) DeleteLast(user.Phone) error {
 	return nil
 }

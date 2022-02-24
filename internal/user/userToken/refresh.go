@@ -1,29 +1,22 @@
 package userToken
 
 import (
+	"bigfood/internal/helpers"
 	"errors"
-	"github.com/google/uuid"
 )
 
 var ErrorInvalidRefreshTokenFormat = errors.New("invalid refresh token format")
 
-type RefreshToken struct {
-	value *uuid.UUID
+type RefreshToken helpers.Uuid
+
+func NewRefresh() RefreshToken {
+	return RefreshToken(helpers.UuidGenerate())
 }
 
-func NewRefresh() *RefreshToken {
-	value := uuid.New()
-	return &RefreshToken{&value}
-}
-
-func ParseRefresh(tokenValue string) (*RefreshToken, error) {
-	token, err := uuid.Parse(tokenValue)
+func ParseRefresh(tokenValue string) (RefreshToken, error) {
+	token, err := helpers.UuidParse(tokenValue)
 	if err != nil {
-		return nil, ErrorInvalidRefreshTokenFormat
+		return "", ErrorInvalidRefreshTokenFormat
 	}
-	return &RefreshToken{&token}, nil
-}
-
-func (t *RefreshToken) String() string {
-	return t.value.String()
+	return RefreshToken(token), nil
 }

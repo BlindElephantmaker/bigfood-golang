@@ -6,9 +6,7 @@ import (
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 	"strings"
 )
@@ -51,10 +49,9 @@ func getClaims(c *gin.Context) *userToken.UserClaims {
 	return permissions.(*userToken.UserClaims)
 }
 
-func getUserId(c *gin.Context) *uuid.UUID {
+func getUserId(c *gin.Context) helpers.Uuid {
 	claims := getClaims(c)
-	userId, _ := uuid.Parse(fmt.Sprint(claims.Permissions.UserId)) // todo: change it to helper
-	return &userId
+	return claims.Permissions.UserId
 }
 
 func userHasRole(c *gin.Context, cafeId helpers.Uuid, role role.Role) bool {

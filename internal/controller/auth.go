@@ -3,17 +3,19 @@ package controller
 import (
 	"bigfood/internal/authorization/actions/auth"
 	"bigfood/internal/authorization/smsCode"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user"
+	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type AuthResponse struct {
-	IsNew   bool   `json:"is-new"`
-	UserId  string `json:"user-id" example:"UUID"`
-	Access  string `json:"access-token"`
-	Refresh string `json:"refresh-token" example:"UUID"`
+	IsNew   bool                   `json:"is-new"`
+	UserId  helpers.Uuid           `json:"user-id" example:"UUID"`
+	Access  userToken.AccessToken  `json:"access-token"`
+	Refresh userToken.RefreshToken `json:"refresh-token" example:"UUID"`
 }
 
 // auth
@@ -50,8 +52,8 @@ func (controller *Controller) auth(c *gin.Context) {
 
 	c.JSON(http.StatusOK, &AuthResponse{
 		IsNew:   response.IsNew,
-		UserId:  response.UserToken.UserId.String(),
-		Access:  response.UserToken.Access.String(),
-		Refresh: response.UserToken.Refresh.String(),
+		UserId:  response.UserToken.UserId,
+		Access:  *response.UserToken.Access,
+		Refresh: response.UserToken.Refresh,
 	})
 }

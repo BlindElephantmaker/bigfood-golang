@@ -1,13 +1,14 @@
 package controller
 
 import (
+	"bigfood/internal/helpers"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type CafeCreateResponse struct {
-	Id string `json:"id" example:"uuid created cafe"`
+	Id helpers.Uuid `json:"id" example:"uuid created cafe"`
 }
 
 // cafeCreate
@@ -29,6 +30,6 @@ func (controller *Controller) cafeCreate(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, &CafeCreateResponse{
-		Id: cafeId.String(),
+		Id: cafeId,
 	})
 }

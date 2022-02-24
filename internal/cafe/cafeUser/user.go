@@ -2,24 +2,23 @@ package cafeUser
 
 import (
 	"bigfood/internal/cafe/cafeUser/role"
-	"github.com/google/uuid"
+	"bigfood/internal/helpers"
 )
 
 type User struct {
-	Id      *uuid.UUID
-	CafeId  *uuid.UUID
+	Id      helpers.Uuid
+	CafeId  helpers.Uuid
 	Comment Comment
-	UserId  *uuid.UUID
+	UserId  helpers.Uuid
 	Roles   role.Roles
 }
 
-func NewCafeUser(cafeId, userId *uuid.UUID) *User {
-	id := uuid.New()
+func NewCafeUser(cafeId, userId helpers.Uuid) *User {
 	return &User{
-		Id:      &id,
+		Id:      helpers.UuidGenerate(),
 		CafeId:  cafeId,
 		UserId:  userId,
-		Comment: newComment(),
+		Comment: NewComment(),
 		Roles: role.Roles{
 			role.Owner,
 			role.Admin,

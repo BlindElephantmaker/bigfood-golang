@@ -4,7 +4,6 @@ import (
 	"bigfood/internal/cafe"
 	"bigfood/internal/cafe/cafeUser"
 	"bigfood/internal/helpers"
-	"github.com/google/uuid"
 )
 
 type Handler struct {
@@ -17,13 +16,13 @@ func New(cafes cafe.Repository) *Handler {
 	}
 }
 
-func (h *Handler) Run(userId *uuid.UUID) (*uuid.UUID, error) {
+func (h *Handler) Run(userId helpers.Uuid) (helpers.Uuid, error) {
 	newCafe := cafe.New()
 	newCafeUser := cafeUser.NewCafeUser(newCafe.Id, userId)
 	now := helpers.TimeNow()
 	err := h.cafeRepository.Add(newCafe, newCafeUser, &now)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	return newCafe.Id, nil

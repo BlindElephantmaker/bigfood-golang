@@ -1,11 +1,13 @@
 package user
 
-import "github.com/google/uuid"
+import (
+	"bigfood/internal/helpers"
+)
 
 type Repository interface {
 	Add(*User) error
-	Get(*uuid.UUID) (*User, error)
+	Get(helpers.Uuid) (*User, error)
 	Update(*User) error
-	GetByPhone(*Phone) (*User, error)
-	IsExistByPhone(*Phone) (bool, error)
+	GetByPhone(Phone) (*User, error)
+	IsExistByPhone(Phone) (bool, error)
 }

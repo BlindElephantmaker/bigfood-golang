@@ -3,10 +3,10 @@ package auth
 import (
 	"bigfood/internal/authorization/smsCode"
 	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"errors"
-	"github.com/google/uuid"
 )
 
 type Handler struct {
@@ -63,7 +63,7 @@ func (h *Handler) Run(message *Message) (*Response, error) {
 	}, nil
 }
 
-func (h *Handler) validateSmsCode(phone *user.Phone, code *smsCode.Code) error {
+func (h *Handler) validateSmsCode(phone user.Phone, code smsCode.Code) error {
 	confirmCode, err := h.smsCodeRepository.Get(phone)
 	if err != nil {
 		return err
@@ -75,7 +75,7 @@ func (h *Handler) validateSmsCode(phone *user.Phone, code *smsCode.Code) error {
 	return nil
 }
 
-func (h *Handler) getUser(phone *user.Phone) (*user.User, error) {
+func (h *Handler) getUser(phone user.Phone) (*user.User, error) {
 	isExist, err := h.userRepository.IsExistByPhone(phone)
 	if err != nil {
 		return nil, err
@@ -85,14 +85,12 @@ func (h *Handler) getUser(phone *user.Phone) (*user.User, error) {
 		return h.userRepository.GetByPhone(phone)
 	}
 
-	emptyName, _ := user.NewName("")
-	id := uuid.New()
-	newUser := user.New(&id, emptyName, phone)
+	newUser := user.New(phone)
 
 	return newUser, h.userRepository.Add(newUser)
 }
 
-func (h *Handler) createToken(id *uuid.UUID) (*userToken.UserToken, error) {
+func (h *Handler) createToken(id helpers.Uuid) (*userToken.UserToken, error) {
 	permissions, err := h.cafeUserRepository.GetUserPermissions(id)
 	if err != nil {
 		return nil, err

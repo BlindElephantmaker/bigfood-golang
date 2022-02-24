@@ -1,14 +1,13 @@
 package cafe
 
 import (
-	"github.com/google/uuid"
+	"bigfood/internal/helpers"
 )
 
 type Cafe struct {
-	Id *uuid.UUID
+	Id helpers.Uuid
 }
 
 func New() *Cafe {
-	id := uuid.New()
-	return &Cafe{&id}
+	return &Cafe{helpers.UuidGenerate()}
 }

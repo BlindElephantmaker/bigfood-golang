@@ -46,7 +46,7 @@ func (h *Handler) Run(m Message) error {
 		return err
 	}
 
-	err = h.smsCodeService.Send(code.String(), phone)
+	err = h.smsCodeService.Send(string(code), phone)
 	if err != nil {
 		_ = h.smsCodeRepository.DeleteLast(phone)
 		return err

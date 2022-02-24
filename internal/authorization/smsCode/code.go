@@ -6,9 +6,7 @@ import (
 	"regexp"
 )
 
-type Code struct {
-	value string
-}
+type Code string
 
 const (
 	length  = 4
@@ -18,28 +16,24 @@ const (
 
 var ErrorSmsCodeIsInvalid = errors.New("sms code is invalid")
 
-func New() *Code {
+func New() Code {
 	buf := make([]byte, length)
 	for i := range buf {
 		buf[i] = symbols[rand.Intn(len(symbols))]
 	}
 
-	return &Code{string(buf)}
+	return Code(buf)
 }
 
-func Parse(code string) (*Code, error) {
+func Parse(code string) (Code, error) {
 	ok, _ := regexp.MatchString(pattern, code)
 	if !ok {
-		return nil, ErrorSmsCodeIsInvalid
+		return "", ErrorSmsCodeIsInvalid
 	}
 
-	return &Code{code}, nil
+	return Code(code), nil
 }
 
-func (c *Code) String() string {
-	return c.value
-}
-
-func (c *Code) Compare(another *Code) bool {
-	return c.String() == another.String()
+func (c *Code) Compare(another Code) bool {
+	return *c == another
 }

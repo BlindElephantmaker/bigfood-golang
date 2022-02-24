@@ -5,7 +5,6 @@ import (
 	"bigfood/internal/helpers"
 	"database/sql"
 	"fmt"
-	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
 	"time"
 )
@@ -30,8 +29,8 @@ type permissionValues struct {
 	Role   sql.NullString `db:"role"`
 }
 
-func castToPermissions(userId *uuid.UUID, values *[]permissionValues) (*role.Permissions, error) {
-	permissions := role.CreateEmptyPermission(helpers.Uuid(userId.String()))
+func castToPermissions(userId helpers.Uuid, values *[]permissionValues) (*role.Permissions, error) {
+	permissions := role.CreateEmptyPermission(userId)
 
 	for _, value := range *values {
 		permissions.CreateCafePerm(value.CafeId)
@@ -44,7 +43,7 @@ func castToPermissions(userId *uuid.UUID, values *[]permissionValues) (*role.Per
 	return permissions, nil
 }
 
-func (r *RepositoryPSQL) GetUserPermissions(userId *uuid.UUID) (*role.Permissions, error) {
+func (r *RepositoryPSQL) GetUserPermissions(userId helpers.Uuid) (*role.Permissions, error) {
 	query := fmt.Sprintf(`
 SELECT id, cafe_id, user_id, role
 FROM %s cu
@@ -53,7 +52,7 @@ WHERE user_id = $1
 `, cafeUserTable, cafeUserRoleTable)
 
 	var permissionValues []permissionValues
-	err := r.db.Select(&permissionValues, query, userId.String())
+	err := r.db.Select(&permissionValues, query, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -64,14 +63,14 @@ WHERE user_id = $1
 func (r *RepositoryPSQL) AddTx(tx *sql.Tx, cafeUser *User, createAt *time.Time) error {
 	queryCafeUser := fmt.Sprintf("INSERT INTO %s (id, cafe_id, user_id, comment, created_at) VALUES ($1, $2, $3, $4, $5)",
 		cafeUserTable)
-	_, err := tx.Exec(queryCafeUser, cafeUser.Id.String(), cafeUser.CafeId.String(), cafeUser.UserId.String(), cafeUser.Comment, createAt)
+	_, err := tx.Exec(queryCafeUser, cafeUser.Id, cafeUser.CafeId, cafeUser.UserId, cafeUser.Comment, createAt)
 	if err != nil {
 		return err
 	}
 
 	queryCafeUserRole := fmt.Sprintf("INSERT INTO %s (cafe_user_id, role) VALUES ($1, $2)", cafeUserRoleTable)
 	for _, userRole := range cafeUser.Roles {
-		_, err = tx.Exec(queryCafeUserRole, cafeUser.Id.String(), userRole)
+		_, err = tx.Exec(queryCafeUserRole, cafeUser.Id, userRole)
 		if err != nil {
 			return err
 		}

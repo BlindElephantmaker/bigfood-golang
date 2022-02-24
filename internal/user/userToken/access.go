@@ -11,9 +11,7 @@ const (
 	signingKey = "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgev" // todo: generate key.pem
 )
 
-type AccessToken struct {
-	value string
-}
+type AccessToken string
 
 type UserClaims struct {
 	jwt.StandardClaims
@@ -25,7 +23,7 @@ var (
 	ErrorInvalidClaims        = errors.New("invalid user claims")
 )
 
-func NewAccess(permissions *role.Permissions, time *time.Time, ttl time.Duration) (*AccessToken, error) {
+func NewAccess(permissions *role.Permissions, time *time.Time, ttl time.Duration) (AccessToken, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &UserClaims{ // todo: change to SigningMethodES256
 		jwt.StandardClaims{
 			IssuedAt:  time.Unix(),
@@ -35,7 +33,7 @@ func NewAccess(permissions *role.Permissions, time *time.Time, ttl time.Duration
 	})
 	value, err := token.SignedString([]byte(signingKey))
 
-	return &AccessToken{value}, err
+	return AccessToken(value), err
 }
 
 func ParseAccess(token string) (*UserClaims, error) {
@@ -57,8 +55,4 @@ func ParseAccess(token string) (*UserClaims, error) {
 	}
 
 	return claims, nil
-}
-
-func (t *AccessToken) String() string {
-	return t.value
 }

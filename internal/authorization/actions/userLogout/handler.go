@@ -1,21 +1,21 @@
 package userLogout
 
 import (
-	userToken2 "bigfood/internal/user/userToken"
+	"bigfood/internal/user/userToken"
 )
 
 type Handler struct {
-	userTokenRepository userToken2.Repository
+	userTokenRepository userToken.Repository
 }
 
-func New(tokens userToken2.Repository) *Handler {
+func New(tokens userToken.Repository) *Handler {
 	return &Handler{
 		userTokenRepository: tokens,
 	}
 }
 
 func (h *Handler) Run(message *Message) error {
-	token, err := userToken2.ParseRefresh(message.Token)
+	token, err := userToken.ParseRefresh(message.Token)
 	if err != nil {
 		return err
 	}

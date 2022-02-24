@@ -1,29 +1,29 @@
 package user
 
 import (
-	"github.com/google/uuid"
+	"bigfood/internal/helpers"
 )
 
 type User struct {
-	Id    *uuid.UUID
-	Name  *Name
-	Phone *Phone
+	Id    helpers.Uuid
+	Name  Name
+	Phone Phone
 }
 
-func New(id *uuid.UUID, name *Name, phone *Phone) *User {
+func New(phone Phone) *User {
 	return &User{
-		Id:    id,
-		Name:  name,
+		Id:    helpers.UuidGenerate(),
+		Name:  NewName(),
 		Phone: phone,
 	}
 }
 
 func Parse(idValue, nameValue, phoneValue string) (*User, error) {
-	id, err := uuid.Parse(idValue)
+	id, err := helpers.UuidParse(idValue)
 	if err != nil {
 		return nil, err
 	}
-	name, err := NewName(nameValue)
+	name, err := ParseName(nameValue)
 	if err != nil {
 		return nil, err
 	}
@@ -32,9 +32,13 @@ func Parse(idValue, nameValue, phoneValue string) (*User, error) {
 		return nil, err
 	}
 
-	return New(&id, name, phone), nil
+	return &User{
+		Id:    id,
+		Name:  name,
+		Phone: phone,
+	}, nil
 }
 
 func (u *User) IsNew() bool {
-	return u.Name.String() == ""
+	return u.Name == ""
 }

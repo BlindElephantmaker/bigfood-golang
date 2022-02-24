@@ -22,7 +22,7 @@ func (h *Handler) Run(message *Message) error {
 		return ErrorUserNameIsEmpty
 	}
 
-	name, err := user.NewName(message.Name)
+	name, err := user.ParseName(message.Name)
 	if err != nil {
 		return err
 	}

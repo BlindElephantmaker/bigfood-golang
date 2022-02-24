@@ -2,9 +2,9 @@ package cafeUser
 
 import (
 	"bigfood/internal/cafe/cafeUser/role"
-	"github.com/google/uuid"
+	"bigfood/internal/helpers"
 )
 
 type Repository interface {
-	GetUserPermissions(userId *uuid.UUID) (*role.Permissions, error)
+	GetUserPermissions(userId helpers.Uuid) (*role.Permissions, error)
 }

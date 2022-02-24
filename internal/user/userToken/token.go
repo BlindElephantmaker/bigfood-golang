@@ -3,7 +3,6 @@ package userToken
 import (
 	"bigfood/internal/cafe/cafeUser/role"
 	"bigfood/internal/helpers"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -14,10 +13,10 @@ const (
 )
 
 type UserToken struct {
-	UserId    *uuid.UUID
+	UserId    helpers.Uuid `db:"user_id"`
 	Access    *AccessToken
-	Refresh   *RefreshToken
-	ExpiresAt *time.Time
+	Refresh   RefreshToken `db:"refresh_token"`
+	ExpiresAt *time.Time   `db:"expires_at"`
 }
 
 func NewUserToken(permissions *role.Permissions) (*UserToken, error) {
@@ -34,36 +33,9 @@ func NewUserToken(permissions *role.Permissions) (*UserToken, error) {
 		return nil, err
 	}
 
-	userId, err := uuid.Parse(string(permissions.UserId))
-	if err != nil {
-		return nil, err
-	}
-
 	return &UserToken{
-		UserId:    &userId,
-		Access:    access,
-		Refresh:   refresh,
-		ExpiresAt: &expiresAt,
-	}, nil
-}
-
-func Parse(userIdValue, refreshValue, expiresAtValue string) (*UserToken, error) {
-	userId, err := uuid.Parse(userIdValue)
-	if err != nil {
-		return nil, err
-	}
-	refresh, err := ParseRefresh(refreshValue)
-	if err != nil {
-		return nil, err
-	}
-	expiresAt, err := helpers.TimeParse(expiresAtValue)
-	if err != nil {
-		return nil, err
-	}
-
-	return &UserToken{
-		UserId:    &userId,
-		Access:    nil,
+		UserId:    permissions.UserId,
+		Access:    &access,
 		Refresh:   refresh,
 		ExpiresAt: &expiresAt,
 	}, nil
