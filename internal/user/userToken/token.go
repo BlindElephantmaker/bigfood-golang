@@ -1,7 +1,7 @@
 package userToken
 
 import (
-	"bigfood/internal/cafe/cafeUser/role"
+	"bigfood/internal/cafeUser/role"
 	"bigfood/internal/helpers"
 	"time"
 )

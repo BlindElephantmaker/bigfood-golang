@@ -240,6 +240,69 @@ var doc = `{
                 }
             }
         },
+        "/cafe/user": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create cafe user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cafe user"
+                ],
+                "summary": "Create cafe user",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cafeUserCreate.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/cafeUserCreate.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "422": {
+                        "description": "Cafe user already exist",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/table": {
             "put": {
                 "security": [
@@ -621,6 +684,72 @@ var doc = `{
                 "sms-code": {
                     "type": "string",
                     "example": "1234"
+                }
+            }
+        },
+        "cafeUserCreate.Message": {
+            "type": "object",
+            "required": [
+                "cafe-id",
+                "phone",
+                "roles"
+            ],
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "User phone"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "owner",
+                        "admin",
+                        "hostess"
+                    ]
+                }
+            }
+        },
+        "cafeUserCreate.Response": {
+            "type": "object",
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "owner",
+                        "admin",
+                        "hostess"
+                    ]
+                },
+                "user-id": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         },

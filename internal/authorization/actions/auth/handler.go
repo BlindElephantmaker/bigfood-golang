@@ -2,7 +2,7 @@ package auth
 
 import (
 	"bigfood/internal/authorization/smsCode"
-	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
@@ -14,6 +14,7 @@ type Handler struct {
 	userRepository     user.Repository
 	tokenRepository    userToken.Repository
 	cafeUserRepository cafeUser.Repository
+	userService        *user.Service
 }
 
 var ErrorSmsCodeNotConfirmed = errors.New("sms code not confirmed")
@@ -23,12 +24,14 @@ func New(
 	users user.Repository,
 	tokens userToken.Repository,
 	cafeUsers cafeUser.Repository,
+	userService *user.Service,
 ) *Handler {
 	return &Handler{
 		smsCodeRepository:  smsCodeRepository,
 		userRepository:     users,
 		tokenRepository:    tokens,
 		cafeUserRepository: cafeUsers,
+		userService:        userService,
 	}
 }
 
@@ -47,7 +50,7 @@ func (h *Handler) Run(message *Message) (*Response, error) {
 		return nil, err
 	}
 
-	u, err := h.getUser(phone)
+	u, err := h.userService.GetOrNewUser(phone)
 	if err != nil {
 		return nil, err
 	}
@@ -73,21 +76,6 @@ func (h *Handler) validateSmsCode(phone user.Phone, code smsCode.Code) error {
 	}
 
 	return nil
-}
-
-func (h *Handler) getUser(phone user.Phone) (*user.User, error) {
-	isExist, err := h.userRepository.IsExistByPhone(phone)
-	if err != nil {
-		return nil, err
-	}
-
-	if isExist {
-		return h.userRepository.GetByPhone(phone)
-	}
-
-	newUser := user.New(phone)
-
-	return newUser, h.userRepository.Add(newUser)
 }
 
 func (h *Handler) createToken(id helpers.Uuid) (*userToken.UserToken, error) {

@@ -19,24 +19,29 @@ func NewController(handlers *infrastructure.Handlers) *Controller {
 func (controller *Controller) InitRoutes() *gin.Engine {
 	router := gin.Default()
 
-	auth := router.Group("/auth")
+	auth := router.Group("auth")
 	{
-		auth.POST("/", controller.auth)
-		auth.POST("/sms-code", controller.smsCode)
-		auth.PUT("/refresh-token", controller.refreshToken)
-		auth.DELETE("/logout", controller.userIdentity, controller.logout)
+		auth.POST("", controller.auth)
+		auth.POST("sms-code", controller.smsCode)
+		auth.PUT("refresh-token", controller.refreshToken)
+		auth.DELETE("logout", controller.userIdentity, controller.logout)
 	}
 
 	api := router.Group("/", controller.userIdentity)
 	{
 		apiUser := api.Group("user")
 		{
-			apiUser.PUT("/", controller.userEdit)
+			apiUser.PUT("", controller.userEdit)
 		}
 
 		apiCafe := api.Group("cafe", controller.userIdentity)
 		{
-			apiCafe.POST("/", controller.cafeCreate)
+			apiCafe.POST("", controller.cafeCreate)
+
+			apiCafeUser := apiCafe.Group("user")
+			{
+				apiCafeUser.POST("", controller.cafeUserCreate)
+			}
 		}
 
 		apiTable := api.Group("table")

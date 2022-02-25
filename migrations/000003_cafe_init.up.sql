@@ -11,6 +11,7 @@ CREATE TABLE cafe_user
     user_id    uuid        NOT NULL,
     comment    VARCHAR(32) NOT NULL,
     created_at TIMESTAMP   NOT NULL,
+    deleted_at TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
     FOREIGN KEY (cafe_id) REFERENCES cafe (id) ON DELETE CASCADE,
     UNIQUE (cafe_id, user_id)

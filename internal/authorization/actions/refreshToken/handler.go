@@ -1,7 +1,7 @@
 package refreshToken
 
 import (
-	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/cafeUser"
 	"bigfood/internal/user/userToken"
 )
 

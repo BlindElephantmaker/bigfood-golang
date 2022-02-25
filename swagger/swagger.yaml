@@ -12,6 +12,53 @@ definitions:
     - phone
     - sms-code
     type: object
+  cafeUserCreate.Message:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+      comment:
+        type: string
+      phone:
+        example: User phone
+        type: string
+      roles:
+        example:
+        - owner
+        - admin
+        - hostess
+        items:
+          type: string
+        type: array
+    required:
+    - cafe-id
+    - phone
+    - roles
+    type: object
+  cafeUserCreate.Response:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+      comment:
+        type: string
+      id:
+        example: uuid
+        type: string
+      name:
+        type: string
+      roles:
+        example:
+        - owner
+        - admin
+        - hostess
+        items:
+          type: string
+        type: array
+      user-id:
+        example: uuid
+        type: string
+    type: object
   controller.AuthResponse:
     properties:
       access-token:
@@ -321,6 +368,46 @@ paths:
       summary: Create cafe
       tags:
       - cafe
+  /cafe/user:
+    post:
+      consumes:
+      - application/json
+      description: Create cafe user
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/cafeUserCreate.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/cafeUserCreate.Response'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "422":
+          description: Cafe user already exist
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create cafe user
+      tags:
+      - cafe user
   /table:
     delete:
       consumes:

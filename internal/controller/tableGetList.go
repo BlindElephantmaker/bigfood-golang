@@ -27,7 +27,7 @@ func (controller *Controller) tableGetList(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userCanViewTable(c, message.CafeId) {
+	if !userIsHostess(c, message.CafeId) {
 		server.AccessDenied(c)
 		return
 	}

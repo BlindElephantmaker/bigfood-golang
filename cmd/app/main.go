@@ -52,7 +52,7 @@ func main() {
 	}
 
 	repositories := infrastructure.NewRepositories(db)
-	services := infrastructure.NewServices()
+	services := infrastructure.NewServices(repositories)
 	handlers := infrastructure.NewHandlers(repositories, services)
 	controllers := controller.NewController(handlers)
 

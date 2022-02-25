@@ -1,10 +1,9 @@
 package cafe
 
 import (
-	"bigfood/internal/cafe/cafeUser"
-	"time"
+	"bigfood/internal/cafeUser"
 )
 
 type Repository interface {
-	Add(cafe *Cafe, cafeUser *cafeUser.User, createAt *time.Time) error
+	Add(cafe *Cafe, cafeUser *cafeUser.User) error
 }

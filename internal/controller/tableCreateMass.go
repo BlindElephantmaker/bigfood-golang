@@ -27,7 +27,7 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userCanEditTable(c, message.CafeId) {
+	if !userIsAdmin(c, message.CafeId) {
 		server.AccessDenied(c)
 		return
 	}

@@ -1,10 +1,10 @@
 package cafe
 
 import (
-	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/cafeUser"
+	"bigfood/internal/helpers"
 	"fmt"
 	"github.com/jmoiron/sqlx"
-	"time"
 )
 
 type RepositoryPSQL struct {
@@ -23,22 +23,20 @@ const (
 	cafeTable = "cafe"
 )
 
-func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.User, createAt *time.Time) error {
+func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.User) error {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return err
 	}
 
+	createAt := helpers.TimeNow()
 	queryCafe := fmt.Sprintf("INSERT INTO %s (id, created_at) VALUES ($1, $2)", cafeTable)
-	result, err := tx.Exec(queryCafe, cafe.Id, createAt)
-	fmt.Println(result)
-	if err != nil {
+	if _, err := tx.Exec(queryCafe, cafe.Id, createAt); err != nil {
 		_ = tx.Rollback()
 		return err
 	}
 
-	err = r.CafeUserRepository.AddTx(tx, cafeUser, createAt)
-	if err != nil {
+	if err := r.CafeUserRepository.AddTx(tx, cafeUser, createAt); err != nil {
 		_ = tx.Rollback()
 		return err
 	}

@@ -2,7 +2,8 @@ package createCafe
 
 import (
 	"bigfood/internal/cafe"
-	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/cafeUser"
+	"bigfood/internal/cafeUser/role"
 	"bigfood/internal/helpers"
 )
 
@@ -18,9 +19,12 @@ func New(cafes cafe.Repository) *Handler {
 
 func (h *Handler) Run(userId helpers.Uuid) (helpers.Uuid, error) {
 	newCafe := cafe.New()
-	newCafeUser := cafeUser.NewCafeUser(newCafe.Id, userId)
-	now := helpers.TimeNow()
-	err := h.cafeRepository.Add(newCafe, newCafeUser, &now)
+	newCafeUser := cafeUser.NewCafeUser(newCafe.Id, userId, cafeUser.NewComment(), role.Roles{
+		role.Owner,
+		role.Admin,
+		role.Hostess,
+	})
+	err := h.cafeRepository.Add(newCafe, newCafeUser)
 	if err != nil {
 		return "", err
 	}

@@ -3,7 +3,7 @@ package infrastructure
 import (
 	"bigfood/internal/authorization/smsCode"
 	"bigfood/internal/cafe"
-	"bigfood/internal/cafe/cafeUser"
+	"bigfood/internal/cafeUser"
 	"bigfood/internal/table"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"

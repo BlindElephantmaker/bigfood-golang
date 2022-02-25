@@ -5,9 +5,9 @@ import (
 )
 
 type User struct {
-	Id    helpers.Uuid
-	Name  Name
-	Phone Phone
+	Id    helpers.Uuid `db:"id"`
+	Name  Name         `db:"name"`
+	Phone Phone        `db:"phone"`
 }
 
 func New(phone Phone) *User {
@@ -16,27 +16,6 @@ func New(phone Phone) *User {
 		Name:  NewName(),
 		Phone: phone,
 	}
-}
-
-func Parse(idValue, nameValue, phoneValue string) (*User, error) {
-	id, err := helpers.UuidParse(idValue)
-	if err != nil {
-		return nil, err
-	}
-	name, err := ParseName(nameValue)
-	if err != nil {
-		return nil, err
-	}
-	phone, err := NewPhone(phoneValue)
-	if err != nil {
-		return nil, err
-	}
-
-	return &User{
-		Id:    id,
-		Name:  name,
-		Phone: phone,
-	}, nil
 }
 
 func (u *User) IsNew() bool {

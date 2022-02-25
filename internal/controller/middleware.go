@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/cafe/cafeUser/role"
+	"bigfood/internal/cafeUser/role"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
