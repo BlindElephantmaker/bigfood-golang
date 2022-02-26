@@ -301,6 +301,55 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete cafe user",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cafe user"
+                ],
+                "summary": "Delete cafe user",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cafeUserDelete.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
             }
         },
         "/cafe/user/list": {
@@ -802,6 +851,18 @@ var doc = `{
                         "admin",
                         "hostess"
                     ]
+                }
+            }
+        },
+        "cafeUserDelete.Message": {
+            "type": "object",
+            "required": [
+                "cafe-user-id"
+            ],
+            "properties": {
+                "cafe-user-id": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         },

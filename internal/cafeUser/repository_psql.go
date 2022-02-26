@@ -90,6 +90,13 @@ func (r *RepositoryPSQL) Update(cafeUser *CafeUser, roles Roles) error {
 	return tx.Commit()
 }
 
+func (r *RepositoryPSQL) Delete(cafeUserId helpers.Uuid) error {
+	now := helpers.TimeNow()
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = $2 WHERE id = $1 AND deleted_at IS NULL", Table)
+	_, err := r.db.Exec(query, cafeUserId, now)
+	return err
+}
+
 func (r *RepositoryPSQL) AddTx(tx *sql.Tx, cafeUser *CafeUser, roles Roles, createAt time.Time) error {
 	queryCafeUser := fmt.Sprintf("INSERT INTO %s (id, cafe_id, user_id, comment, created_at) VALUES ($1, $2, $3, $4, $5)",
 		Table)

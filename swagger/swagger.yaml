@@ -55,6 +55,14 @@ definitions:
     - phone
     - roles
     type: object
+  cafeUserDelete.Message:
+    properties:
+      cafe-user-id:
+        example: uuid
+        type: string
+    required:
+    - cafe-user-id
+    type: object
   cafeUserList.Message:
     properties:
       cafe-id:
@@ -380,6 +388,37 @@ paths:
       tags:
       - cafe
   /cafe/user:
+    delete:
+      consumes:
+      - application/json
+      description: Delete cafe user
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/cafeUserDelete.Message'
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete cafe user
+      tags:
+      - cafe user
     post:
       consumes:
       - application/json

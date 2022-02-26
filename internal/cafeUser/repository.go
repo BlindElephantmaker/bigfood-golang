@@ -13,4 +13,5 @@ type Repository interface {
 	GetListByCafeId(cafeId helpers.Uuid) ([]*CafeUser, error)
 	GetUserRoles(cafeUserId helpers.Uuid) (Roles, error)
 	Update(*CafeUser, Roles) error
+	Delete(cafeUserId helpers.Uuid) error
 }
