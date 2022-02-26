@@ -1,5 +1,25 @@
 basePath: /
 definitions:
+  actions.Response:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+      cafeUser.Roles:
+        items:
+          type: string
+        type: array
+      comment:
+        type: string
+      id:
+        example: uuid
+        type: string
+      user-id:
+        example: uuid
+        type: string
+      user.Name:
+        type: string
+    type: object
   auth.Message:
     properties:
       phone:
@@ -35,29 +55,20 @@ definitions:
     - phone
     - roles
     type: object
-  cafeUserCreate.Response:
+  cafeUserList.Message:
     properties:
       cafe-id:
         example: uuid
         type: string
-      comment:
-        type: string
-      id:
-        example: uuid
-        type: string
-      name:
-        type: string
-      roles:
-        example:
-        - owner
-        - admin
-        - hostess
+    required:
+    - cafe-id
+    type: object
+  cafeUserList.Response:
+    properties:
+      cafe-users:
         items:
-          type: string
+          $ref: '#/definitions/actions.Response'
         type: array
-      user-id:
-        example: uuid
-        type: string
     type: object
   controller.AuthResponse:
     properties:
@@ -386,7 +397,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/cafeUserCreate.Response'
+            $ref: '#/definitions/actions.Response'
         "400":
           description: Invalid data
           schema:
@@ -406,6 +417,42 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create cafe user
+      tags:
+      - cafe user
+  /cafe/user/list:
+    get:
+      consumes:
+      - application/json
+      description: Get cafe user list
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/cafeUserList.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/cafeUserList.Response'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get cafe user list
       tags:
       - cafe user
   /table:

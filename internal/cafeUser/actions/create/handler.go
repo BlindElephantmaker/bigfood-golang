@@ -2,6 +2,7 @@ package cafeUserCreate
 
 import (
 	"bigfood/internal/cafeUser"
+	"bigfood/internal/cafeUser/actions"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"errors"
@@ -14,15 +15,9 @@ type Message struct {
 	Roles   []string `json:"roles" binding:"required" example:"owner,admin,hostess"`
 }
 
-type Response struct {
-	*cafeUser.CafeUser
-	Roles cafeUser.Roles `json:"roles" example:"owner,admin,hostess"`
-	Name  user.Name      `json:"name"`
-}
-
 var ErrorCafeUserAlreadyExist = errors.New("cafe user already exist")
 
-func (h *Handler) Run(m *Message) (*Response, error) {
+func (h *Handler) Run(m *Message) (*actions.Response, error) {
 	cafeId, phone, comment, roles, err := parseMessage(m)
 	if err != nil {
 		return nil, err
@@ -48,7 +43,7 @@ func (h *Handler) Run(m *Message) (*Response, error) {
 		err = h.CafeUserRepository.Update(cafeUsr, roles)
 	}
 
-	return &Response{
+	return &actions.Response{
 		CafeUser: cafeUsr,
 		Roles:    roles,
 		Name:     usr.Name,

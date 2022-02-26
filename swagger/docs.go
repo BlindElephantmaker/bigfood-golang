@@ -273,7 +273,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/cafeUserCreate.Response"
+                            "$ref": "#/definitions/actions.Response"
                         }
                     },
                     "400": {
@@ -290,6 +290,63 @@ var doc = `{
                     },
                     "422": {
                         "description": "Cafe user already exist",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/cafe/user/list": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get cafe user list",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cafe user"
+                ],
+                "summary": "Get cafe user list",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cafeUserList.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/cafeUserList.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseError"
                         }
@@ -670,6 +727,35 @@ var doc = `{
         }
     },
     "definitions": {
+        "actions.Response": {
+            "type": "object",
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "cafeUser.Roles": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "user-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "user.Name": {
+                    "type": "string"
+                }
+            }
+        },
         "auth.Message": {
             "type": "object",
             "required": [
@@ -719,37 +805,26 @@ var doc = `{
                 }
             }
         },
-        "cafeUserCreate.Response": {
+        "cafeUserList.Message": {
             "type": "object",
+            "required": [
+                "cafe-id"
+            ],
             "properties": {
                 "cafe-id": {
                     "type": "string",
                     "example": "uuid"
-                },
-                "comment": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "uuid"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "roles": {
+                }
+            }
+        },
+        "cafeUserList.Response": {
+            "type": "object",
+            "properties": {
+                "cafe-users": {
                     "type": "array",
                     "items": {
-                        "type": "string"
-                    },
-                    "example": [
-                        "owner",
-                        "admin",
-                        "hostess"
-                    ]
-                },
-                "user-id": {
-                    "type": "string",
-                    "example": "uuid"
+                        "$ref": "#/definitions/actions.Response"
+                    }
                 }
             }
         },

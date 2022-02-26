@@ -22,45 +22,44 @@ const (
 )
 
 func (r *RepositoryPSQL) Get(cafeId, userId helpers.Uuid) (*CafeUser, error) {
-	var cafePSQL struct {
-		Id        helpers.Uuid `db:"id"`
-		CafeId    helpers.Uuid `db:"cafe_id"`
-		UserId    helpers.Uuid `db:"user_id"`
-		Comment   Comment      `db:"comment"`
-		DeletedAt sql.NullTime `db:"deleted_at"`
-	}
+	var cafeUser CafeUser
 	queryCafeUser := fmt.Sprintf(
 		"SELECT id, cafe_id, user_id, comment, deleted_at FROM %s WHERE cafe_id = $1 AND user_id = $2",
 		Table,
 	)
-	err := r.db.Get(&cafePSQL, queryCafeUser, cafeId, userId)
+	err := r.db.Get(&cafeUser, queryCafeUser, cafeId, userId)
 	if err != nil {
 		return nil, err
 	}
 
-	//todo : where load this?
-	//var cafeUserRoles role.Roles
-	//queryUserRoles := fmt.Sprintf("SELECT role FROM %s WHERE cafe_user_id = $1", RoleTable)
-	//if err := r.db.Get(&cafeUserRoles, queryUserRoles, cafePSQL.UserId); err == ErrorNoResult {
-	//	cafeUserRoles = role.Roles{}
-	//} else if err != nil {
-	//	return nil, err
-	//}
+	return &cafeUser, nil
+}
 
-	var deleteAt *time.Time
-	if cafePSQL.DeletedAt.Valid {
-		deleteAt = &cafePSQL.DeletedAt.Time
-	} else {
-		deleteAt = nil
+func (r *RepositoryPSQL) GetListByCafeId(cafeId helpers.Uuid) ([]*CafeUser, error) {
+	var cafeUsers []*CafeUser
+	query := fmt.Sprintf(
+		"SELECT id, cafe_id, user_id, comment, deleted_at FROM %s WHERE cafe_id = $1 AND deleted_at IS NULL",
+		Table,
+	)
+	err := r.db.Select(&cafeUsers, query, cafeId)
+	if err != nil && err != ErrorNoResult {
+		return nil, err
 	}
 
-	return &CafeUser{
-		Id:        cafePSQL.Id,
-		CafeId:    cafePSQL.CafeId,
-		UserId:    cafePSQL.UserId,
-		Comment:   cafePSQL.Comment,
-		DeletedAt: deleteAt,
-	}, nil
+	return cafeUsers, nil
+}
+
+func (r *RepositoryPSQL) GetUserRoles(cafeUserId helpers.Uuid) (Roles, error) {
+	var roles Roles
+	query := fmt.Sprintf("SELECT role FROM %s WHERE cafe_user_id = $1", RoleTable)
+	err := r.db.Select(&roles, query, cafeUserId)
+	if err == ErrorNoResult {
+		roles = Roles{}
+	} else if err != nil {
+		return nil, err
+	}
+
+	return roles, nil
 }
 
 func (r *RepositoryPSQL) Add(cafeUser *CafeUser, roles Roles) error {
