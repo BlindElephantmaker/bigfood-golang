@@ -7,6 +7,6 @@ import (
 
 type Response struct {
 	*cafeUser.CafeUser
-	cafeUser.Roles `json:"roles" example:"owner,admin,hostess"` // todo: strange in swagger
-	user.Name      `json:"name"`
+	Roles     cafeUser.Roles `json:"roles" example:"owner,admin,hostess"` // todo: get list or roles from const
+	user.Name `json:"name"`
 }

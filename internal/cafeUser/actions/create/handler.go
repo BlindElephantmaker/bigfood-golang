@@ -28,7 +28,7 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 		return nil, err
 	}
 
-	cafeUsr, err := h.CafeUserRepository.Get(cafeId, usr.Id)
+	cafeUsr, err := h.CafeUserRepository.GetByCafeAndUserIds(cafeId, usr.Id)
 	if err == cafeUser.ErrorNoResult {
 		cafeUsr = cafeUser.NewCafeUser(cafeId, usr.Id, comment)
 		err = h.CafeUserRepository.Add(cafeUsr, roles)

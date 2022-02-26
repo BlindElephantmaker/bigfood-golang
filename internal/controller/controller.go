@@ -43,6 +43,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 				apiCafeUser.GET("list", controller.cafeUserList)
 				apiCafeUser.POST("", controller.cafeUserCreate)
 				apiCafeUser.DELETE("", controller.cafeUserDelete)
+				apiCafeUser.PUT("", controller.cafeUserEdit)
 			}
 		}
 

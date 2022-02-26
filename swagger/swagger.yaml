@@ -5,15 +5,20 @@ definitions:
       cafe-id:
         example: uuid
         type: string
-      cafeUser.Roles:
-        items:
-          type: string
-        type: array
       comment:
         type: string
       id:
         example: uuid
         type: string
+      roles:
+        description: 'todo: get list or roles from const'
+        example:
+        - owner
+        - admin
+        - hostess
+        items:
+          type: string
+        type: array
       user-id:
         example: uuid
         type: string
@@ -60,6 +65,21 @@ definitions:
       cafe-user-id:
         example: uuid
         type: string
+    required:
+    - cafe-user-id
+    type: object
+  cafeUserEdit.Message:
+    properties:
+      cafe-user-id:
+        example: uuid
+        type: string
+      comment:
+        type: string
+      roles:
+        description: 'todo: bad array swagger'
+        items:
+          type: string
+        type: array
     required:
     - cafe-user-id
     type: object
@@ -456,6 +476,45 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create cafe user
+      tags:
+      - cafe user
+    put:
+      consumes:
+      - application/json
+      description: Edit cafe user
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/cafeUserEdit.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/actions.Response'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "422":
+          description: Owner role could not be set
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Edit cafe user
       tags:
       - cafe user
   /cafe/user/list:

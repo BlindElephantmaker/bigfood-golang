@@ -19,9 +19,22 @@ func NewRepositoryPSQL(db *sqlx.DB) *RepositoryPSQL {
 const (
 	Table     = "cafe_user"
 	RoleTable = "cafe_user_role"
+
+	excludeRole = Owner
 )
 
-func (r *RepositoryPSQL) Get(cafeId, userId helpers.Uuid) (*CafeUser, error) {
+func (r *RepositoryPSQL) Get(cafeUserId helpers.Uuid) (*CafeUser, error) {
+	var cafeUser CafeUser
+	query := fmt.Sprintf("SELECT id, cafe_id, user_id, comment, deleted_at FROM %s WHERE id = $1", Table)
+	err := r.db.Get(&cafeUser, query, cafeUserId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &cafeUser, nil
+}
+
+func (r *RepositoryPSQL) GetByCafeAndUserIds(cafeId, userId helpers.Uuid) (*CafeUser, error) {
 	var cafeUser CafeUser
 	queryCafeUser := fmt.Sprintf(
 		"SELECT id, cafe_id, user_id, comment, deleted_at FROM %s WHERE cafe_id = $1 AND user_id = $2",
@@ -49,17 +62,17 @@ func (r *RepositoryPSQL) GetListByCafeId(cafeId helpers.Uuid) ([]*CafeUser, erro
 	return cafeUsers, nil
 }
 
-func (r *RepositoryPSQL) GetUserRoles(cafeUserId helpers.Uuid) (Roles, error) {
+func (r *RepositoryPSQL) GetUserRoles(cafeUserId helpers.Uuid) (*Roles, error) {
 	var roles Roles
-	query := fmt.Sprintf("SELECT role FROM %s WHERE cafe_user_id = $1", RoleTable)
-	err := r.db.Select(&roles, query, cafeUserId)
+	query := fmt.Sprintf("SELECT role FROM %s WHERE cafe_user_id = $1 and role != $2", RoleTable)
+	err := r.db.Select(&roles, query, cafeUserId, excludeRole)
 	if err == ErrorNoResult {
 		roles = Roles{}
 	} else if err != nil {
 		return nil, err
 	}
 
-	return roles, nil
+	return &roles, nil
 }
 
 func (r *RepositoryPSQL) Add(cafeUser *CafeUser, roles Roles) error {
@@ -131,8 +144,9 @@ func (r *RepositoryPSQL) UpdateTx(tx *sql.Tx, cafeUser *CafeUser, roles Roles) e
 	}
 
 	if _, err := tx.Exec(
-		fmt.Sprintf("DELETE FROM %s WHERE cafe_user_id = $1", RoleTable),
+		fmt.Sprintf("DELETE FROM %s WHERE cafe_user_id = $1 AND role != $2", RoleTable),
 		cafeUser.Id,
+		excludeRole,
 	); err != nil {
 		return err
 	}

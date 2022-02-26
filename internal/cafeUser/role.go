@@ -24,7 +24,7 @@ func parseRole(value string) (Role, error) {
 }
 
 func ParseRoles(values []string) (Roles, error) {
-	var roles Roles
+	roles := Roles{}
 	for _, value := range values {
 		role, err := parseRole(value)
 		if err != nil {

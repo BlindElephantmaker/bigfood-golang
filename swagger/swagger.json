@@ -227,6 +227,67 @@
             }
         },
         "/cafe/user": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Edit cafe user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "cafe user"
+                ],
+                "summary": "Edit cafe user",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/cafeUserEdit.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/actions.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "422": {
+                        "description": "Owner role could not be set",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -769,18 +830,24 @@
                     "type": "string",
                     "example": "uuid"
                 },
-                "cafeUser.Roles": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                },
                 "comment": {
                     "type": "string"
                 },
                 "id": {
                     "type": "string",
                     "example": "uuid"
+                },
+                "roles": {
+                    "description": "todo: get list or roles from const",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "example": [
+                        "owner",
+                        "admin",
+                        "hostess"
+                    ]
                 },
                 "user-id": {
                     "type": "string",
@@ -849,6 +916,28 @@
                 "cafe-user-id": {
                     "type": "string",
                     "example": "uuid"
+                }
+            }
+        },
+        "cafeUserEdit.Message": {
+            "type": "object",
+            "required": [
+                "cafe-user-id"
+            ],
+            "properties": {
+                "cafe-user-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "roles": {
+                    "description": "todo: bad array swagger",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
