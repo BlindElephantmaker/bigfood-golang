@@ -5,5 +5,5 @@ import (
 )
 
 type Repository interface {
-	Add(cafe *Cafe, cafeUser *cafeUser.User) error
+	Add(cafe *Cafe, cafeUser *cafeUser.CafeUser, userRoles cafeUser.Roles) error
 }

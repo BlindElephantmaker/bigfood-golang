@@ -42,12 +42,12 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 			repositories.SmsCodeRepository,
 			repositories.UserRepository,
 			repositories.UserTokenRepository,
-			repositories.CafeUserRepository,
+			repositories.PermissionRepository,
 			services.UserService,
 		),
 		RefreshTokenHandler: refreshToken.New(
 			repositories.UserTokenRepository,
-			repositories.CafeUserRepository,
+			repositories.PermissionRepository,
 		),
 		UserLogoutHandler: userLogout.New(
 			repositories.UserTokenRepository,

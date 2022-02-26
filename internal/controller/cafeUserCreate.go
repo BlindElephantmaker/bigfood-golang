@@ -3,7 +3,6 @@ package controller
 import (
 	"bigfood/internal/cafeUser"
 	cafeUserCreate "bigfood/internal/cafeUser/actions/create"
-	"bigfood/internal/cafeUser/role"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/pkg/server"
@@ -40,7 +39,7 @@ func (controller *Controller) cafeUserCreate(c *gin.Context) {
 	if err == helpers.ErrorInvalidUuid ||
 		err == user.ErrorPhoneNumberIsInvalid ||
 		err == cafeUser.ErrorCafeUserCommentIsTooLong ||
-		err == role.ErrorUserRoleInvalid {
+		err == cafeUser.ErrorUserRoleInvalid {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}

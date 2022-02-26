@@ -1,21 +1,21 @@
-package role
+package permissions
 
 import (
+	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
 )
 
-// todo: maybe move to authorization
 type CafePermissions struct {
-	Roles Roles
+	Roles cafeUser.Roles
 }
 
 func createEmptyCafePermission() *CafePermissions {
 	return &CafePermissions{
-		Roles: Roles{},
+		Roles: cafeUser.Roles{},
 	}
 }
 
-func (cp *CafePermissions) appendRole(role Role) {
+func (cp *CafePermissions) appendRole(role cafeUser.Role) {
 	cp.Roles = append(cp.Roles, role)
 }
 
@@ -24,7 +24,7 @@ type Permissions struct {
 	Cafes  map[helpers.Uuid]*CafePermissions
 }
 
-func (p *Permissions) AppendRole(cafeId helpers.Uuid, role Role) {
+func (p *Permissions) AppendRole(cafeId helpers.Uuid, role cafeUser.Role) {
 	cafePerm := p.Cafes[cafeId]
 	cafePerm.appendRole(role)
 }
@@ -36,7 +36,7 @@ func (p *Permissions) CreateCafePerm(cafeId helpers.Uuid) {
 	}
 }
 
-func (p *Permissions) HasRole(cafeId helpers.Uuid, role Role) bool {
+func (p *Permissions) HasRole(cafeId helpers.Uuid, role cafeUser.Role) bool {
 	cafePerm, ok := p.Cafes[cafeId]
 	if !ok {
 		return false

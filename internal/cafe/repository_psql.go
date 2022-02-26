@@ -23,7 +23,7 @@ const (
 	cafeTable = "cafe"
 )
 
-func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.User) error {
+func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.CafeUser, userRoles cafeUser.Roles) error {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return err
@@ -36,7 +36,7 @@ func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.User) error {
 		return err
 	}
 
-	if err := r.CafeUserRepository.AddTx(tx, cafeUser, createAt); err != nil {
+	if err := r.CafeUserRepository.AddTx(tx, cafeUser, userRoles, createAt); err != nil {
 		_ = tx.Rollback()
 		return err
 	}

@@ -1,7 +1,7 @@
 package userToken
 
 import (
-	"bigfood/internal/cafeUser/role"
+	"bigfood/internal/cafeUser/permissions"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -15,7 +15,7 @@ type AccessToken string
 
 type UserClaims struct {
 	jwt.StandardClaims
-	role.Permissions
+	permissions.Permissions
 }
 
 var (
@@ -23,7 +23,7 @@ var (
 	ErrorInvalidClaims        = errors.New("invalid user claims")
 )
 
-func NewAccess(permissions *role.Permissions, time *time.Time, ttl time.Duration) (AccessToken, error) {
+func NewAccess(permissions *permissions.Permissions, time *time.Time, ttl time.Duration) (AccessToken, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &UserClaims{ // todo: change to SigningMethodES256
 		jwt.StandardClaims{
 			IssuedAt:  time.Unix(),

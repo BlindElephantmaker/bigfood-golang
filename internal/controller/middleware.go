@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/cafeUser/role"
+	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
@@ -54,7 +54,7 @@ func getUserId(c *gin.Context) helpers.Uuid {
 	return claims.Permissions.UserId
 }
 
-func userHasRole(c *gin.Context, cafeId helpers.Uuid, role role.Role) bool {
+func userHasRole(c *gin.Context, cafeId helpers.Uuid, role cafeUser.Role) bool {
 	claims := getClaims(c)
 	return claims.Permissions.HasRole(cafeId, role)
 }

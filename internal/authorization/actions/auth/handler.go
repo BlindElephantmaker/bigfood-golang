@@ -2,7 +2,7 @@ package auth
 
 import (
 	"bigfood/internal/authorization/smsCode"
-	"bigfood/internal/cafeUser"
+	"bigfood/internal/cafeUser/permissions"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
@@ -10,11 +10,11 @@ import (
 )
 
 type Handler struct {
-	smsCodeRepository  smsCode.Repository
-	userRepository     user.Repository
-	tokenRepository    userToken.Repository
-	cafeUserRepository cafeUser.Repository
-	userService        *user.Service
+	smsCodeRepository     smsCode.Repository
+	userRepository        user.Repository
+	tokenRepository       userToken.Repository
+	permissionsRepository permissions.Repository
+	userService           *user.Service
 }
 
 var ErrorSmsCodeNotConfirmed = errors.New("sms code not confirmed")
@@ -23,15 +23,15 @@ func New(
 	smsCodeRepository smsCode.Repository,
 	users user.Repository,
 	tokens userToken.Repository,
-	cafeUsers cafeUser.Repository,
+	permissions permissions.Repository,
 	userService *user.Service,
 ) *Handler {
 	return &Handler{
-		smsCodeRepository:  smsCodeRepository,
-		userRepository:     users,
-		tokenRepository:    tokens,
-		cafeUserRepository: cafeUsers,
-		userService:        userService,
+		smsCodeRepository:     smsCodeRepository,
+		userRepository:        users,
+		tokenRepository:       tokens,
+		permissionsRepository: permissions,
+		userService:           userService,
 	}
 }
 
@@ -79,12 +79,12 @@ func (h *Handler) validateSmsCode(phone user.Phone, code smsCode.Code) error {
 }
 
 func (h *Handler) createToken(id helpers.Uuid) (*userToken.UserToken, error) {
-	permissions, err := h.cafeUserRepository.GetUserPermissions(id)
+	userPermissions, err := h.permissionsRepository.GetPermissions(id)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := userToken.NewUserToken(permissions)
+	token, err := userToken.NewUserToken(userPermissions)
 	if err != nil {
 		return nil, err
 	}

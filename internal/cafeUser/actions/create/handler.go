@@ -2,7 +2,6 @@ package cafeUserCreate
 
 import (
 	"bigfood/internal/cafeUser"
-	"bigfood/internal/cafeUser/role"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"errors"
@@ -16,8 +15,9 @@ type Message struct {
 }
 
 type Response struct {
-	*cafeUser.User
-	Name user.Name `json:"name"`
+	*cafeUser.CafeUser
+	Roles cafeUser.Roles `json:"roles" example:"owner,admin,hostess"`
+	Name  user.Name      `json:"name"`
 }
 
 var ErrorCafeUserAlreadyExist = errors.New("cafe user already exist")
@@ -28,35 +28,35 @@ func (h *Handler) Run(m *Message) (*Response, error) {
 		return nil, err
 	}
 
-	u, err := h.UserService.GetOrNewUser(phone)
+	usr, err := h.UserService.GetOrNewUser(phone)
 	if err != nil {
 		return nil, err
 	}
 
-	cu, err := h.CafeUserRepository.Get(cafeId, u.Id)
+	cafeUsr, err := h.CafeUserRepository.Get(cafeId, usr.Id)
 	if err == cafeUser.ErrorNoResult {
-		cu = cafeUser.NewCafeUser(cafeId, u.Id, comment, roles)
-		err = h.CafeUserRepository.Add(cu)
+		cafeUsr = cafeUser.NewCafeUser(cafeId, usr.Id, comment)
+		err = h.CafeUserRepository.Add(cafeUsr, roles)
 	} else if err != nil {
 		return nil, err
 	} else {
-		if !cu.IsDeleted() {
+		if !cafeUsr.IsDeleted() {
 			return nil, ErrorCafeUserAlreadyExist
 		}
-		cu.DeletedAt = nil
-		cu.Comment = comment
-		cu.Roles = roles
-		err = h.CafeUserRepository.Update(cu)
+		cafeUsr.DeletedAt = nil
+		cafeUsr.Comment = comment
+		err = h.CafeUserRepository.Update(cafeUsr, roles)
 	}
 
 	return &Response{
-		User: cu,
-		Name: u.Name,
+		CafeUser: cafeUsr,
+		Roles:    roles,
+		Name:     usr.Name,
 	}, err
 }
 
-func parseMessage(m *Message) (helpers.Uuid, user.Phone, cafeUser.Comment, role.Roles, error) {
-	roles, err := role.ParseRoles(m.Roles)
+func parseMessage(m *Message) (helpers.Uuid, user.Phone, cafeUser.Comment, cafeUser.Roles, error) {
+	roles, err := cafeUser.ParseRoles(m.Roles)
 	if err != nil {
 		return "", "", "", nil, err
 	}

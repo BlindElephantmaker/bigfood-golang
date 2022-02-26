@@ -1,4 +1,4 @@
-package role
+package cafeUser
 
 import "errors"
 
