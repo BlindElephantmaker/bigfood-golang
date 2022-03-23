@@ -1,7 +1,6 @@
 package userToken
 
 import (
-	"bigfood/internal/helpers"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 )
@@ -33,16 +32,6 @@ func (r *RepositoryPSQL) Get(refreshToken RefreshToken) (*UserToken, error) {
 	}
 
 	return &userToken, nil
-}
-
-func (r *RepositoryPSQL) Delete(token RefreshToken, userId helpers.Uuid) error {
-	query := fmt.Sprintf("DELETE FROM %s WHERE refresh_token = :refresh_token AND user_id = :user_id", table)
-	_, err := r.db.NamedExec(query, map[string]interface{}{
-		"refresh_token": token,
-		"user_id":       userId,
-	})
-
-	return err
 }
 
 func (r *RepositoryPSQL) Refresh(newToken, oldToken *UserToken) error {

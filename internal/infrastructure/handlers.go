@@ -4,7 +4,6 @@ import (
 	"bigfood/internal/authorization/action/auth"
 	"bigfood/internal/authorization/action/refreshToken"
 	"bigfood/internal/authorization/action/sendSmsCode"
-	"bigfood/internal/authorization/action/userLogout"
 	"bigfood/internal/cafe/actions/create"
 	cafeUserAdd "bigfood/internal/cafeUser/actions/create"
 	cafeUserDelete "bigfood/internal/cafeUser/actions/delete"
@@ -23,7 +22,6 @@ type Handlers struct {
 	SendSmsCode            *sendSmsCode.Handler
 	UserAuthHandler        *auth.Handler
 	RefreshTokenHandler    *refreshToken.Handler
-	UserLogoutHandler      *userLogout.Handler
 	UserEditHandler        *userEdit.Handler
 	CafeCreateHandler      *createCafe.Handler
 	TableCreateHandler     *tableCreate.Handler
@@ -54,9 +52,6 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		RefreshTokenHandler: refreshToken.New(
 			repositories.UserTokenRepository,
 			repositories.PermissionRepository,
-		),
-		UserLogoutHandler: userLogout.New(
-			repositories.UserTokenRepository,
 		),
 		UserEditHandler: userEdit.New(
 			repositories.UserRepository,
