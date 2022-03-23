@@ -5,7 +5,7 @@ import (
 )
 
 type Message struct {
-	RefreshToken userToken.RefreshToken `json:"token" binding:"required" example:"UUID"` // todo: check uuid validation
+	RefreshToken userToken.RefreshToken `json:"token" binding:"required" example:"UUID"`
 }
 
 func (h *Handler) Run(m *Message) (*userToken.UserToken, error) {
