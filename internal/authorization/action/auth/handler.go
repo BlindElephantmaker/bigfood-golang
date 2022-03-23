@@ -2,7 +2,6 @@ package auth
 
 import (
 	"bigfood/internal/authorization/smsCode"
-	"bigfood/internal/cafeUser/permissions"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"errors"
@@ -55,12 +54,7 @@ func (h *Handler) validateSmsCode(m *Message) error {
 }
 
 func (h *Handler) createToken(userId user.Id) (*userToken.UserToken, error) {
-	userPermissions, err := h.permissionsRepository.GetPermissions(userId)
-	if err != nil {
-		return nil, err
-	}
-
-	token, err := userToken.NewUserToken(userPermissions)
+	token, err := userToken.NewUserToken(userId)
 	if err != nil {
 		return nil, err
 	}
@@ -74,25 +68,22 @@ func (h *Handler) createToken(userId user.Id) (*userToken.UserToken, error) {
 }
 
 type Handler struct {
-	smsCodeRepository     smsCode.Repository
-	userRepository        user.Repository
-	tokenRepository       userToken.Repository
-	permissionsRepository permissions.Repository
-	userService           *user.Service
+	smsCodeRepository smsCode.Repository
+	userRepository    user.Repository
+	tokenRepository   userToken.Repository
+	userService       *user.Service
 }
 
 func New(
 	smsCodeRepository smsCode.Repository,
 	users user.Repository,
 	tokens userToken.Repository,
-	permissions permissions.Repository,
 	userService *user.Service,
 ) *Handler {
 	return &Handler{
-		smsCodeRepository:     smsCodeRepository,
-		userRepository:        users,
-		tokenRepository:       tokens,
-		permissionsRepository: permissions,
-		userService:           userService,
+		smsCodeRepository: smsCodeRepository,
+		userRepository:    users,
+		tokenRepository:   tokens,
+		userService:       userService,
 	}
 }

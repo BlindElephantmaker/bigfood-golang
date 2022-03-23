@@ -1,7 +1,6 @@
 package refreshToken
 
 import (
-	"bigfood/internal/cafeUser/permissions"
 	"bigfood/internal/user/userToken"
 )
 
@@ -15,12 +14,7 @@ func (h *Handler) Run(m *Message) (*userToken.UserToken, error) {
 		return nil, err
 	}
 
-	userPermissions, err := h.permissionRepository.GetPermissions(oldToken.UserId)
-	if err != nil {
-		return nil, err
-	}
-
-	newToken, err := userToken.NewUserToken(userPermissions)
+	newToken, err := userToken.NewUserToken(oldToken.UserId)
 	if err != nil {
 		return nil, err
 	}
@@ -34,13 +28,11 @@ func (h *Handler) Run(m *Message) (*userToken.UserToken, error) {
 }
 
 type Handler struct {
-	tokenRepository      userToken.Repository
-	permissionRepository permissions.Repository
+	tokenRepository userToken.Repository
 }
 
-func New(tokens userToken.Repository, permissions permissions.Repository) *Handler {
+func New(tokens userToken.Repository) *Handler {
 	return &Handler{
-		tokenRepository:      tokens,
-		permissionRepository: permissions,
+		tokenRepository: tokens,
 	}
 }

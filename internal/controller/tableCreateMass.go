@@ -26,10 +26,11 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userIsAdmin(c, message.CafeId) {
-		server.AccessDenied(c)
-		return
-	}
+	// todo
+	//if !userIsAdmin(c, message.CafeId) {
+	//	server.AccessDenied(c)
+	//	return
+	//}
 
 	tables, err := controller.handlers.TableCreateMassHandler.Run(&message)
 	if err != nil {

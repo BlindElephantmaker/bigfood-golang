@@ -1,7 +1,7 @@
 package userToken
 
 import (
-	"bigfood/internal/cafeUser/permissions"
+	"bigfood/internal/user"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
 	"time"
@@ -13,31 +13,24 @@ const (
 
 type AccessToken string
 
-type UserClaims struct {
-	jwt.StandardClaims
-	permissions.Permissions
-}
-
 var (
 	ErrorInvalidSigningMethod = errors.New("invalid signing method")
 	ErrorInvalidClaims        = errors.New("invalid user claims")
 )
 
-func NewAccess(permissions *permissions.Permissions, time *time.Time, ttl time.Duration) (AccessToken, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &UserClaims{ // todo: change to SigningMethodES256
-		jwt.StandardClaims{
-			IssuedAt:  time.Unix(),
-			ExpiresAt: time.Add(ttl).Unix(),
-		},
-		*permissions,
+func NewAccess(userId user.Id, time *time.Time, ttl time.Duration) (AccessToken, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.StandardClaims{ // todo: change to SigningMethodES256
+		IssuedAt:  time.Unix(),
+		ExpiresAt: time.Add(ttl).Unix(),
+		Id:        string(userId),
 	})
 	value, err := token.SignedString([]byte(signingKey))
 
 	return AccessToken(value), err
 }
 
-func ParseAccess(token string) (*UserClaims, error) {
-	jwtToken, err := jwt.ParseWithClaims(token, &UserClaims{}, func(token *jwt.Token) (interface{}, error) {
+func ParseAccess(token string) (*jwt.StandardClaims, error) {
+	jwtToken, err := jwt.ParseWithClaims(token, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // todo: check after change SigningMethodHS256 to SigningMethodES256
 			return nil, ErrorInvalidSigningMethod
 		}
@@ -49,7 +42,7 @@ func ParseAccess(token string) (*UserClaims, error) {
 		return nil, err
 	}
 
-	claims, ok := jwtToken.Claims.(*UserClaims)
+	claims, ok := jwtToken.Claims.(*jwt.StandardClaims)
 	if !ok {
 		return nil, ErrorInvalidClaims
 	}

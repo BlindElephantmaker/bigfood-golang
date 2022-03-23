@@ -28,10 +28,11 @@ func (controller *Controller) cafeUserCreate(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userIsAdmin(c, message.CafeId) {
-		server.AccessDenied(c)
-		return
-	}
+	// todo
+	//if !userIsAdmin(c, message.CafeId) {
+	//	server.AccessDenied(c)
+	//	return
+	//}
 
 	response, err := controller.handlers.CafeUserAddHandler.Run(&message)
 	if err == cafeUser.ErrorUserRoleInvalid {

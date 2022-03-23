@@ -1,7 +1,6 @@
 package userToken
 
 import (
-	"bigfood/internal/cafeUser/permissions"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"time"
@@ -20,11 +19,11 @@ type UserToken struct {
 	ExpiresAt *time.Time   `db:"expires_at"`
 }
 
-func NewUserToken(permissions *permissions.Permissions) (*UserToken, error) {
+func NewUserToken(userId user.Id) (*UserToken, error) {
 	now := helpers.NowTime()
 	expiresAt := now.Add(refreshTTL)
 
-	access, err := NewAccess(permissions, &now, accessTTL)
+	access, err := NewAccess(userId, &now, accessTTL)
 	if err != nil {
 		return nil, err
 	}
@@ -35,7 +34,7 @@ func NewUserToken(permissions *permissions.Permissions) (*UserToken, error) {
 	}
 
 	return &UserToken{
-		UserId:    permissions.UserId,
+		UserId:    userId,
 		Access:    &access,
 		Refresh:   refresh,
 		ExpiresAt: &expiresAt,

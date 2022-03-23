@@ -31,10 +31,11 @@ func (controller *Controller) tableCreate(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userIsAdmin(c, message.CafeId) {
-		server.AccessDenied(c)
-		return
-	}
+	// todo
+	//if !userIsAdmin(c, message.CafeId) {
+	//	server.AccessDenied(c)
+	//	return
+	//}
 
 	t, err := controller.handlers.TableCreateHandler.Run(&message)
 	if err != nil {

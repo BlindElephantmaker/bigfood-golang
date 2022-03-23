@@ -26,10 +26,11 @@ func (controller *Controller) cafeUserList(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userIsHostess(c, message.CafeId) {
-		server.AccessDenied(c)
-		return
-	}
+	// todo
+	//if !userIsHostess(c, message.CafeId) {
+	//	server.AccessDenied(c)
+	//	return
+	//}
 
 	response, err := controller.handlers.CafeUserListHandler.Run(&message)
 	if err != nil {

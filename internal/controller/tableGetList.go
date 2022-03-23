@@ -26,10 +26,11 @@ func (controller *Controller) tableGetList(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	if !userIsHostess(c, message.CafeId) {
-		server.AccessDenied(c)
-		return
-	}
+	// todo
+	//if !userIsHostess(c, message.CafeId) {
+	//	server.AccessDenied(c)
+	//	return
+	//}
 
 	tables, err := controller.handlers.TableGetListHandler.Run(&message)
 	if err != nil {

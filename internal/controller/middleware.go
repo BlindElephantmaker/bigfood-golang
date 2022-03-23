@@ -1,8 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/cafeUser"
-	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
@@ -14,48 +12,42 @@ import (
 
 const (
 	authorizationHeader = "Authorization"
-	claims              = "claims"
+	userId              = "userId"
 )
 
 var (
-	ErrorEmptyAuthorizationHeader   = errors.New("empty authorization header")
-	ErrorInvalidAuthorizationHeader = errors.New("invalid authorization header")
+	errorEmptyAuthorizationHeader   = errors.New("empty authorization header")
+	errorInvalidAuthorizationHeader = errors.New("invalid authorization header")
 )
 
 func (controller *Controller) userIdentity(c *gin.Context) {
-	// todo: how compare cases?
 	header := c.GetHeader(authorizationHeader)
 	if header == "" {
-		server.NewResponseError(c, http.StatusUnauthorized, ErrorEmptyAuthorizationHeader)
+		server.NewResponseError(c, http.StatusUnauthorized, errorEmptyAuthorizationHeader)
 		return
 	}
 
 	headerParts := strings.Split(header, " ")
 	if len(headerParts) != 2 || headerParts[0] != "Bearer" {
-		server.NewResponseError(c, http.StatusUnauthorized, ErrorInvalidAuthorizationHeader)
+		server.NewResponseError(c, http.StatusUnauthorized, errorInvalidAuthorizationHeader)
 		return
 	}
 
-	userClaims, err := userToken.ParseAccess(headerParts[1])
+	claims, err := userToken.ParseAccess(headerParts[1])
 	if err != nil {
 		server.NewResponseError(c, http.StatusUnauthorized, err)
 		return
 	}
 
-	c.Set(claims, userClaims)
-}
-
-func getClaims(c *gin.Context) *userToken.UserClaims {
-	permissions, _ := c.Get(claims)
-	return permissions.(*userToken.UserClaims)
+	id, err := user.ParseId(claims.Id)
+	if err != nil {
+		server.NewResponseError(c, http.StatusUnauthorized, err)
+		return
+	}
+	c.Set(userId, id)
 }
 
 func getUserId(c *gin.Context) user.Id {
-	claims := getClaims(c)
-	return claims.Permissions.UserId
-}
-
-func userHasRole(c *gin.Context, cafeId helpers.Uuid, role cafeUser.Role) bool {
-	claims := getClaims(c)
-	return claims.Permissions.HasRole(cafeId, role)
+	userId, _ := c.Get(userId)
+	return userId.(user.Id)
 }
