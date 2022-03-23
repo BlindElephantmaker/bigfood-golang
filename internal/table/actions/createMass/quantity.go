@@ -7,8 +7,8 @@ import (
 
 type Quantity int
 
-var errorQuantityIsTooLow = helpers.NewErrorBadRequest("quantity of tables must be greater than 0")
-var errorQuantityIsTooHigh = helpers.NewErrorBadRequest("quantity of tables must be less than 100")
+var errorQuantityIsTooLow = helpers.ErrorBadRequest("quantity of tables must be greater than 0")
+var errorQuantityIsTooHigh = helpers.ErrorBadRequest("quantity of tables must be less than 100")
 
 func (q *Quantity) UnmarshalJSON(data []byte) error {
 	var value int

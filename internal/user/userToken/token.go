@@ -20,7 +20,7 @@ type UserToken struct {
 }
 
 func NewUserToken(permissions *permissions.Permissions) (*UserToken, error) {
-	now := helpers.TimeNow()
+	now := helpers.NowTime()
 	expiresAt := now.Add(refreshTTL)
 
 	access, err := NewAccess(permissions, &now, accessTTL)

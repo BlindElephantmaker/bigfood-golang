@@ -7,7 +7,7 @@ import (
 
 type Uuid string
 
-var errorInvalidUuid = NewErrorBadRequest("UUID is invalid")
+var errorInvalidUuid = ErrorBadRequest("UUID is invalid")
 
 func NewUuid() Uuid {
 	return Uuid(googleUuid.New().String())
@@ -20,7 +20,7 @@ func (u *Uuid) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	uuid, err := parseUuid(value)
+	uuid, err := ParseUuid(value)
 	if err != nil {
 		return err
 	}
@@ -29,7 +29,7 @@ func (u *Uuid) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func parseUuid(value string) (Uuid, error) {
+func ParseUuid(value string) (Uuid, error) {
 	uuid, err := googleUuid.Parse(value)
 	if err != nil {
 		return "", errorInvalidUuid

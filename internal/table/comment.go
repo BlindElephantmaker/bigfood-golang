@@ -7,7 +7,7 @@ import (
 
 type Comment string
 
-var errorTableCommentIsTooLong = helpers.NewErrorBadRequest("table comment is too long")
+var errorTableCommentIsTooLong = helpers.ErrorBadRequest("table comment is too long")
 
 func (c *Comment) UnmarshalJSON(data []byte) error {
 	var value string

@@ -7,8 +7,8 @@ import (
 
 type Title string
 
-var errorTableTitleIsTooShort = helpers.NewErrorBadRequest("table title is too short")
-var errorTableTitleIsTooLong = helpers.NewErrorBadRequest("table title is too long")
+var errorTableTitleIsTooShort = helpers.ErrorBadRequest("table title is too short")
+var errorTableTitleIsTooLong = helpers.ErrorBadRequest("table title is too long")
 
 func (t *Title) UnmarshalJSON(data []byte) error {
 	var value string

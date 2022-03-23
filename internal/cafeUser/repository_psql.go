@@ -81,7 +81,7 @@ func (r *RepositoryPSQL) Add(cafeUser *CafeUser, roles Roles) error {
 		return err
 	}
 
-	if err := r.AddTx(tx, cafeUser, roles, helpers.TimeNow()); err != nil {
+	if err := r.AddTx(tx, cafeUser, roles, helpers.NowTime()); err != nil {
 		_ = tx.Rollback()
 		return err
 	}
@@ -104,7 +104,7 @@ func (r *RepositoryPSQL) Update(cafeUser *CafeUser, roles Roles) error {
 }
 
 func (r *RepositoryPSQL) Delete(cafeUserId helpers.Uuid) error {
-	now := helpers.TimeNow()
+	now := helpers.NowTime()
 	query := fmt.Sprintf("UPDATE %s SET deleted_at = $2 WHERE id = $1 AND deleted_at IS NULL", Table)
 	_, err := r.db.Exec(query, cafeUserId, now)
 	return err

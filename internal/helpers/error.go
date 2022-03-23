@@ -19,7 +19,7 @@ func (e Error) Error() string {
 	return e.originalError.Error()
 }
 
-func NewErrorBadRequest(msg string) Error {
+func ErrorBadRequest(msg string) Error {
 	return newError(msg, BadRequest)
 }
 

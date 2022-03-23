@@ -29,7 +29,7 @@ func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.CafeUser, userRoles 
 		return err
 	}
 
-	createAt := helpers.TimeNow()
+	createAt := helpers.NowTime()
 	queryCafe := fmt.Sprintf("INSERT INTO %s (id, created_at) VALUES ($1, $2)", cafeTable)
 	if _, err := tx.Exec(queryCafe, cafe.Id, createAt); err != nil {
 		_ = tx.Rollback()

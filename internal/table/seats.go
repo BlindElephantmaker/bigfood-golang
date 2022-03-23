@@ -9,7 +9,7 @@ type Seats int
 
 const defaultSeatsValue = Seats(4)
 
-var errorTableSeatsInvalidValue = helpers.NewErrorBadRequest("table seats has invalid value")
+var errorTableSeatsInvalidValue = helpers.ErrorBadRequest("table seats has invalid value")
 
 func (s *Seats) UnmarshalJSON(data []byte) error {
 	var value int

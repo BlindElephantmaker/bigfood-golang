@@ -44,7 +44,7 @@ func (h *Handler) Run(m *Message) (*table.Table, error) {
 
 	oneTableList := []*table.Table{newTable}
 
-	return newTable, h.TableRepository.AddSlice(oneTableList, helpers.TimeNow())
+	return newTable, h.TableRepository.AddSlice(oneTableList, helpers.NowTime())
 }
 
 type Handler struct {

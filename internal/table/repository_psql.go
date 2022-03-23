@@ -86,7 +86,7 @@ func (r *RepositoryPSQL) Update(t *Table) error {
 }
 
 func (r *RepositoryPSQL) Delete(tableId helpers.Uuid) error {
-	now := helpers.TimeNow()
+	now := helpers.NowTime()
 	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", table)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"id":         tableId,
@@ -97,7 +97,7 @@ func (r *RepositoryPSQL) Delete(tableId helpers.Uuid) error {
 }
 
 func (r *RepositoryPSQL) DeleteAll(cafeId helpers.Uuid) error {
-	now := helpers.TimeNow()
+	now := helpers.NowTime()
 	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND cafe_id = :cafe_id", table)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"cafe_id":    cafeId,

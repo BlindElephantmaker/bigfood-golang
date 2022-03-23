@@ -10,7 +10,7 @@ type Phone string
 
 const pattern = `^\+\d{11}$` // todo: phone number is not always 11 digits
 
-var errorPhoneNumberIsInvalid = helpers.NewErrorBadRequest("phone number is invalid")
+var errorPhoneNumberIsInvalid = helpers.ErrorBadRequest("phone number is invalid")
 
 func (p *Phone) UnmarshalJSON(data []byte) error {
 	var value string

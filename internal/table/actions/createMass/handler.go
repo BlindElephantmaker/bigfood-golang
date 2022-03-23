@@ -18,7 +18,7 @@ func (h *Handler) Run(message *Message) ([]*table.Table, error) {
 		tables = append(tables, table.NewTable(message.CafeId, title))
 	}
 
-	err := h.TableRepository.AddSlice(tables, helpers.TimeNow())
+	err := h.TableRepository.AddSlice(tables, helpers.NowTime())
 	if err != nil {
 		return nil, err
 	}
