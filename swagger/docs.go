@@ -69,51 +69,6 @@ var doc = `{
                 }
             }
         },
-        "/auth/logout": {
-            "delete": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Any reason to do this?",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "auth"
-                ],
-                "summary": "User logout (Deprecated)",
-                "parameters": [
-                    {
-                        "description": "Body",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/userLogout.Message"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    },
-                    "400": {
-                        "description": "Invalid refresh token",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseError"
-                        }
-                    }
-                }
-            }
-        },
         "/auth/refresh-token": {
             "put": {
                 "description": "Refresh user refresh and access tokens",
@@ -273,7 +228,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/action.Response"
+                            "$ref": "#/definitions/actions.Response"
                         }
                     },
                     "400": {
@@ -334,7 +289,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/action.Response"
+                            "$ref": "#/definitions/actions.Response"
                         }
                     },
                     "400": {
@@ -837,7 +792,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "action.Response": {
+        "actions.Response": {
             "type": "object",
             "properties": {
                 "cafe-id": {
@@ -909,6 +864,7 @@ var doc = `{
                     "example": "User phone"
                 },
                 "roles": {
+                    "description": "todo: collection",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -947,7 +903,7 @@ var doc = `{
                     "type": "string"
                 },
                 "roles": {
-                    "description": "todo: bad array swagger",
+                    "description": "todo: bad array swagger and parse collection",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -973,7 +929,7 @@ var doc = `{
                 "cafe-users": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/action.Response"
+                        "$ref": "#/definitions/actions.Response"
                     }
                 }
             }
@@ -1190,7 +1146,6 @@ var doc = `{
                     "example": "uuid"
                 },
                 "title": {
-                    "description": "todo: check *",
                     "type": "string"
                 }
             }
@@ -1204,18 +1159,6 @@ var doc = `{
                 "name": {
                     "type": "string",
                     "example": "New user name"
-                }
-            }
-        },
-        "userLogout.Message": {
-            "type": "object",
-            "required": [
-                "token"
-            ],
-            "properties": {
-                "token": {
-                    "type": "string",
-                    "example": "uuid"
                 }
             }
         }

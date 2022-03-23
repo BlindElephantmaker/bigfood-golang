@@ -48,6 +48,7 @@ definitions:
         example: User phone
         type: string
       roles:
+        description: 'todo: collection'
         example:
         - owner
         - admin
@@ -76,7 +77,7 @@ definitions:
       comment:
         type: string
       roles:
-        description: 'todo: bad array swagger'
+        description: 'todo: bad array swagger and parse collection'
         items:
           type: string
         type: array
@@ -240,7 +241,6 @@ definitions:
         example: uuid
         type: string
       title:
-        description: 'todo: check *'
         type: string
     required:
     - table-id
@@ -252,14 +252,6 @@ definitions:
         type: string
     required:
     - name
-    type: object
-  userLogout.Message:
-    properties:
-      token:
-        example: uuid
-        type: string
-    required:
-    - token
     type: object
 host: localhost:8000
 info:
@@ -296,34 +288,6 @@ paths:
           schema:
             $ref: '#/definitions/server.ResponseError'
       summary: User authorization
-      tags:
-      - auth
-  /auth/logout:
-    delete:
-      consumes:
-      - application/json
-      description: Any reason to do this?
-      parameters:
-      - description: Body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/userLogout.Message'
-      responses:
-        "200":
-          description: Success
-        "400":
-          description: Invalid refresh token
-          schema:
-            $ref: '#/definitions/server.ResponseError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ResponseError'
-      security:
-      - ApiKeyAuth: []
-      summary: User logout (Deprecated)
       tags:
       - auth
   /auth/refresh-token:
