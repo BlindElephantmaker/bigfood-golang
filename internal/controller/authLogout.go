@@ -1,8 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/authorization/actions/userLogout"
-	"bigfood/internal/user/userToken"
+	"bigfood/internal/authorization/action/userLogout"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -30,9 +29,6 @@ func (controller *Controller) logout(c *gin.Context) {
 	message.UserId = getUserId(c)
 
 	err = controller.handlers.UserLogoutHandler.Run(&message)
-	if err == userToken.ErrorInvalidRefreshTokenFormat {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

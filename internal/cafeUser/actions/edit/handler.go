@@ -10,9 +10,9 @@ import (
 )
 
 type Message struct {
-	CafeUserId string    `json:"cafe-user-id" binding:"required" example:"uuid"`
-	Comment    *string   `json:"comment"`
-	Roles      *[]string `json:"roles"` // todo: bad array swagger
+	CafeUserId helpers.Uuid      `json:"cafe-user-id" binding:"required" example:"uuid"`
+	Comment    *cafeUser.Comment `json:"comment"`
+	Roles      *[]string         `json:"roles"` // todo: bad array swagger and parse collection
 }
 
 var ErrorOwnerRoleCouldNotBeSet = errors.New(fmt.Sprintf("%s role could not be set", cafeUser.Owner))
@@ -52,23 +52,9 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 }
 
 func parseMessage(m *Message) (helpers.Uuid, *cafeUser.Comment, *cafeUser.Roles, error) {
-	cafeUserId, err := helpers.UuidParse(m.CafeUserId)
-	if err != nil {
-		return "", nil, nil, err
-	}
-
-	var comment *cafeUser.Comment
-	if m.Comment != nil {
-		c, err := cafeUser.ParseComment(*m.Comment)
-		if err != nil {
-			return "", nil, nil, err
-		}
-		comment = &c
-	}
-
 	var roles cafeUser.Roles
 	if m.Roles != nil {
-		roles, err = cafeUser.ParseRoles(*m.Roles)
+		roles, err := cafeUser.ParseRoles(*m.Roles)
 		for _, role := range roles {
 			if role == cafeUser.Owner {
 				return "", nil, nil, ErrorOwnerRoleCouldNotBeSet
@@ -79,7 +65,7 @@ func parseMessage(m *Message) (helpers.Uuid, *cafeUser.Comment, *cafeUser.Roles,
 		}
 	}
 
-	return cafeUserId, comment, &roles, nil
+	return m.CafeUserId, m.Comment, &roles, nil // todo
 }
 
 type Handler struct {

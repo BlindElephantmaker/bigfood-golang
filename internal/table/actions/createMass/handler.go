@@ -3,33 +3,22 @@ package createMass
 import (
 	"bigfood/internal/helpers"
 	"bigfood/internal/table"
-	"errors"
 	"fmt"
 )
 
-var ErrorQuantityIsTooLow = errors.New("quantity of tables must be greater than 0")
-var ErrorQuantityIsTooHigh = errors.New("quantity of tables must be less than 100")
+type Message struct {
+	CafeId   helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
+	Quantity Quantity     `json:"quantity" binding:"required" example:"10"`
+}
 
 func (h *Handler) Run(message *Message) ([]*table.Table, error) {
-	if message.Quantity < 1 {
-		return nil, ErrorQuantityIsTooLow
-	}
-	if message.Quantity > 100 {
-		return nil, ErrorQuantityIsTooHigh
-	}
-
-	cafeId, err := helpers.UuidParse(message.CafeId)
-	if err != nil {
-		return nil, err
-	}
-
 	var tables []*table.Table
-	for i := 1; i <= message.Quantity; i++ {
+	for i := 1; i <= int(message.Quantity); i++ {
 		title, _ := table.ParseTitle(fmt.Sprint(i))
-		tables = append(tables, table.NewTable(cafeId, title))
+		tables = append(tables, table.NewTable(message.CafeId, title))
 	}
 
-	err = h.TableRepository.AddSlice(tables, helpers.TimeNow())
+	err := h.TableRepository.AddSlice(tables, helpers.TimeNow())
 	if err != nil {
 		return nil, err
 	}

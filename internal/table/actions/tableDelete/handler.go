@@ -5,19 +5,18 @@ import (
 	"bigfood/internal/table"
 )
 
+type Message struct {
+	TableId helpers.Uuid `json:"table-id" binding:"required" example:"uuid"`
+}
+
+func (h *Handler) Run(m *Message) error {
+	return h.TableRepository.Delete(m.TableId)
+}
+
 type Handler struct {
 	TableRepository table.Repository
 }
 
 func New(tables table.Repository) *Handler {
 	return &Handler{tables}
-}
-
-func (h *Handler) Run(message *Message) error {
-	tableId, err := helpers.UuidParse(message.TableId)
-	if err != nil {
-		return err
-	}
-
-	return h.TableRepository.Delete(tableId)
 }

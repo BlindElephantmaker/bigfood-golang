@@ -9,5 +9,5 @@ type Cafe struct {
 }
 
 func New() *Cafe {
-	return &Cafe{helpers.UuidGenerate()}
+	return &Cafe{helpers.NewUuid()}
 }

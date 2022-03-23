@@ -35,7 +35,7 @@ func AccessDenied(c *gin.Context) {
 func ParseJsonRequestToMessage(c *gin.Context, message interface{}) error {
 	err := c.BindJSON(&message)
 	if err != nil {
-		NewResponseError(c, http.StatusBadRequest, ErrorParseJsonRequestToMessage)
+		NewResponseError(c, http.StatusBadRequest, ErrorParseJsonRequestToMessage) // todo: show validation error
 	}
 	return err
 }

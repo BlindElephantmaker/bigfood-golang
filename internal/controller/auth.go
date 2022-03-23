@@ -1,10 +1,8 @@
 package controller
 
 import (
-	"bigfood/internal/authorization/actions/auth"
-	"bigfood/internal/authorization/smsCode"
+	"bigfood/internal/authorization/action/auth"
 	"bigfood/internal/helpers"
-	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -37,10 +35,6 @@ func (controller *Controller) auth(c *gin.Context) {
 	}
 
 	response, err := controller.handlers.UserAuthHandler.Run(&message)
-	if err == user.ErrorPhoneNumberIsInvalid || err == smsCode.ErrorSmsCodeIsInvalid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err == auth.ErrorSmsCodeNotConfirmed {
 		server.NewResponseError(c, http.StatusUnprocessableEntity, err)
 		return

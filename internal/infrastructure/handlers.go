@@ -1,10 +1,10 @@
 package infrastructure
 
 import (
-	"bigfood/internal/authorization/actions/auth"
-	"bigfood/internal/authorization/actions/refreshToken"
-	"bigfood/internal/authorization/actions/sendSmsCode"
-	"bigfood/internal/authorization/actions/userLogout"
+	"bigfood/internal/authorization/action/auth"
+	"bigfood/internal/authorization/action/refreshToken"
+	"bigfood/internal/authorization/action/sendSmsCode"
+	"bigfood/internal/authorization/action/userLogout"
 	"bigfood/internal/cafe/actions/create"
 	cafeUserAdd "bigfood/internal/cafeUser/actions/create"
 	cafeUserDelete "bigfood/internal/cafeUser/actions/delete"

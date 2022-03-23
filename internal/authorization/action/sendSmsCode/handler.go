@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+type Message struct {
+	Phone user.Phone `json:"phone" binding:"required" example:"+71234567890"`
+	// todo: captcha
+}
+
 const (
 	maxRetryCount = 3
 	ttl           = time.Minute * 30
@@ -27,12 +32,7 @@ func New(service smsCode.Service, repository smsCode.Repository) *Handler {
 }
 
 func (h *Handler) Run(m Message) error {
-	phone, err := user.NewPhone(m.Phone)
-	if err != nil {
-		return err
-	}
-
-	count, err := h.smsCodeRepository.Count(phone)
+	count, err := h.smsCodeRepository.Count(m.Phone)
 	if err != nil {
 		return err
 	}
@@ -41,14 +41,14 @@ func (h *Handler) Run(m Message) error {
 	}
 
 	code := smsCode.New()
-	err = h.smsCodeRepository.Add(code, phone, ttl)
+	err = h.smsCodeRepository.Add(code, m.Phone, ttl)
 	if err != nil {
 		return err
 	}
 
-	err = h.smsCodeService.Send(string(code), phone)
+	err = h.smsCodeService.Send(string(code), m.Phone)
 	if err != nil {
-		_ = h.smsCodeRepository.DeleteLast(phone)
+		_ = h.smsCodeRepository.DeleteLast(m.Phone)
 		return err
 	}
 

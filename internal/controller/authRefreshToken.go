@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/authorization/actions/refreshToken"
+	"bigfood/internal/authorization/action/refreshToken"
 	"bigfood/internal/helpers"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
@@ -34,10 +34,6 @@ func (controller *Controller) refreshToken(c *gin.Context) {
 	}
 
 	token, err := controller.handlers.RefreshTokenHandler.Run(&message)
-	if err == userToken.ErrorInvalidRefreshTokenFormat {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

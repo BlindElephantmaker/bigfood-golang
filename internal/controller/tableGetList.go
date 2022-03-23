@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table/actions/getList"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -33,10 +32,6 @@ func (controller *Controller) tableGetList(c *gin.Context) {
 	}
 
 	tables, err := controller.handlers.TableGetListHandler.Run(&message)
-	if err == helpers.ErrorInvalidUuid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

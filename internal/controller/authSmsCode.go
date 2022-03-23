@@ -1,8 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/authorization/actions/sendSmsCode"
-	"bigfood/internal/user"
+	"bigfood/internal/authorization/action/sendSmsCode"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -28,10 +27,6 @@ func (controller *Controller) smsCode(c *gin.Context) {
 	}
 
 	err = controller.handlers.SendSmsCode.Run(message)
-	if err == user.ErrorPhoneNumberIsInvalid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err == sendSmsCode.ErrorRetryCountExceeded {
 		server.NewResponseError(c, http.StatusTooManyRequests, err)
 		return

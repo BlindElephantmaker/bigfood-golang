@@ -9,10 +9,10 @@ import (
 )
 
 type Message struct {
-	CafeId  string   `json:"cafe-id" binding:"required" example:"uuid"`
-	Phone   string   `json:"phone" binding:"required" example:"User phone"`
-	Comment *string  `json:"comment"`
-	Roles   []string `json:"roles" binding:"required" example:"owner,admin,hostess"`
+	CafeId  helpers.Uuid      `json:"cafe-id" binding:"required" example:"uuid"`
+	Phone   user.Phone        `json:"phone" binding:"required" example:"User phone"`
+	Comment *cafeUser.Comment `json:"comment"`
+	Roles   []string          `json:"roles" binding:"required" example:"owner,admin,hostess"` // todo: collection
 }
 
 var ErrorCafeUserAlreadyExist = errors.New("cafe user already exist")
@@ -55,26 +55,15 @@ func parseMessage(m *Message) (helpers.Uuid, user.Phone, cafeUser.Comment, cafeU
 	if err != nil {
 		return "", "", "", nil, err
 	}
-	phone, err := user.NewPhone(m.Phone)
-	if err != nil {
-		return "", "", "", nil, err
-	}
-	cafeId, err := helpers.UuidParse(m.CafeId)
-	if err != nil {
-		return "", "", "", nil, err
-	}
 
 	var comment cafeUser.Comment
-	if m.Comment != nil {
-		comment, err = cafeUser.ParseComment(*m.Comment)
-		if err != nil {
-			return "", "", "", nil, err
-		}
+	if m.Comment != nil { // todo: maybe move it to UnmarshalJSON?
+		comment = *m.Comment
 	} else {
 		comment = cafeUser.NewComment()
 	}
 
-	return cafeId, phone, comment, roles, nil
+	return m.CafeId, m.Phone, comment, roles, nil // todo
 }
 
 type Handler struct {

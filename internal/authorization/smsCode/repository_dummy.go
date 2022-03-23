@@ -12,7 +12,7 @@ type RepositoryDummy struct {
 }
 
 type dummy struct {
-	code  Code
+	code  SmsCode
 	count int
 }
 
@@ -20,7 +20,7 @@ func NewRepositoryDummy() *RepositoryDummy {
 	return &RepositoryDummy{make(map[user.Phone]*dummy)}
 }
 
-func (r *RepositoryDummy) Add(code Code, phone user.Phone, ttl time.Duration) error {
+func (r *RepositoryDummy) Add(code SmsCode, phone user.Phone, ttl time.Duration) error {
 	d := r.memory[phone]
 	if d != nil {
 		d.code = code
@@ -35,8 +35,8 @@ func (r *RepositoryDummy) Add(code Code, phone user.Phone, ttl time.Duration) er
 	return nil
 }
 
-func (r *RepositoryDummy) Get(phone user.Phone) (Code, error) {
-	return Parse("1234")
+func (r *RepositoryDummy) Get(phone user.Phone) (SmsCode, error) {
+	return "1234", nil
 }
 
 func (r *RepositoryDummy) Count(phone user.Phone) (int, error) {

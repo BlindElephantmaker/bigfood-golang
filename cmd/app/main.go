@@ -24,10 +24,15 @@ import (
 // @in                          header
 // @name                        Authorization
 func main() {
+	// todo: add env production and development
+
 	// todo: move initializing from here
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
+
+	// todo: test server can't read config, fix it
+	//initConfig()
 
 	if err := godotenv.Load(); err != nil { // todo: it is use global. How move to local?
 		log.Fatalf("failed to load env variables: %s", err.Error())
@@ -73,6 +78,12 @@ func initConfig() error {
 
 	return viper.ReadInConfig()
 }
+
+// todo: test server can't read config, fix it
+//func initConfig() {
+//	viper.Set("server.port", "8000")
+//	viper.Set("server.log-level", "debug")
+//}
 
 // todo: it is use global. How move to local?
 func initLogger(logLevel string) error {

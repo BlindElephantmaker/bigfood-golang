@@ -3,7 +3,6 @@ package controller
 import (
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions/edit"
-	"bigfood/internal/helpers"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -32,9 +31,7 @@ func (controller *Controller) cafeUserEdit(c *gin.Context) {
 	// todo: permissions role and cafeUserId
 
 	response, err := controller.handlers.CafeUserEditHandler.Run(&message)
-	if err == helpers.ErrorInvalidUuid ||
-		err == cafeUser.ErrorCafeUserCommentIsTooLong ||
-		err == cafeUser.ErrorUserRoleInvalid {
+	if err == cafeUser.ErrorUserRoleInvalid {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return
 	}

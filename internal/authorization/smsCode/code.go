@@ -1,12 +1,13 @@
 package smsCode
 
 import (
+	"encoding/json"
 	"errors"
 	"math/rand"
 	"regexp"
 )
 
-type Code string
+type SmsCode string
 
 const (
 	length  = 4
@@ -16,24 +17,40 @@ const (
 
 var ErrorSmsCodeIsInvalid = errors.New("sms code is invalid")
 
-func New() Code {
+func New() SmsCode {
 	buf := make([]byte, length)
 	for i := range buf {
 		buf[i] = symbols[rand.Intn(len(symbols))]
 	}
 
-	return Code(buf)
+	return SmsCode(buf)
 }
 
-func Parse(code string) (Code, error) {
+func (sc *SmsCode) UnmarshalJSON(data []byte) error {
+	var value string
+	err := json.Unmarshal(data, &value)
+	if err != nil {
+		return err
+	}
+
+	smsCode, err := parse(value)
+	if err != nil {
+		return err
+	}
+
+	*sc = smsCode
+	return nil
+}
+
+func (sc *SmsCode) Compare(another SmsCode) bool {
+	return *sc == another
+}
+
+func parse(code string) (SmsCode, error) {
 	ok, _ := regexp.MatchString(pattern, code)
 	if !ok {
 		return "", ErrorSmsCodeIsInvalid
 	}
 
-	return Code(code), nil
-}
-
-func (c *Code) Compare(another Code) bool {
-	return *c == another
+	return SmsCode(code), nil
 }

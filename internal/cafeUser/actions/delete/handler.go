@@ -6,16 +6,11 @@ import (
 )
 
 type Message struct {
-	CafeUserId string `json:"cafe-user-id" binding:"required" example:"uuid"`
+	CafeUserId helpers.Uuid `json:"cafe-user-id" binding:"required" example:"uuid"`
 }
 
 func (h *Handler) Run(m *Message) error {
-	cafeUserId, err := helpers.UuidParse(m.CafeUserId)
-	if err != nil {
-		return err
-	}
-
-	return h.CafeUserRepository.Delete(cafeUserId)
+	return h.CafeUserRepository.Delete(m.CafeUserId)
 }
 
 type Handler struct {

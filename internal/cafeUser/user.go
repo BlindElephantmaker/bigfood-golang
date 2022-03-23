@@ -15,7 +15,7 @@ type CafeUser struct {
 
 func NewCafeUser(cafeId, userId helpers.Uuid, comment Comment) *CafeUser {
 	return &CafeUser{
-		Id:        helpers.UuidGenerate(),
+		Id:        helpers.NewUuid(),
 		CafeId:    cafeId,
 		UserId:    userId,
 		Comment:   comment,

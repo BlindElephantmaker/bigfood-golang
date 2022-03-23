@@ -273,7 +273,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/actions.Response"
+                            "$ref": "#/definitions/action.Response"
                         }
                     },
                     "400": {
@@ -334,7 +334,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/actions.Response"
+                            "$ref": "#/definitions/action.Response"
                         }
                     },
                     "400": {
@@ -837,7 +837,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "actions.Response": {
+        "action.Response": {
             "type": "object",
             "properties": {
                 "cafe-id": {
@@ -973,7 +973,7 @@ var doc = `{
                 "cafe-users": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/actions.Response"
+                        "$ref": "#/definitions/action.Response"
                     }
                 }
             }

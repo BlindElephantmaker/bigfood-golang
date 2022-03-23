@@ -8,7 +8,7 @@ import (
 )
 
 type Message struct {
-	CafeId string `json:"cafe-id" binding:"required" example:"uuid"`
+	CafeId helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
 }
 
 type Response struct {
@@ -18,12 +18,7 @@ type Response struct {
 func (h *Handler) Run(m *Message) (*Response, error) {
 	responseEmpty := &Response{[]*actions.Response{}}
 
-	cafeId, err := helpers.UuidParse(m.CafeId)
-	if err != nil {
-		return responseEmpty, err
-	}
-
-	cafeUsers, err := h.CafeUserRepository.GetListByCafeId(cafeId)
+	cafeUsers, err := h.CafeUserRepository.GetListByCafeId(m.CafeId)
 	if err != nil {
 		return responseEmpty, err
 	}

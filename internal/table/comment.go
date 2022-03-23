@@ -1,14 +1,37 @@
 package table
 
-import "errors"
+import (
+	"bigfood/internal/helpers"
+	"encoding/json"
+)
 
 type Comment string
 
-var ErrorTableCommentIsTooLong = errors.New("table comment is too long")
+var errorTableCommentIsTooLong = helpers.NewErrorBadRequest("table comment is too long")
 
-func ParseComment(comment string) (Comment, error) {
+func (c *Comment) UnmarshalJSON(data []byte) error {
+	var value string
+	err := json.Unmarshal(data, &value)
+	if err != nil {
+		return err
+	}
+
+	comment, err := parseComment(value)
+	if err != nil {
+		return err
+	}
+
+	*c = comment
+	return nil
+}
+
+func NewComment() Comment {
+	return ""
+}
+
+func parseComment(comment string) (Comment, error) {
 	if len(comment) > 32 {
-		return "", ErrorTableCommentIsTooLong
+		return "", errorTableCommentIsTooLong
 	}
 
 	return Comment(comment), nil

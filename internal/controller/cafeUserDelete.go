@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bigfood/internal/cafeUser/actions/delete"
-	"bigfood/internal/helpers"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -29,10 +28,6 @@ func (controller *Controller) cafeUserDelete(c *gin.Context) {
 	// todo: permissions role and cafeUserId
 
 	err = controller.handlers.CafeUserDeleteHandler.Run(&message)
-	if err == helpers.ErrorInvalidUuid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

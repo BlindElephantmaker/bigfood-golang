@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/user"
 	"bigfood/internal/user/actions/userEdit"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -29,10 +28,6 @@ func (controller *Controller) userEdit(c *gin.Context) {
 	message.Id = getUserId(c)
 
 	err = controller.handlers.UserEditHandler.Run(&message)
-	if err == user.ErrorUsernameIsTooShort || err == user.ErrorUsernameIsTooLong || err == userEdit.ErrorUserNameIsEmpty {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

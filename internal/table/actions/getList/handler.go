@@ -5,21 +5,12 @@ import (
 	"bigfood/internal/table"
 )
 
-type Handler struct {
-	TableRepository table.Repository
+type Message struct {
+	CafeId helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
 }
 
-func New(tables table.Repository) *Handler {
-	return &Handler{tables}
-}
-
-func (h *Handler) Run(message *Message) ([]*table.Table, error) {
-	cafeId, err := helpers.UuidParse(message.CafeId)
-	if err != nil {
-		return nil, err
-	}
-
-	tables, err := h.TableRepository.GetByCafe(cafeId)
+func (h *Handler) Run(m *Message) ([]*table.Table, error) {
+	tables, err := h.TableRepository.GetByCafe(m.CafeId)
 	if err != nil {
 		return nil, err
 	}
@@ -28,4 +19,12 @@ func (h *Handler) Run(message *Message) ([]*table.Table, error) {
 	}
 
 	return tables, nil
+}
+
+type Handler struct {
+	TableRepository table.Repository
+}
+
+func New(tables table.Repository) *Handler {
+	return &Handler{tables}
 }

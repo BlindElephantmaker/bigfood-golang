@@ -12,7 +12,7 @@ type User struct {
 
 func New(phone Phone) *User {
 	return &User{
-		Id:    helpers.UuidGenerate(),
+		Id:    helpers.NewUuid(),
 		Name:  NewName(),
 		Phone: phone,
 	}

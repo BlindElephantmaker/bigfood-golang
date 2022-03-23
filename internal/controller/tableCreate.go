@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table"
 	"bigfood/internal/table/actions/tableCreate"
 	"bigfood/pkg/server"
@@ -38,14 +37,6 @@ func (controller *Controller) tableCreate(c *gin.Context) {
 	}
 
 	t, err := controller.handlers.TableCreateHandler.Run(&message)
-	if err == helpers.ErrorInvalidUuid ||
-		err == table.ErrorTableSeatsInvalidValue ||
-		err == table.ErrorTableCommentIsTooLong ||
-		err == table.ErrorTableTitleIsTooShort ||
-		err == table.ErrorTableTitleIsTooLong {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bigfood/internal/cafeUser/actions/list"
-	"bigfood/internal/helpers"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -33,10 +32,6 @@ func (controller *Controller) cafeUserList(c *gin.Context) {
 	}
 
 	response, err := controller.handlers.CafeUserListHandler.Run(&message)
-	if err == helpers.ErrorInvalidUuid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

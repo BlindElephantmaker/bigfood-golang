@@ -21,9 +21,7 @@ type CafeCreateResponse struct {
 // @Failure      500  {object}  server.ResponseError  "Internal Server Error"
 // @Router       /cafe [post]
 func (controller *Controller) cafeCreate(c *gin.Context) {
-	id := getUserId(c)
-
-	cafeId, err := controller.handlers.CafeCreateHandler.Run(id)
+	cafeId, err := controller.handlers.CafeCreateHandler.Run(getUserId(c))
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

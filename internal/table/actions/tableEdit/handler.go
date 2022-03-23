@@ -5,45 +5,36 @@ import (
 	"bigfood/internal/table"
 )
 
+type Message struct {
+	TableId helpers.Uuid   `json:"table-id" binding:"required" example:"uuid"`
+	Title   *table.Title   `json:"title"`
+	Comment *table.Comment `json:"comment"`
+	Seats   *table.Seats   `json:"seats"`
+}
+
+func (h *Handler) Run(m *Message) error {
+	t, err := h.TableRepository.Get(m.TableId)
+	if err != nil {
+		return err
+	}
+
+	if m.Title != nil {
+		t.Title = *m.Title
+	}
+	if m.Comment != nil {
+		t.Comment = *m.Comment
+	}
+	if m.Seats != nil {
+		t.Seats = *m.Seats
+	}
+
+	return h.TableRepository.Update(t)
+}
+
 type Handler struct {
 	TableRepository table.Repository
 }
 
 func New(tables table.Repository) *Handler {
 	return &Handler{tables}
-}
-
-func (h *Handler) Run(message *Message) error {
-	tableId, err := helpers.UuidParse(message.TableId)
-	if err != nil {
-		return err
-	}
-	t, err := h.TableRepository.Get(tableId)
-	if err != nil {
-		return err
-	}
-
-	if message.Title != nil {
-		title, err := table.ParseTitle(*message.Title)
-		if err != nil {
-			return err
-		}
-		t.Title = title
-	}
-	if message.Comment != nil {
-		comment, err := table.ParseComment(*message.Comment)
-		if err != nil {
-			return err
-		}
-		t.Comment = comment
-	}
-	if message.Seats != nil {
-		seats, err := table.ParseSeats(*message.Seats)
-		if err != nil {
-			return err
-		}
-		t.Seats = seats
-	}
-
-	return h.TableRepository.Update(t)
 }

@@ -22,3 +22,5 @@ swag-fmt:
 
 swag:
 	make swag-fmt && make swag-init
+
+# todo: build for deploy

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table/actions/tableDelete"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -29,10 +28,6 @@ func (controller *Controller) tableDelete(c *gin.Context) {
 	// todo: permission Admin and table id
 
 	err = controller.handlers.TableDeleteHandler.Run(&message)
-	if err == helpers.ErrorInvalidUuid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

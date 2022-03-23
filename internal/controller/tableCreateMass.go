@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table/actions/createMass"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -33,12 +32,6 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	}
 
 	tables, err := controller.handlers.TableCreateMassHandler.Run(&message)
-	if err == createMass.ErrorQuantityIsTooLow ||
-		err == createMass.ErrorQuantityIsTooHigh ||
-		err == helpers.ErrorInvalidUuid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

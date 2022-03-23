@@ -11,11 +11,11 @@ type TableListResponse struct {
 	Tables []*table.Table `json:"tables"`
 }
 
-func userIsAdmin(c *gin.Context, cafeId string) bool {
-	return userHasRole(c, helpers.Uuid(cafeId), cafeUser.Admin)
+func userIsAdmin(c *gin.Context, cafeId helpers.Uuid) bool {
+	return userHasRole(c, cafeId, cafeUser.Admin)
 }
 
-func userIsHostess(c *gin.Context, cafeId string) bool {
+func userIsHostess(c *gin.Context, cafeId helpers.Uuid) bool {
 	return userIsAdmin(c, cafeId) ||
-		userHasRole(c, helpers.Uuid(cafeId), cafeUser.Hostess)
+		userHasRole(c, cafeId, cafeUser.Hostess)
 }
