@@ -1,7 +1,6 @@
 package user
 
 import (
-	"bigfood/internal/helpers"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 )
@@ -23,7 +22,7 @@ func (r *RepositoryPSQL) Add(u *User) error {
 	return err
 }
 
-func (r *RepositoryPSQL) Get(id helpers.Uuid) (*User, error) {
+func (r *RepositoryPSQL) Get(id Id) (*User, error) {
 	var user User
 	query := fmt.Sprintf("SELECT id, name, phone FROM %s WHERE id = $1", table)
 	if err := r.db.Get(&user, query, id); err != nil {

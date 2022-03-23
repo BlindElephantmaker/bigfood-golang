@@ -3,6 +3,7 @@ package permissions
 import (
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 )
 
 type CafePermissions struct {
@@ -20,7 +21,7 @@ func (cp *CafePermissions) appendRole(role cafeUser.Role) {
 }
 
 type Permissions struct {
-	UserId helpers.Uuid
+	UserId user.Id
 	Cafes  map[helpers.Uuid]*CafePermissions
 }
 
@@ -50,7 +51,7 @@ func (p *Permissions) HasRole(cafeId helpers.Uuid, role cafeUser.Role) bool {
 	return false
 }
 
-func CreateEmptyPermission(userId helpers.Uuid) *Permissions {
+func CreateEmptyPermission(userId user.Id) *Permissions {
 	return &Permissions{
 		UserId: userId,
 		Cafes:  make(map[helpers.Uuid]*CafePermissions),

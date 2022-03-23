@@ -2,7 +2,7 @@ package controller
 
 import (
 	"bigfood/internal/authorization/action/auth"
-	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -11,7 +11,7 @@ import (
 
 type AuthResponse struct {
 	IsNew   bool                   `json:"is-new"`
-	UserId  helpers.Uuid           `json:"user-id" example:"UUID"`
+	UserId  user.Id                `json:"user-id" example:"UUID"`
 	Access  userToken.AccessToken  `json:"access-token"`
 	Refresh userToken.RefreshToken `json:"refresh-token" example:"UUID"`
 }

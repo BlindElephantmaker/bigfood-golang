@@ -3,13 +3,14 @@ package permissions
 import (
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 )
 
 type Repository interface {
-	GetPermissions(userId helpers.Uuid) (*Permissions, error)
+	GetPermissions(user.Id) (*Permissions, error)
 }
 
 type RepositoryPSQL struct {
@@ -26,15 +27,13 @@ const (
 )
 
 type permissionValue struct {
-	Id     string         `db:"id"`
 	CafeId helpers.Uuid   `db:"cafe_id"`
-	UserId string         `db:"user_id"`
 	Role   sql.NullString `db:"role"`
 }
 
-func (r *RepositoryPSQL) GetPermissions(userId helpers.Uuid) (*Permissions, error) {
+func (r *RepositoryPSQL) GetPermissions(userId user.Id) (*Permissions, error) {
 	query := fmt.Sprintf(`
-SELECT id, cafe_id, user_id, role
+SELECT cafe_id, role
 FROM %s cu
     LEFT JOIN %s cur on cu.id = cur.cafe_user_id
 WHERE user_id = $1
@@ -49,7 +48,7 @@ WHERE user_id = $1
 	return castToPermissions(userId, &permissionValues)
 }
 
-func castToPermissions(userId helpers.Uuid, values *[]permissionValue) (*Permissions, error) {
+func castToPermissions(userId user.Id, values *[]permissionValue) (*Permissions, error) {
 	permissions := CreateEmptyPermission(userId)
 
 	for _, value := range *values {

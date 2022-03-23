@@ -2,6 +2,7 @@ package cafeUser
 
 import (
 	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -34,7 +35,7 @@ func (r *RepositoryPSQL) Get(cafeUserId helpers.Uuid) (*CafeUser, error) {
 	return &cafeUser, nil
 }
 
-func (r *RepositoryPSQL) GetByCafeAndUserIds(cafeId, userId helpers.Uuid) (*CafeUser, error) {
+func (r *RepositoryPSQL) GetByCafeAndUserIds(cafeId helpers.Uuid, userId user.Id) (*CafeUser, error) {
 	var cafeUser CafeUser
 	queryCafeUser := fmt.Sprintf(
 		"SELECT id, cafe_id, user_id, comment, deleted_at FROM %s WHERE cafe_id = $1 AND user_id = $2",

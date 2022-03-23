@@ -4,6 +4,7 @@ import (
 	"bigfood/internal/cafe"
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 )
 
 type Handler struct {
@@ -16,7 +17,7 @@ func New(cafes cafe.Repository) *Handler {
 	}
 }
 
-func (h *Handler) Run(userId helpers.Uuid) (helpers.Uuid, error) {
+func (h *Handler) Run(userId user.Id) (helpers.Uuid, error) {
 	newCafe := cafe.New()
 	newCafeUser := cafeUser.NewCafeUser(newCafe.Id, userId, cafeUser.NewComment())
 	err := h.cafeRepository.Add(newCafe, newCafeUser, cafeUser.Roles{

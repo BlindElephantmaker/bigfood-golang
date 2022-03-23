@@ -3,7 +3,6 @@ package auth
 import (
 	"bigfood/internal/authorization/smsCode"
 	"bigfood/internal/cafeUser/permissions"
-	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"errors"
@@ -55,8 +54,8 @@ func (h *Handler) validateSmsCode(m *Message) error {
 	return nil
 }
 
-func (h *Handler) createToken(id helpers.Uuid) (*userToken.UserToken, error) {
-	userPermissions, err := h.permissionsRepository.GetPermissions(id)
+func (h *Handler) createToken(userId user.Id) (*userToken.UserToken, error) {
+	userPermissions, err := h.permissionsRepository.GetPermissions(userId)
 	if err != nil {
 		return nil, err
 	}

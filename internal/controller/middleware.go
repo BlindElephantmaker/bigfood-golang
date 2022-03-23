@@ -3,6 +3,7 @@ package controller
 import (
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"errors"
@@ -49,7 +50,7 @@ func getClaims(c *gin.Context) *userToken.UserClaims {
 	return permissions.(*userToken.UserClaims)
 }
 
-func getUserId(c *gin.Context) helpers.Uuid {
+func getUserId(c *gin.Context) user.Id {
 	claims := getClaims(c)
 	return claims.Permissions.UserId
 }

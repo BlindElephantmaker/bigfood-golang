@@ -5,14 +5,14 @@ import (
 )
 
 type User struct {
-	Id    helpers.Uuid `db:"id"`
-	Name  Name         `db:"name"`
-	Phone Phone        `db:"phone"`
+	Id    Id    `db:"id"`
+	Name  Name  `db:"name"`
+	Phone Phone `db:"phone"`
 }
 
 func New(phone Phone) *User {
 	return &User{
-		Id:    helpers.NewUuid(),
+		Id:    Id(helpers.NewUuid()),
 		Name:  NewName(),
 		Phone: phone,
 	}

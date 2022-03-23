@@ -3,6 +3,7 @@ package userToken
 import (
 	"bigfood/internal/cafeUser/permissions"
 	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 	"time"
 )
 
@@ -13,7 +14,7 @@ const (
 )
 
 type UserToken struct {
-	UserId    helpers.Uuid `db:"user_id"`
+	UserId    user.Id `db:"user_id"`
 	Access    *AccessToken
 	Refresh   RefreshToken `db:"refresh_token"`
 	ExpiresAt *time.Time   `db:"expires_at"`

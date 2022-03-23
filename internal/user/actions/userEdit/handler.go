@@ -1,18 +1,17 @@
 package userEdit
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 )
 
 type Message struct {
-	Id   helpers.Uuid `swaggerignore:"true"`
-	Name user.Name    `json:"name" binding:"required" example:"New user name"`
+	UserId user.Id   `swaggerignore:"true"`
+	Name   user.Name `json:"name" binding:"required" example:"New user name"`
 	// todo: edit photo
 }
 
 func (h *Handler) Run(message *Message) error {
-	u, err := h.userRepository.Get(message.Id)
+	u, err := h.userRepository.Get(message.UserId)
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,7 @@ package controller
 
 import (
 	"bigfood/internal/authorization/action/refreshToken"
-	"bigfood/internal/helpers"
+	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -10,7 +10,7 @@ import (
 )
 
 type RefreshTokenResponse struct {
-	Id      helpers.Uuid           `json:"id" example:"UUID"`
+	Id      user.Id                `json:"id" example:"UUID"`
 	Access  userToken.AccessToken  `json:"access"`
 	Refresh userToken.RefreshToken `json:"refresh" example:"UUID"`
 }
