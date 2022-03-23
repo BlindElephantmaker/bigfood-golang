@@ -1,12 +1,11 @@
 package tableDelete
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table"
 )
 
 type Message struct {
-	TableId helpers.Uuid `json:"table-id" binding:"required" example:"uuid"`
+	TableId table.Id `json:"table-id" binding:"required" example:"uuid"`
 }
 
 func (h *Handler) Run(m *Message) error {

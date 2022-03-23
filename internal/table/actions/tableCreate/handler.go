@@ -35,7 +35,7 @@ func (h *Handler) Run(m *Message) (*table.Table, error) {
 	}
 
 	newTable := &table.Table{
-		Id:      helpers.NewUuid(),
+		Id:      table.NewId(),
 		CafeId:  m.CafeId,
 		Title:   title,
 		Comment: comment,

@@ -1,12 +1,11 @@
 package tableEdit
 
 import (
-	"bigfood/internal/helpers"
 	"bigfood/internal/table"
 )
 
 type Message struct {
-	TableId helpers.Uuid   `json:"table-id" binding:"required" example:"uuid"`
+	TableId table.Id       `json:"table-id" binding:"required" example:"uuid"`
 	Title   *table.Title   `json:"title"`
 	Comment *table.Comment `json:"comment"`
 	Seats   *table.Seats   `json:"seats"`

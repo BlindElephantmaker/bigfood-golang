@@ -3,7 +3,7 @@ package table
 import "bigfood/internal/helpers"
 
 type Table struct {
-	Id      helpers.Uuid `json:"id" example:"uuid" db:"id"`
+	Id      Id           `json:"id" example:"uuid" db:"id"`
 	CafeId  helpers.Uuid `json:"cafe-id" example:"uuid" db:"cafe_id"`
 	Title   Title        `json:"title" example:"serial number" db:"title"`
 	Comment Comment      `json:"comment" example:"comment" db:"comment"`
@@ -12,7 +12,7 @@ type Table struct {
 
 func NewTable(cafeId helpers.Uuid, title Title) *Table {
 	return &Table{
-		Id:      helpers.NewUuid(),
+		Id:      NewId(),
 		CafeId:  cafeId,
 		Title:   title,
 		Comment: NewComment(),

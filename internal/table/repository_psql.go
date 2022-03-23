@@ -62,7 +62,7 @@ func createInsertQuery(batchSize int) string {
 	return query
 }
 
-func (r *RepositoryPSQL) Get(tableId helpers.Uuid) (*Table, error) {
+func (r *RepositoryPSQL) Get(tableId Id) (*Table, error) {
 	var t Table
 	query := fmt.Sprintf("SELECT id, cafe_id, title, comment, seats FROM %s WHERE id = $1", table)
 	err := r.db.Get(&t, query, tableId)
@@ -85,7 +85,7 @@ func (r *RepositoryPSQL) Update(t *Table) error {
 	return err
 }
 
-func (r *RepositoryPSQL) Delete(tableId helpers.Uuid) error {
+func (r *RepositoryPSQL) Delete(tableId Id) error {
 	now := helpers.NowTime()
 	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", table)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
