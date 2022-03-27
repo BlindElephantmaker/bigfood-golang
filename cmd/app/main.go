@@ -3,7 +3,7 @@ package main
 import (
 	"bigfood/internal/controller"
 	"bigfood/internal/infrastructure"
-	"bigfood/pkg/postgres"
+	"bigfood/pkg/database"
 	"bigfood/pkg/server"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
@@ -43,7 +43,7 @@ func main() {
 		log.Fatalf("error initializing logger: %s", err.Error())
 	}
 
-	configPSQL := postgres.NewConfig(
+	configPSQL := database.NewConfig(
 		os.Getenv("POSTGRES_HOST"),
 		os.Getenv("POSTGRES_PORT"),
 		os.Getenv("POSTGRES_USER"),
@@ -51,7 +51,7 @@ func main() {
 		os.Getenv("POSTGRES_DATABASE"),
 		os.Getenv("POSTGRES_SSL"),
 	)
-	db, err := postgres.NewPostgresDB(configPSQL)
+	db, err := database.NewPostgresDB(configPSQL)
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
