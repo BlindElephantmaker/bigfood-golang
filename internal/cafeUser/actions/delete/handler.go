@@ -2,11 +2,10 @@ package cafeUserDelete
 
 import (
 	"bigfood/internal/cafeUser"
-	"bigfood/internal/helpers"
 )
 
 type Message struct {
-	CafeUserId helpers.Uuid `json:"cafe-user-id" binding:"required" example:"uuid"`
+	CafeUserId cafeUser.Id `json:"cafe-user-id" binding:"required" example:"uuid"`
 }
 
 func (h *Handler) Run(m *Message) error {

@@ -25,7 +25,7 @@ const (
 	excludeRole = Owner
 )
 
-func (r *RepositoryPsql) Get(cafeUserId helpers.Uuid) (*CafeUser, error) {
+func (r *RepositoryPsql) Get(cafeUserId Id) (*CafeUser, error) {
 	var cafeUser CafeUser
 	query := fmt.Sprintf("SELECT id, cafe_id, user_id, comment, deleted_at FROM %s WHERE id = $1", Table)
 	err := r.db.Get(&cafeUser, query, cafeUserId)
@@ -64,7 +64,7 @@ func (r *RepositoryPsql) GetByCafeAndUser(cafeId cafe.Id, userId user.Id) (*Cafe
 	return &cafeUser, nil
 }
 
-func (r *RepositoryPsql) GetUserRoles(cafeUserId helpers.Uuid) (*Roles, error) {
+func (r *RepositoryPsql) GetUserRoles(cafeUserId Id) (*Roles, error) {
 	var roles Roles
 	query := fmt.Sprintf("SELECT role FROM %s WHERE cafe_user_id = $1 and role != $2", RoleTable)
 	err := r.db.Select(&roles, query, cafeUserId, excludeRole)
@@ -105,7 +105,7 @@ func (r *RepositoryPsql) Update(cafeUser *CafeUser, roles Roles) error {
 	return tx.Commit()
 }
 
-func (r *RepositoryPsql) Delete(cafeUserId helpers.Uuid) error {
+func (r *RepositoryPsql) Delete(cafeUserId Id) error {
 	now := helpers.NowTime()
 	query := fmt.Sprintf("UPDATE %s SET deleted_at = $2 WHERE id = $1 AND deleted_at IS NULL", Table)
 	_, err := r.db.Exec(query, cafeUserId, now)

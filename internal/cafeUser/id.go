@@ -1,4 +1,4 @@
-package cafe
+package cafeUser
 
 import (
 	"bigfood/internal/helpers"
@@ -8,7 +8,7 @@ import (
 
 type Id helpers.Uuid
 
-var errorCafeIdIsInvalidFormat = errors.New("cafe id is invalid format")
+var errorCafeUserIdIsInvalidFormat = errors.New("cafe user id is invalid format")
 
 func NewId() Id {
 	return Id(helpers.NewUuid())
@@ -23,7 +23,7 @@ func (i *Id) UnmarshalJSON(data []byte) error {
 
 	uuid, err := helpers.ParseUuid(value)
 	if err != nil {
-		return errorCafeIdIsInvalidFormat
+		return errorCafeUserIdIsInvalidFormat
 	}
 
 	*i = Id(uuid)

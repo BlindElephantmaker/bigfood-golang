@@ -3,14 +3,13 @@ package cafeUserEdit
 import (
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions"
-	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"errors"
 	"fmt"
 )
 
 type Message struct {
-	CafeUserId helpers.Uuid      `json:"cafe-user-id" binding:"required" example:"uuid"`
+	CafeUserId cafeUser.Id       `json:"cafe-user-id" binding:"required" example:"uuid"`
 	Comment    *cafeUser.Comment `json:"comment"`
 	Roles      *[]string         `json:"roles"` // todo: bad array swagger and parse collection
 }
@@ -18,9 +17,9 @@ type Message struct {
 var ErrorOwnerRoleCouldNotBeSet = errors.New(fmt.Sprintf("%s role could not be set", cafeUser.Owner))
 
 func (h *Handler) Run(m *Message) (*actions.Response, error) {
-	cafeUserId, comment, roles, err := parseMessage(m)
+	roles, err := parseMessage(m)
 
-	cafeUsr, err := h.CafeUserRepository.Get(cafeUserId)
+	cafeUsr, err := h.CafeUserRepository.Get(m.CafeUserId)
 	if err != nil {
 		return nil, err
 	}
@@ -29,12 +28,12 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 		return nil, err
 	}
 
-	if comment != nil {
-		cafeUsr.Comment = *comment
+	if m.Comment != nil {
+		cafeUsr.Comment = *m.Comment
 	}
 
 	if roles == nil {
-		roles, err = h.CafeUserRepository.GetUserRoles(cafeUserId)
+		roles, err = h.CafeUserRepository.GetUserRoles(m.CafeUserId)
 		if err != nil {
 			return nil, err
 		}
@@ -51,21 +50,21 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 	}, nil
 }
 
-func parseMessage(m *Message) (helpers.Uuid, *cafeUser.Comment, *cafeUser.Roles, error) {
+func parseMessage(m *Message) (*cafeUser.Roles, error) {
 	var roles cafeUser.Roles
 	if m.Roles != nil {
 		roles, err := cafeUser.ParseRoles(*m.Roles)
 		for _, role := range roles {
 			if role == cafeUser.Owner {
-				return "", nil, nil, ErrorOwnerRoleCouldNotBeSet
+				return nil, ErrorOwnerRoleCouldNotBeSet
 			}
 		}
 		if err != nil {
-			return "", nil, nil, err
+			return nil, err
 		}
 	}
 
-	return m.CafeUserId, m.Comment, &roles, nil // todo
+	return &roles, nil
 }
 
 type Handler struct {

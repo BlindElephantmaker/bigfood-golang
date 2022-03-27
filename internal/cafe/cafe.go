@@ -6,6 +6,6 @@ type Cafe struct {
 
 func New() *Cafe {
 	return &Cafe{
-		Id: NewCafeId(),
+		Id: NewId(),
 	}
 }
