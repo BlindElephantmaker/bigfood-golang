@@ -20,14 +20,12 @@ type Repositories struct {
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
-	cafeUserRepository := cafeUser.NewRepositoryPSQL(db)
-
 	return &Repositories{
 		SmsCodeRepository:   smsCode.NewRepositoryDummy(),
-		UserRepository:      user.NewRepositoryPSQL(db),
-		UserTokenRepository: userToken.NewRepositoryPSQL(db),
-		CafeRepository:      cafe.NewRepositoryPSQL(db, cafeUserRepository),
-		CafeUserRepository:  cafeUserRepository,
-		TableRepository:     table.NewRepositoryPSQL(db),
+		UserRepository:      user.NewRepositoryPsql(db),
+		UserTokenRepository: userToken.NewRepositoryPsql(db),
+		CafeRepository:      cafe.NewRepositoryPsql(db),
+		CafeUserRepository:  cafeUser.NewRepositoryPsql(db),
+		TableRepository:     table.NewRepositoryPsql(db),
 	}
 }

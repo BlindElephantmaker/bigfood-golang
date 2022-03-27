@@ -1,12 +1,12 @@
 package getList
 
 import (
-	"bigfood/internal/helpers"
+	"bigfood/internal/cafe"
 	"bigfood/internal/table"
 )
 
 type Message struct {
-	CafeId helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
+	CafeId cafe.Id `json:"cafe-id" binding:"required" example:"uuid"`
 }
 
 func (h *Handler) Run(m *Message) ([]*table.Table, error) {

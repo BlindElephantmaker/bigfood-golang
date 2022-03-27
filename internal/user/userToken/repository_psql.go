@@ -9,21 +9,21 @@ const table = "user_token"
 
 var queryAdd = fmt.Sprintf("INSERT INTO %s (user_id, refresh_token, expires_at) VALUES ($1, $2, $3)", table)
 
-type RepositoryPSQL struct {
+type RepositoryPsql struct {
 	db *sqlx.DB
 }
 
-func NewRepositoryPSQL(db *sqlx.DB) *RepositoryPSQL {
-	return &RepositoryPSQL{db: db}
+func NewRepositoryPsql(db *sqlx.DB) *RepositoryPsql {
+	return &RepositoryPsql{db: db}
 }
 
-func (r *RepositoryPSQL) Add(token *UserToken) error {
+func (r *RepositoryPsql) Add(token *UserToken) error {
 	_, err := r.db.Exec(queryAdd, token.UserId, token.Refresh, token.ExpiresAt)
 
 	return err
 }
 
-func (r *RepositoryPSQL) Get(refreshToken RefreshToken) (*UserToken, error) {
+func (r *RepositoryPsql) Get(refreshToken RefreshToken) (*UserToken, error) {
 	var userToken UserToken
 	query := fmt.Sprintf("SELECT refresh_token, user_id, expires_at FROM %s WHERE refresh_token = $1", table)
 	err := r.db.Get(&userToken, query, refreshToken)
@@ -34,7 +34,7 @@ func (r *RepositoryPSQL) Get(refreshToken RefreshToken) (*UserToken, error) {
 	return &userToken, nil
 }
 
-func (r *RepositoryPSQL) Refresh(newToken, oldToken *UserToken) error {
+func (r *RepositoryPsql) Refresh(newToken, oldToken *UserToken) error {
 	tx, err := r.db.Begin()
 	if err != nil {
 		return err

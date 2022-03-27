@@ -1,21 +1,22 @@
 package createMass
 
 import (
+	"bigfood/internal/cafe"
 	"bigfood/internal/helpers"
 	"bigfood/internal/table"
 	"fmt"
 )
 
 type Message struct {
-	CafeId   helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
-	Quantity Quantity     `json:"quantity" binding:"required" example:"10"`
+	CafeId   cafe.Id  `json:"cafe-id" binding:"required" example:"uuid"`
+	Quantity Quantity `json:"quantity" binding:"required" example:"10"`
 }
 
-func (h *Handler) Run(message *Message) ([]*table.Table, error) {
+func (h *Handler) Run(m *Message) ([]*table.Table, error) {
 	var tables []*table.Table
-	for i := 1; i <= int(message.Quantity); i++ {
+	for i := 1; i <= int(m.Quantity); i++ {
 		title, _ := table.ParseTitle(fmt.Sprint(i))
-		tables = append(tables, table.NewTable(message.CafeId, title))
+		tables = append(tables, table.NewTable(m.CafeId, title))
 	}
 
 	err := h.TableRepository.AddSlice(tables, helpers.NowTime())

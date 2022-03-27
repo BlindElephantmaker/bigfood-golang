@@ -1,12 +1,13 @@
 package tableCreate
 
 import (
+	"bigfood/internal/cafe"
 	"bigfood/internal/helpers"
 	"bigfood/internal/table"
 )
 
 type Message struct {
-	CafeId  helpers.Uuid   `json:"cafe-id" binding:"required" example:"uuid"`
+	CafeId  cafe.Id        `json:"cafe-id" binding:"required" example:"uuid"`
 	Title   *table.Title   `json:"title"`
 	Comment *table.Comment `json:"comment"`
 	Seats   *table.Seats   `json:"seats"`

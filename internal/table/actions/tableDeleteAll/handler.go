@@ -1,16 +1,16 @@
 package tableDeleteAll
 
 import (
-	"bigfood/internal/helpers"
+	"bigfood/internal/cafe"
 	"bigfood/internal/table"
 )
 
 type Message struct {
-	CafeId helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
+	CafeId cafe.Id `json:"cafe-id" binding:"required" example:"uuid"`
 }
 
-func (h *Handler) Run(message *Message) error {
-	return h.TableRepository.DeleteAll(message.CafeId)
+func (h *Handler) Run(m *Message) error {
+	return h.TableRepository.DeleteAll(m.CafeId)
 }
 
 type Handler struct {

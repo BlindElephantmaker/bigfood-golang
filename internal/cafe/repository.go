@@ -1,9 +1,12 @@
 package cafe
 
 import (
-	"bigfood/internal/cafeUser"
+	"database/sql"
+	"time"
 )
 
+const table = "cafe"
+
 type Repository interface {
-	Add(cafe *Cafe, cafeUser *cafeUser.CafeUser, userRoles cafeUser.Roles) error
+	AddTx(tx *sql.Tx, cafe *Cafe, createAt time.Time) error
 }

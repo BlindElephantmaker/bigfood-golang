@@ -1,14 +1,14 @@
 package controller
 
 import (
-	"bigfood/internal/helpers"
+	"bigfood/internal/cafe"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 type CafeCreateResponse struct {
-	Id helpers.Uuid `json:"id" example:"uuid created cafe"`
+	Id cafe.Id `json:"id" example:"uuid created cafe"`
 }
 
 // cafeCreate

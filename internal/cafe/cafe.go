@@ -1,13 +1,11 @@
 package cafe
 
-import (
-	"bigfood/internal/helpers"
-)
-
 type Cafe struct {
-	Id helpers.Uuid
+	Id
 }
 
 func New() *Cafe {
-	return &Cafe{helpers.NewUuid()}
+	return &Cafe{
+		Id: NewCafeId(),
+	}
 }

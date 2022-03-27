@@ -1,45 +1,22 @@
 package cafe
 
 import (
-	"bigfood/internal/cafeUser"
-	"bigfood/internal/helpers"
+	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
+	"time"
 )
 
-type RepositoryPSQL struct {
-	db                 *sqlx.DB
-	CafeUserRepository *cafeUser.RepositoryPSQL
+type RepositoryPsql struct {
+	*sqlx.DB
 }
 
-func NewRepositoryPSQL(db *sqlx.DB, cafeUserRepository *cafeUser.RepositoryPSQL) *RepositoryPSQL {
-	return &RepositoryPSQL{
-		db:                 db,
-		CafeUserRepository: cafeUserRepository,
-	}
+func NewRepositoryPsql(db *sqlx.DB) *RepositoryPsql {
+	return &RepositoryPsql{db}
 }
 
-const (
-	cafeTable = "cafe"
-)
-
-func (r *RepositoryPSQL) Add(cafe *Cafe, cafeUser *cafeUser.CafeUser, userRoles cafeUser.Roles) error {
-	tx, err := r.db.Begin()
-	if err != nil {
-		return err
-	}
-
-	createAt := helpers.NowTime()
-	queryCafe := fmt.Sprintf("INSERT INTO %s (id, created_at) VALUES ($1, $2)", cafeTable)
-	if _, err := tx.Exec(queryCafe, cafe.Id, createAt); err != nil {
-		_ = tx.Rollback()
-		return err
-	}
-
-	if err := r.CafeUserRepository.AddTx(tx, cafeUser, userRoles, createAt); err != nil {
-		_ = tx.Rollback()
-		return err
-	}
-
-	return tx.Commit()
+func (r *RepositoryPsql) AddTx(tx *sql.Tx, cafe *Cafe, createdAt time.Time) error {
+	query := fmt.Sprintf("INSERT INTO %s (id, created_at) VALUES ($1, $2)", table)
+	_, err := tx.Exec(query, cafe.Id, createdAt)
+	return err
 }

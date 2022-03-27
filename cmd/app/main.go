@@ -43,7 +43,7 @@ func main() {
 		log.Fatalf("error initializing logger: %s", err.Error())
 	}
 
-	configPSQL := database.NewConfig(
+	configPsql := database.NewConfig(
 		os.Getenv("POSTGRES_HOST"),
 		os.Getenv("POSTGRES_PORT"),
 		os.Getenv("POSTGRES_USER"),
@@ -51,13 +51,13 @@ func main() {
 		os.Getenv("POSTGRES_DATABASE"),
 		os.Getenv("POSTGRES_SSL"),
 	)
-	db, err := database.NewPostgresDB(configPSQL)
+	db, err := database.NewPostgresDB(configPsql)
 	if err != nil {
 		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
 	repositories := infrastructure.NewRepositories(db)
-	services := infrastructure.NewServices(repositories)
+	services := infrastructure.NewServices(repositories, db)
 	handlers := infrastructure.NewHandlers(repositories, services)
 	controllers := controller.NewController(handlers)
 

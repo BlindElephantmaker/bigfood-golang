@@ -34,7 +34,7 @@ func (controller *Controller) cafeUserCreate(c *gin.Context) {
 	//	return
 	//}
 
-	response, err := controller.handlers.CafeUserAddHandler.Run(&message)
+	response, err := controller.handlers.CafeUserCreateHandler.Run(&message)
 	if err == cafeUser.ErrorUserRoleInvalid {
 		server.NewResponseError(c, http.StatusBadRequest, err)
 		return

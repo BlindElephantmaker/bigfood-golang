@@ -1,15 +1,15 @@
 package cafeUserCreate
 
 import (
+	"bigfood/internal/cafe"
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions"
-	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"errors"
 )
 
 type Message struct {
-	CafeId  helpers.Uuid      `json:"cafe-id" binding:"required" example:"uuid"`
+	CafeId  cafe.Id           `json:"cafe-id" binding:"required" example:"uuid"`
 	Phone   user.Phone        `json:"phone" binding:"required" example:"User phone"`
 	Comment *cafeUser.Comment `json:"comment"`
 	Roles   []string          `json:"roles" binding:"required" example:"owner,admin,hostess"` // todo: collection
@@ -18,19 +18,19 @@ type Message struct {
 var ErrorCafeUserAlreadyExist = errors.New("cafe user already exist")
 
 func (h *Handler) Run(m *Message) (*actions.Response, error) {
-	cafeId, phone, comment, roles, err := parseMessage(m)
+	comment, roles, err := parseMessage(m)
 	if err != nil {
 		return nil, err
 	}
 
-	usr, err := h.UserService.GetOrNewUser(phone)
+	usr, err := h.UserService.GetOrNewUser(m.Phone)
 	if err != nil {
 		return nil, err
 	}
 
-	cafeUsr, err := h.CafeUserRepository.GetByCafeAndUserIds(cafeId, usr.Id)
+	cafeUsr, err := h.CafeUserRepository.GetByCafeAndUser(m.CafeId, usr.Id)
 	if err == cafeUser.ErrorNoResult {
-		cafeUsr = cafeUser.NewCafeUser(cafeId, usr.Id, comment)
+		cafeUsr = cafeUser.NewCafeUser(m.CafeId, usr.Id, comment)
 		err = h.CafeUserRepository.Add(cafeUsr, roles)
 	} else if err != nil {
 		return nil, err
@@ -50,10 +50,10 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 	}, err
 }
 
-func parseMessage(m *Message) (helpers.Uuid, user.Phone, cafeUser.Comment, cafeUser.Roles, error) {
+func parseMessage(m *Message) (cafeUser.Comment, cafeUser.Roles, error) {
 	roles, err := cafeUser.ParseRoles(m.Roles)
 	if err != nil {
-		return "", "", "", nil, err
+		return "", nil, err
 	}
 
 	var comment cafeUser.Comment
@@ -63,7 +63,7 @@ func parseMessage(m *Message) (helpers.Uuid, user.Phone, cafeUser.Comment, cafeU
 		comment = cafeUser.NewComment()
 	}
 
-	return m.CafeId, m.Phone, comment, roles, nil // todo
+	return comment, roles, nil
 }
 
 type Handler struct {

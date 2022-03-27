@@ -1,14 +1,14 @@
 package cafeUserList
 
 import (
+	"bigfood/internal/cafe"
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions"
-	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 )
 
 type Message struct {
-	CafeId helpers.Uuid `json:"cafe-id" binding:"required" example:"uuid"`
+	CafeId cafe.Id `json:"cafe-id" binding:"required" example:"uuid"`
 }
 
 type Response struct {
@@ -18,7 +18,7 @@ type Response struct {
 func (h *Handler) Run(m *Message) (*Response, error) {
 	responseEmpty := &Response{[]*actions.Response{}}
 
-	cafeUsers, err := h.CafeUserRepository.GetListByCafeId(m.CafeId)
+	cafeUsers, err := h.CafeUserRepository.GetByCafe(m.CafeId)
 	if err != nil {
 		return responseEmpty, err
 	}

@@ -5,10 +5,10 @@ import (
 	"bigfood/internal/authorization/action/refreshToken"
 	"bigfood/internal/authorization/action/sendSmsCode"
 	"bigfood/internal/cafe/actions/create"
-	cafeUserAdd "bigfood/internal/cafeUser/actions/create"
-	cafeUserDelete "bigfood/internal/cafeUser/actions/delete"
-	cafeUserEdit "bigfood/internal/cafeUser/actions/edit"
-	cafeUserList "bigfood/internal/cafeUser/actions/list"
+	"bigfood/internal/cafeUser/actions/create"
+	"bigfood/internal/cafeUser/actions/delete"
+	"bigfood/internal/cafeUser/actions/edit"
+	"bigfood/internal/cafeUser/actions/list"
 	"bigfood/internal/table/actions/createMass"
 	"bigfood/internal/table/actions/getList"
 	"bigfood/internal/table/actions/tableCreate"
@@ -30,7 +30,7 @@ type Handlers struct {
 	TableEditHandler       *tableEdit.Handler
 	TableDeleteHandler     *tableDelete.Handler
 	TableDeleteAllHandler  *tableDeleteAll.Handler
-	CafeUserAddHandler     *cafeUserAdd.Handler
+	CafeUserCreateHandler  *cafeUserCreate.Handler
 	CafeUserListHandler    *cafeUserList.Handler
 	CafeUserDeleteHandler  *cafeUserDelete.Handler
 	CafeUserEditHandler    *cafeUserEdit.Handler
@@ -56,6 +56,8 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		),
 		CafeCreateHandler: createCafe.New(
 			repositories.CafeRepository,
+			repositories.CafeUserRepository,
+			services.Transactions,
 		),
 		TableCreateMassHandler: createMass.New(
 			repositories.TableRepository,
@@ -75,7 +77,7 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		TableDeleteAllHandler: tableDeleteAll.New(
 			repositories.TableRepository,
 		),
-		CafeUserAddHandler: cafeUserAdd.New(
+		CafeUserCreateHandler: cafeUserCreate.New(
 			repositories.CafeUserRepository,
 			services.UserService,
 		),
