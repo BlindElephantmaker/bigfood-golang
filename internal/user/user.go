@@ -1,9 +1,5 @@
 package user
 
-import (
-	"bigfood/internal/helpers"
-)
-
 type User struct {
 	Id    Id    `db:"id"`
 	Name  Name  `db:"name"`
@@ -12,7 +8,7 @@ type User struct {
 
 func New(phone Phone) *User {
 	return &User{
-		Id:    Id(helpers.NewUuid()),
+		Id:    newId(),
 		Name:  NewName(),
 		Phone: phone,
 	}

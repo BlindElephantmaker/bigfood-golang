@@ -10,7 +10,7 @@ type Id helpers.Uuid
 
 var errorCafeUserIdIsInvalidFormat = errors.New("cafe user id is invalid format")
 
-func NewId() Id {
+func newId() Id {
 	return Id(helpers.NewUuid())
 }
 

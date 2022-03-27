@@ -10,6 +10,10 @@ type Id helpers.Uuid
 
 var errorUserIdIsInvalidFormat = errors.New("user id is invalid format")
 
+func newId() Id {
+	return Id(helpers.NewUuid())
+}
+
 func ParseId(value string) (Id, error) {
 	id, err := helpers.ParseUuid(value)
 	if err != nil {
