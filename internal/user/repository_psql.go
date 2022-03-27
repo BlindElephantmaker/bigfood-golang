@@ -5,8 +5,6 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-const table = "users"
-
 type RepositoryPsql struct {
 	db *sqlx.DB
 }
@@ -32,16 +30,6 @@ func (r *RepositoryPsql) Get(id Id) (*User, error) {
 	return &user, nil
 }
 
-func (r *RepositoryPsql) Update(u *User) error {
-	query := fmt.Sprintf("UPDATE %s SET name = :name WHERE id = :id", table)
-	_, err := r.db.NamedExec(query, map[string]interface{}{
-		"id":   u.Id,
-		"name": u.Name,
-	})
-
-	return err
-}
-
 func (r *RepositoryPsql) GetByPhone(phone Phone) (*User, error) {
 	var user User
 	query := fmt.Sprintf("SELECT id, name, phone FROM %s WHERE phone = $1", table)
@@ -50,6 +38,16 @@ func (r *RepositoryPsql) GetByPhone(phone Phone) (*User, error) {
 	}
 
 	return &user, nil
+}
+
+func (r *RepositoryPsql) Update(u *User) error {
+	query := fmt.Sprintf("UPDATE %s SET name = :name WHERE id = :id", table)
+	_, err := r.db.NamedExec(query, map[string]interface{}{
+		"id":   u.Id,
+		"name": u.Name,
+	})
+
+	return err
 }
 
 func (r *RepositoryPsql) IsExistByPhone(phone Phone) (bool, error) {

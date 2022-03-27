@@ -17,8 +17,6 @@ func NewRepositoryPsql(db *sqlx.DB) *RepositoryPsql {
 	return &RepositoryPsql{db: db}
 }
 
-const table = "tables"
-
 func (r *RepositoryPsql) AddSlice(tables []*Table, createdAt time.Time) error {
 	params := []interface{}{}
 
@@ -74,6 +72,20 @@ func (r *RepositoryPsql) Get(tableId Id) (*Table, error) {
 	return &t, nil
 }
 
+func (r *RepositoryPsql) GetByCafe(cafeId cafe.Id) ([]*Table, error) {
+	var tables []*Table
+	query := fmt.Sprintf(
+		"SELECT id, cafe_id, title, comment, seats FROM %s WHERE cafe_id = $1 AND deleted_at IS NULL ORDER BY title",
+		table,
+	)
+	err := r.db.Select(&tables, query, cafeId)
+	if err != nil {
+		return nil, err
+	}
+
+	return tables, nil
+}
+
 func (r *RepositoryPsql) Update(t *Table) error {
 	query := fmt.Sprintf("UPDATE %s SET title = :title, comment = :comment, seats = :seats WHERE id = :id", table)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
@@ -106,18 +118,4 @@ func (r *RepositoryPsql) DeleteAll(cafeId cafe.Id) error {
 	})
 
 	return err
-}
-
-func (r *RepositoryPsql) GetByCafe(cafeId cafe.Id) ([]*Table, error) {
-	var tables []*Table
-	query := fmt.Sprintf(
-		"SELECT id, cafe_id, title, comment, seats FROM %s WHERE cafe_id = $1 AND deleted_at IS NULL ORDER BY title",
-		table,
-	)
-	err := r.db.Select(&tables, query, cafeId)
-	if err != nil {
-		return nil, err
-	}
-
-	return tables, nil
 }

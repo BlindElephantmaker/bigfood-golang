@@ -1,5 +1,7 @@
 package user
 
+const table = "users"
+
 type Repository interface {
 	Add(*User) error
 	Get(Id) (*User, error)

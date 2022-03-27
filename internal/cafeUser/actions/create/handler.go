@@ -4,6 +4,7 @@ import (
 	"bigfood/internal/cafe"
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"errors"
 )
@@ -31,7 +32,7 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 	cafeUsr, err := h.CafeUserRepository.GetByCafeAndUser(m.CafeId, usr.Id)
 	if err == cafeUser.ErrorNoResult {
 		cafeUsr = cafeUser.NewCafeUser(m.CafeId, usr.Id, comment)
-		err = h.CafeUserRepository.Add(cafeUsr, roles)
+		err = h.CafeUserRepository.Add(cafeUsr, helpers.NowTime(), roles)
 	} else if err != nil {
 		return nil, err
 	} else {
