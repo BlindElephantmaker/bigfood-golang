@@ -224,6 +224,14 @@ definitions:
     - table-id
     - until-data
     type: object
+  reserveDelete.Message:
+    properties:
+      reserve-id:
+        example: uuid
+        type: string
+    required:
+    - reserve-id
+    type: object
   sendSmsCode.Message:
     properties:
       phone:
@@ -573,6 +581,37 @@ paths:
       tags:
       - cafe user
   /reserve:
+    delete:
+      consumes:
+      - application/json
+      description: Delete reserve
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/reserveDelete.Message'
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete reserve
+      tags:
+      - reserve
     post:
       consumes:
       - application/json

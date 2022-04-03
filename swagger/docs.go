@@ -486,6 +486,55 @@ var doc = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete reserve",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Delete reserve",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reserveDelete.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
             }
         },
         "/reserve/{reserve-id}": {
@@ -1222,6 +1271,18 @@ var doc = `{
                 "until-data": {
                     "type": "string",
                     "example": "RFC3339"
+                }
+            }
+        },
+        "reserveDelete.Message": {
+            "type": "object",
+            "required": [
+                "reserve-id"
+            ],
+            "properties": {
+                "reserve-id": {
+                    "type": "string",
+                    "example": "uuid"
                 }
             }
         },

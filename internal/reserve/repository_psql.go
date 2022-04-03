@@ -1,6 +1,7 @@
 package reserve
 
 import (
+	"bigfood/internal/helpers"
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -57,6 +58,17 @@ VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 		reserve.UntilDate,
 		createdAt,
 	)
+
+	return err
+}
+
+func (r *RepositoryPsql) Delete(reserveId Id) error {
+	now := helpers.NowTime()
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", tableReserve)
+	_, err := r.db.NamedExec(query, map[string]interface{}{
+		"id":         reserveId,
+		"deleted_at": now,
+	})
 
 	return err
 }

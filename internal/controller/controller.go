@@ -60,6 +60,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		{
 			apiReserve.GET("/:reserve-id", controller.reserveGet)
 			apiReserve.POST("/", controller.reserveCreate)
+			apiReserve.DELETE("/", controller.reserveDelete)
 		}
 	}
 

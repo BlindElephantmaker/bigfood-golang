@@ -13,4 +13,5 @@ var errorReservedTimeIsBusy = helpers.ErrorBadRequest("table already reserved")
 type Repository interface {
 	Add(reserve *Reserve, createdAt time.Time) error
 	Get(Id) (*Reserve, error)
+	Delete(Id) error
 }
