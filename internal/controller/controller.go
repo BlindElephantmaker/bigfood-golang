@@ -58,6 +58,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 
 		apiReserve := api.Group("reserve")
 		{
+			apiReserve.GET("/:reserve-id", controller.reserveGet)
 			apiReserve.POST("/", controller.reserveCreate)
 		}
 	}

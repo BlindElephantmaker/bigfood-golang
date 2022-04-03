@@ -22,10 +22,10 @@ func (r *RepositoryPsql) Add(u *User) error {
 	return err
 }
 
-func (r *RepositoryPsql) Get(id Id) (*User, error) {
+func (r *RepositoryPsql) Get(userId Id) (*User, error) {
 	var user User
 	query := fmt.Sprintf("SELECT id, name, phone FROM %s WHERE id = $1", table)
-	err := r.db.Get(&user, query, id)
+	err := r.db.Get(&user, query, userId)
 	if err == sql.ErrNoRows {
 		return nil, NotExist
 	}

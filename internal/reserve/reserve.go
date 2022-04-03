@@ -11,14 +11,14 @@ var ErrorFromDateMustBeLessThanUntilDate = helpers.ErrorBadRequest("from date mu
 var ErrorFromDateMustBeMoreThanCurrentDate = helpers.ErrorBadRequest("from date must be more than current date")
 
 type Reserve struct {
-	Id         Id         `json:"id" db:"id"`
+	Id         Id         `json:"id" db:"id" example:"uuid"`
 	Comment    Comment    `json:"comment" db:"comment"`
-	GuestCount GuestCount `json:"guest-count" db:"guest_count"`
-	TableId    table.Id   `json:"table-id" db:"table_id"`
-	ContactId  contact.Id `json:"contact-id" db:"contact_id"`
-	FromDate   time.Time  `json:"from-date" db:"from_date"`
-	UntilDate  time.Time  `json:"until-date" db:"until_date"`
-	DeletedAt  *time.Time `json:"deleted-at,omitempty" db:"deleted_at"`
+	GuestCount GuestCount `json:"guest-count" db:"guest_count" example:"4"`
+	TableId    table.Id   `json:"table-id" db:"table_id" example:"uuid"`
+	ContactId  contact.Id `json:"contact-id" db:"contact_id" example:"uuid"`
+	FromDate   time.Time  `json:"from-date" db:"from_date" example:"RFC3339"`
+	UntilDate  time.Time  `json:"until-date" db:"until_date" example:"RFC3339"`
+	DeletedAt  *time.Time `json:"deleted-at,omitempty" db:"deleted_at" example:"RFC3339"`
 }
 
 func NewReserve(

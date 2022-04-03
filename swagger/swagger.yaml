@@ -174,19 +174,25 @@ definitions:
       comment:
         type: string
       contact-id:
+        example: uuid
         type: string
       deleted-at:
-        description: 'todo: check omitempty'
+        example: RFC3339
         type: string
       from-date:
+        example: RFC3339
         type: string
       guest-count:
+        example: 4
         type: integer
       id:
+        example: uuid
         type: string
       table-id:
+        example: uuid
         type: string
       until-date:
+        example: RFC3339
         type: string
     type: object
   reserveCreate.Message:
@@ -197,8 +203,10 @@ definitions:
         example: uuid
         type: string
       from-data:
+        example: RFC3339
         type: string
       guest-count:
+        example: 4
         type: integer
       phone:
         example: "+71234567890"
@@ -207,6 +215,7 @@ definitions:
         example: uuid
         type: string
       until-data:
+        example: RFC3339
         type: string
     required:
     - comment
@@ -590,6 +599,10 @@ paths:
           description: Access Denied
           schema:
             $ref: '#/definitions/server.ResponseError'
+        "422":
+          description: Not exist
+          schema:
+            $ref: '#/definitions/server.ResponseError'
         "500":
           description: Internal Server Error
           schema:
@@ -597,6 +610,37 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Create reserve
+      tags:
+      - reserve
+  /reserve/{reserve-id}:
+    get:
+      description: Get reserve
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/reserve.Reserve'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "422":
+          description: Not exist
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get reserve
       tags:
       - reserve
   /table:

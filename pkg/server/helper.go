@@ -26,6 +26,13 @@ func InternalServerError(c *gin.Context, err error) {
 	})
 }
 
+func StatusBadRequest(c *gin.Context, err error) {
+	logrus.Error(err.Error())
+	c.AbortWithStatusJSON(http.StatusBadRequest, ResponseError{
+		Message: err.Error(),
+	})
+}
+
 // todo: not used
 //func AccessDenied(c *gin.Context) {
 //	c.AbortWithStatusJSON(http.StatusUnauthorized, ResponseError{

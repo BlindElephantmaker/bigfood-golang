@@ -1,6 +1,7 @@
 package reserve
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	"time"
@@ -12,6 +13,27 @@ type RepositoryPsql struct {
 
 func NewRepositoryPsql(db *sqlx.DB) *RepositoryPsql {
 	return &RepositoryPsql{db: db}
+}
+
+func (r *RepositoryPsql) Get(reserveId Id) (*Reserve, error) {
+	var reserve Reserve
+	query := fmt.Sprintf(`
+SELECT id
+     , table_id
+     , contact_id
+     , comment
+     , guest_count
+     , from_date
+     , until_date
+     , deleted_at
+FROM %s
+WHERE id = $1
+`, tableReserve)
+	err := r.db.Get(&reserve, query, reserveId)
+	if err == sql.ErrNoRows {
+		return nil, notExist
+	}
+	return &reserve, err
 }
 
 func (r *RepositoryPsql) Add(reserve *Reserve, createdAt time.Time) error {

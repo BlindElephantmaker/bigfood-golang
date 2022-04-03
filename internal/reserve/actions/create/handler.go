@@ -12,10 +12,10 @@ type Message struct {
 	TableId    table.Id           `json:"table-id" binding:"required" example:"uuid"`
 	Phone      *helpers.Phone     `json:"phone" example:"+71234567890"`
 	ContactId  *contact.Id        `json:"contact-id" example:"uuid"`
-	GuestCount reserve.GuestCount `json:"guest-count" binding:"required"`
+	GuestCount reserve.GuestCount `json:"guest-count" binding:"required" example:"4"`
 	Comment    reserve.Comment    `json:"comment" binding:"required"`
-	FromData   time.Time          `json:"from-data" binding:"required"`
-	UntilData  time.Time          `json:"until-data" binding:"required"`
+	FromData   time.Time          `json:"from-data" binding:"required" example:"RFC3339"`
+	UntilData  time.Time          `json:"until-data" binding:"required" example:"RFC3339"`
 }
 
 var ErrorPhoneOrContactIdMustBePassed = helpers.ErrorBadRequest("phone or contact_id must be passed")

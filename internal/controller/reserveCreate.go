@@ -18,6 +18,7 @@ import (
 // @Success      200    {object}  reserve.Reserve        "Success"
 // @Failure      400    {object}  server.ResponseError   "Invalid data"
 // @Failure      401    {object}  server.ResponseError   "Access Denied"
+// @Failure      422    {object}  server.ResponseError   "Not exist"
 // @Failure      500    {object}  server.ResponseError   "Internal Server Error"
 // @Router       /reserve [post]
 func (controller *Controller) reserveCreate(c *gin.Context) {

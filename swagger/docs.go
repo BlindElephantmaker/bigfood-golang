@@ -473,6 +473,61 @@ var doc = `{
                             "$ref": "#/definitions/server.ResponseError"
                         }
                     },
+                    "422": {
+                        "description": "Not exist",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/reserve/{reserve-id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get reserve",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Get reserve",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/reserve.Reserve"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "422": {
+                        "description": "Not exist",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -1102,26 +1157,32 @@ var doc = `{
                     "type": "string"
                 },
                 "contact-id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "uuid"
                 },
                 "deleted-at": {
-                    "description": "todo: check omitempty",
-                    "type": "string"
+                    "type": "string",
+                    "example": "RFC3339"
                 },
                 "from-date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "RFC3339"
                 },
                 "guest-count": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 4
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "uuid"
                 },
                 "table-id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "uuid"
                 },
                 "until-date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "RFC3339"
                 }
             }
         },
@@ -1143,10 +1204,12 @@ var doc = `{
                     "example": "uuid"
                 },
                 "from-data": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "RFC3339"
                 },
                 "guest-count": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 4
                 },
                 "phone": {
                     "type": "string",
@@ -1157,7 +1220,8 @@ var doc = `{
                     "example": "uuid"
                 },
                 "until-data": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "RFC3339"
                 }
             }
         },
