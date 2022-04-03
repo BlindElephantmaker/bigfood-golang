@@ -232,6 +232,14 @@ definitions:
     required:
     - reserve-id
     type: object
+  reserveUndelete.Message:
+    properties:
+      reserve-id:
+        example: uuid
+        type: string
+    required:
+    - reserve-id
+    type: object
   sendSmsCode.Message:
     properties:
       phone:
@@ -680,6 +688,38 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get reserve
+      tags:
+      - reserve
+  /reserve/undelete:
+    put:
+      consumes:
+      - application/json
+      description: Reserve undelete
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/reserveUndelete.Message'
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Reserve undelete
       tags:
       - reserve
   /table:

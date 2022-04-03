@@ -73,6 +73,15 @@ func (r *RepositoryPsql) Delete(reserveId Id) error {
 	return err
 }
 
+func (r *RepositoryPsql) Undelete(reserveId Id) error {
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = NULL WHERE id = :id", tableReserve)
+	_, err := r.db.NamedExec(query, map[string]interface{}{
+		"id": reserveId,
+	})
+
+	return err
+}
+
 func (r *RepositoryPsql) checkAvailability(reserve *Reserve) error {
 	query := `
 SELECT id

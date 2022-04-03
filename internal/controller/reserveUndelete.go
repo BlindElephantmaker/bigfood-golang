@@ -1,26 +1,26 @@
 package controller
 
 import (
-	"bigfood/internal/reserve/actions/delete"
+	"bigfood/internal/reserve/actions/undelete"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-// reserveDelete
-// @Summary      Delete reserve
+// reserveUndelete
+// @Summary      Reserve undelete
 // @Security     ApiKeyAuth
-// @Description  Delete reserve
+// @Description  Reserve undelete
 // @Tags         reserve
 // @Accept       json
-// @Param        input  body  reserveDelete.Message  true  "Body"
+// @Param        input  body  reserveUndelete.Message  true  "Body"
 // @Success      200    "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid data"
 // @Failure      401    {object}  server.ResponseError  "Access Denied"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
-// @Router       /reserve [delete]
-func (controller *Controller) reserveDelete(c *gin.Context) {
-	var message reserveDelete.Message
+// @Router       /reserve/undelete [put]
+func (controller *Controller) reserveUndelete(c *gin.Context) {
+	var message reserveUndelete.Message
 	err := server.ParseJsonRequestToMessage(c, &message)
 	if err != nil {
 		return
@@ -31,7 +31,7 @@ func (controller *Controller) reserveDelete(c *gin.Context) {
 	//	return
 	//}
 
-	if err := controller.handlers.ReserveDeleteHandler.Run(&message); err != nil {
+	if err := controller.handlers.ReserveUndeleteHandler.Run(&message); err != nil {
 		server.InternalServerError(c, err)
 		return
 	}

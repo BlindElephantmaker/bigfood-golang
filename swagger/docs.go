@@ -537,6 +537,57 @@ var doc = `{
                 }
             }
         },
+        "/reserve/undelete": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Reserve undelete",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Reserve undelete",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reserveUndelete.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/reserve/{reserve-id}": {
             "get": {
                 "security": [
@@ -1275,6 +1326,18 @@ var doc = `{
             }
         },
         "reserveDelete.Message": {
+            "type": "object",
+            "required": [
+                "reserve-id"
+            ],
+            "properties": {
+                "reserve-id": {
+                    "type": "string",
+                    "example": "uuid"
+                }
+            }
+        },
+        "reserveUndelete.Message": {
             "type": "object",
             "required": [
                 "reserve-id"
