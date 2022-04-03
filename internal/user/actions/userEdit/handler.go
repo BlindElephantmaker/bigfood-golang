@@ -1,8 +1,6 @@
 package userEdit
 
-import (
-	"bigfood/internal/user"
-)
+import "bigfood/internal/user"
 
 type Message struct {
 	UserId user.Id   `swaggerignore:"true"`
@@ -11,12 +9,12 @@ type Message struct {
 }
 
 func (h *Handler) Run(message *Message) error {
-	u, err := h.userRepository.Get(message.UserId)
+	usr, err := h.userRepository.Get(message.UserId)
 	if err != nil {
 		return err
 	}
-	u.Name = message.Name
-	return h.userRepository.Update(u)
+	usr.Name = message.Name
+	return h.userRepository.Update(usr)
 }
 
 type Handler struct {

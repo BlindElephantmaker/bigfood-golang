@@ -2,22 +2,24 @@ package auth
 
 import (
 	"bigfood/internal/authorization/smsCode"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"bigfood/internal/user/userToken"
-	"errors"
 )
 
 type Message struct {
-	Phone   user.Phone      `json:"phone" binding:"required" example:"+71234567890"`
+	Phone   helpers.Phone   `json:"phone" binding:"required" example:"+71234567890"`
 	SmsCode smsCode.SmsCode `json:"sms-code" binding:"required" example:"1234"`
 }
 
 type Response struct {
-	UserToken *userToken.UserToken
-	IsNew     bool
+	IsNew   bool                   `json:"is-new"`
+	UserId  user.Id                `json:"user-id" example:"UUID"`
+	Access  userToken.AccessToken  `json:"access-token"`
+	Refresh userToken.RefreshToken `json:"refresh-token" example:"UUID"`
 }
 
-var ErrorSmsCodeNotConfirmed = errors.New("sms code not confirmed")
+var errorSmsCodeNotConfirmed = helpers.ErrorUnprocessableEntity("sms code not confirmed")
 
 func (h *Handler) Run(m *Message) (*Response, error) {
 	err := h.validateSmsCode(m)
@@ -25,19 +27,21 @@ func (h *Handler) Run(m *Message) (*Response, error) {
 		return nil, err
 	}
 
-	u, err := h.userService.GetOrNewUser(m.Phone)
+	usr, err := h.userService.GetOrNewUser(m.Phone)
 	if err != nil {
 		return nil, err
 	}
 
-	token, err := h.createToken(u.Id)
+	access, usrToken, err := h.userTokenService.CreateTokens(usr.Id)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Response{
-		UserToken: token,
-		IsNew:     u.IsNew(),
+		UserId:  usr.Id,
+		IsNew:   usr.IsNew(),
+		Refresh: usrToken.Refresh,
+		Access:  access,
 	}, nil
 }
 
@@ -47,43 +51,26 @@ func (h *Handler) validateSmsCode(m *Message) error {
 		return err
 	}
 	if !confirmCode.Compare(m.SmsCode) {
-		return ErrorSmsCodeNotConfirmed
+		return errorSmsCodeNotConfirmed
 	}
 
 	return nil
 }
 
-func (h *Handler) createToken(userId user.Id) (*userToken.UserToken, error) {
-	token, err := userToken.NewUserToken(userId)
-	if err != nil {
-		return nil, err
-	}
-
-	err = h.tokenRepository.Add(token)
-	if err != nil {
-		return nil, err
-	}
-
-	return token, nil
-}
-
 type Handler struct {
 	smsCodeRepository smsCode.Repository
-	userRepository    user.Repository
-	tokenRepository   userToken.Repository
 	userService       *user.Service
+	userTokenService  *userToken.Service
 }
 
 func New(
 	smsCodeRepository smsCode.Repository,
-	users user.Repository,
-	tokens userToken.Repository,
 	userService *user.Service,
+	userTokenService *userToken.Service,
 ) *Handler {
 	return &Handler{
 		smsCodeRepository: smsCodeRepository,
-		userRepository:    users,
-		tokenRepository:   tokens,
 		userService:       userService,
+		userTokenService:  userTokenService,
 	}
 }

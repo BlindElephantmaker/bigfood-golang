@@ -1,6 +1,7 @@
 package userToken
 
 import (
+	"bigfood/internal/helpers"
 	"bigfood/internal/user"
 	"errors"
 	"github.com/dgrijalva/jwt-go"
@@ -9,6 +10,7 @@ import (
 
 const (
 	signingKey = "MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgev" // todo: generate key.pem
+	accessTTL  = 1 * helpers.Day
 )
 
 type AccessToken string
@@ -18,10 +20,10 @@ var (
 	ErrorInvalidClaims        = errors.New("invalid user claims")
 )
 
-func NewAccess(userId user.Id, time *time.Time, ttl time.Duration) (AccessToken, error) {
+func newAccess(userId user.Id, now time.Time) (AccessToken, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.StandardClaims{ // todo: change to SigningMethodES256
-		IssuedAt:  time.Unix(),
-		ExpiresAt: time.Add(ttl).Unix(),
+		IssuedAt:  now.Unix(),
+		ExpiresAt: now.Add(accessTTL).Unix(),
 		Id:        string(userId),
 	})
 	value, err := token.SignedString([]byte(signingKey))

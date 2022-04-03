@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions/edit"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -31,14 +30,6 @@ func (controller *Controller) cafeUserEdit(c *gin.Context) {
 	// todo: permissions role and cafeUserId
 
 	response, err := controller.handlers.CafeUserEditHandler.Run(&message)
-	if err == cafeUser.ErrorUserRoleInvalid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
-	if err == cafeUserEdit.ErrorOwnerRoleCouldNotBeSet {
-		server.NewResponseError(c, http.StatusUnprocessableEntity, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

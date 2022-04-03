@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions/create"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
@@ -35,14 +34,6 @@ func (controller *Controller) cafeUserCreate(c *gin.Context) {
 	//}
 
 	response, err := controller.handlers.CafeUserCreateHandler.Run(&message)
-	if err == cafeUser.ErrorUserRoleInvalid {
-		server.NewResponseError(c, http.StatusBadRequest, err)
-		return
-	}
-	if err == cafeUserCreate.ErrorCafeUserAlreadyExist {
-		server.NewResponseError(c, http.StatusUnprocessableEntity, err)
-		return
-	}
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

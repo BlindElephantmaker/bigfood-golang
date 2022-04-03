@@ -55,6 +55,11 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 			apiTable.DELETE("/", controller.tableDelete)
 			apiTable.DELETE("/delete-all", controller.tableDeleteAll)
 		}
+
+		apiReserve := api.Group("reserve")
+		{
+			apiReserve.POST("/", controller.reserveCreate)
+		}
 	}
 
 	router.GET("/api/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

@@ -1,6 +1,6 @@
 package smsCode
 
-import "bigfood/internal/user"
+import "bigfood/internal/helpers"
 
 // todo: code it
 
@@ -10,6 +10,6 @@ func NewServiceDummy() *ServiceDummy {
 	return &ServiceDummy{}
 }
 
-func (s *ServiceDummy) Send(text string, phone user.Phone) error {
+func (s *ServiceDummy) Send(text string, phone helpers.Phone) error {
 	return nil
 }

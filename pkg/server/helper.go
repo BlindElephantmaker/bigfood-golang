@@ -26,11 +26,12 @@ func InternalServerError(c *gin.Context, err error) {
 	})
 }
 
-func AccessDenied(c *gin.Context) {
-	c.AbortWithStatusJSON(http.StatusUnauthorized, ResponseError{
-		Message: "Access Denied",
-	})
-}
+// todo: not used
+//func AccessDenied(c *gin.Context) {
+//	c.AbortWithStatusJSON(http.StatusUnauthorized, ResponseError{
+//		Message: "Access Denied",
+//	})
+//}
 
 func ParseJsonRequestToMessage(c *gin.Context, message interface{}) error {
 	err := c.BindJSON(&message)

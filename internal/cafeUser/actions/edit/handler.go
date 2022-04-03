@@ -3,8 +3,8 @@ package cafeUserEdit
 import (
 	"bigfood/internal/cafeUser"
 	"bigfood/internal/cafeUser/actions"
+	"bigfood/internal/helpers"
 	"bigfood/internal/user"
-	"errors"
 	"fmt"
 )
 
@@ -14,7 +14,7 @@ type Message struct {
 	Roles      *[]string         `json:"roles"` // todo: bad array swagger and parse collection
 }
 
-var ErrorOwnerRoleCouldNotBeSet = errors.New(fmt.Sprintf("%s role could not be set", cafeUser.Owner))
+var ErrorOwnerRoleCouldNotBeSet = helpers.ErrorUnprocessableEntity(fmt.Sprintf("%s role could not be set", cafeUser.Owner))
 
 func (h *Handler) Run(m *Message) (*actions.Response, error) {
 	roles, err := parseMessage(m)

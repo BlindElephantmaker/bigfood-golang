@@ -2,7 +2,6 @@ package user
 
 import (
 	"bigfood/internal/helpers"
-	"encoding/json"
 	"errors"
 )
 
@@ -23,17 +22,10 @@ func ParseId(value string) (Id, error) {
 }
 
 func (i *Id) UnmarshalJSON(data []byte) error {
-	var value string
-	err := json.Unmarshal(data, &value)
+	uuid, err := helpers.UnmarshalUuid(data)
 	if err != nil {
-		return err
+		return errorUserIdIsInvalidFormat
 	}
-
-	uuid, err := ParseId(value)
-	if err != nil {
-		return err
-	}
-
-	*i = uuid
+	*i = Id(*uuid)
 	return nil
 }

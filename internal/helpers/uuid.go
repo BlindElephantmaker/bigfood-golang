@@ -2,37 +2,34 @@ package helpers
 
 import (
 	"encoding/json"
-	googleUuid "github.com/google/uuid"
+	"github.com/google/uuid"
 )
 
 type Uuid string
 
-var errorInvalidUuid = ErrorBadRequest("UUID is invalid")
-
 func NewUuid() Uuid {
-	return Uuid(googleUuid.New().String())
+	return Uuid(uuid.New().String())
 }
 
-func (u *Uuid) UnmarshalJSON(data []byte) error {
+func ParseUuid(data string) (Uuid, error) {
+	value, err := uuid.Parse(data)
+	if err != nil {
+		return "", err
+	}
+	return Uuid(value.String()), nil
+}
+
+func UnmarshalUuid(data []byte) (*Uuid, error) {
+	if string(data) == "null" {
+		return nil, nil
+	}
+
 	var value string
 	err := json.Unmarshal(data, &value)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	uuid, err := ParseUuid(value)
-	if err != nil {
-		return err
-	}
-
-	*u = uuid
-	return nil
-}
-
-func ParseUuid(value string) (Uuid, error) {
-	uuid, err := googleUuid.Parse(value)
-	if err != nil {
-		return "", errorInvalidUuid
-	}
-	return Uuid(uuid.String()), nil
+	parsedUuid, err := ParseUuid(value)
+	return &parsedUuid, err
 }

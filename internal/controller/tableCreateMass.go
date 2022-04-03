@@ -19,7 +19,7 @@ import (
 // @Failure      400    {object}  server.ResponseError  "Invalid data"
 // @Failure      401    {object}  server.ResponseError  "Access Denied"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
-// @Router       /table/mass-create [post]
+// @Router       /table/create-mass [post]
 func (controller *Controller) tableCreateMass(c *gin.Context) {
 	var message createMass.Message
 	err := server.ParseJsonRequestToMessage(c, &message) // todo: strange handle case "quantity": 0

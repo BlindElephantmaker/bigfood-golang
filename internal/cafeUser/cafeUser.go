@@ -7,9 +7,9 @@ import (
 )
 
 type CafeUser struct {
-	Id        Id         `json:"id" example:"uuid" db:"id"`
-	CafeId    cafe.Id    `json:"cafe-id" example:"uuid" db:"cafe_id"`
-	UserId    user.Id    `json:"user-id" example:"uuid" db:"user_id"`
+	Id        Id         `json:"id" db:"id" example:"uuid"`
+	CafeId    cafe.Id    `json:"cafe-id" db:"cafe_id" example:"uuid"`
+	UserId    user.Id    `json:"user-id" db:"user_id" example:"uuid"`
 	Comment   Comment    `json:"comment" db:"comment"`
 	DeletedAt *time.Time `json:"-" db:"deleted_at" swaggerignore:"true"`
 }

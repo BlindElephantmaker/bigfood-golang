@@ -2,13 +2,13 @@ package sendSmsCode
 
 import (
 	"bigfood/internal/authorization/smsCode"
-	"bigfood/internal/user"
+	"bigfood/internal/helpers"
 	"errors"
 	"time"
 )
 
 type Message struct {
-	Phone user.Phone `json:"phone" binding:"required" example:"+71234567890"`
+	Phone helpers.Phone `json:"phone" binding:"required" example:"+71234567890"`
 	// todo: captcha
 }
 

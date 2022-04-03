@@ -3,9 +3,9 @@ package helpers
 import "errors"
 
 const (
-	BadRequest   = ErrorType(iota)
-	ShowToUser   // todo
-	HideFromUser // todo
+	badRequest = ErrorType(iota)
+	unprocessableEntity
+	//hideFromUser todo
 )
 
 type ErrorType uint
@@ -20,7 +20,11 @@ func (e Error) Error() string {
 }
 
 func ErrorBadRequest(msg string) Error {
-	return newError(msg, BadRequest)
+	return newError(msg, badRequest)
+}
+
+func ErrorUnprocessableEntity(msg string) Error {
+	return newError(msg, unprocessableEntity)
 }
 
 func newError(msg string, errorType ErrorType) Error {

@@ -2,7 +2,6 @@ package cafe
 
 import (
 	"bigfood/internal/helpers"
-	"encoding/json"
 	"errors"
 )
 
@@ -15,17 +14,10 @@ func newId() Id {
 }
 
 func (i *Id) UnmarshalJSON(data []byte) error {
-	var value string
-	err := json.Unmarshal(data, &value)
-	if err != nil {
-		return err
-	}
-
-	uuid, err := helpers.ParseUuid(value)
+	uuid, err := helpers.UnmarshalUuid(data)
 	if err != nil {
 		return errorCafeIdIsInvalidFormat
 	}
-
-	*i = Id(uuid)
+	*i = Id(*uuid)
 	return nil
 }

@@ -51,7 +51,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.AuthResponse"
+                            "$ref": "#/definitions/auth.Response"
                         }
                     },
                     "422": {
@@ -97,7 +97,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.RefreshTokenResponse"
+                            "$ref": "#/definitions/refreshToken.Response"
                         }
                     },
                     "400": {
@@ -183,7 +183,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.CafeCreateResponse"
+                            "$ref": "#/definitions/createCafe.Response"
                         }
                     },
                     "500": {
@@ -425,6 +425,63 @@ var doc = `{
                 }
             }
         },
+        "/reserve": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create reserve",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Create reserve",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reserveCreate.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/reserve.Reserve"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/table": {
             "put": {
                 "security": [
@@ -507,7 +564,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.TableCreateResponse"
+                            "$ref": "#/definitions/table.Table"
                         }
                     },
                     "400": {
@@ -558,6 +615,63 @@ var doc = `{
                 "responses": {
                     "200": {
                         "description": "Success"
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/table/create-mass": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create N-quantity of tables",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Mass creation",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/createMass.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/controller.TableListResponse"
+                        }
                     },
                     "400": {
                         "description": "Invalid data",
@@ -688,63 +802,6 @@ var doc = `{
                 }
             }
         },
-        "/table/mass-create": {
-            "post": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Create N-quantity of tables",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "table"
-                ],
-                "summary": "Mass creation",
-                "parameters": [
-                    {
-                        "description": "Body",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/createMass.Message"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "schema": {
-                            "$ref": "#/definitions/controller.TableListResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Invalid data",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseError"
-                        }
-                    },
-                    "401": {
-                        "description": "Access Denied",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseError"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseError"
-                        }
-                    }
-                }
-            }
-        },
         "/user": {
             "put": {
                 "security": [
@@ -844,6 +901,34 @@ var doc = `{
                 }
             }
         },
+        "auth.Response": {
+            "type": "object",
+            "properties": {
+                "access-token": {
+                    "type": "string"
+                },
+                "is-new": {
+                    "type": "boolean"
+                },
+                "refresh-token": {
+                    "type": "string",
+                    "example": "UUID"
+                },
+                "user-id": {
+                    "type": "string",
+                    "example": "UUID"
+                }
+            }
+        },
+        "cafe.Cafe": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "example": "uuid"
+                }
+            }
+        },
         "cafeUserCreate.Message": {
             "type": "object",
             "required": [
@@ -934,58 +1019,6 @@ var doc = `{
                 }
             }
         },
-        "controller.AuthResponse": {
-            "type": "object",
-            "properties": {
-                "access-token": {
-                    "type": "string"
-                },
-                "is-new": {
-                    "type": "boolean"
-                },
-                "refresh-token": {
-                    "type": "string",
-                    "example": "UUID"
-                },
-                "user-id": {
-                    "type": "string",
-                    "example": "UUID"
-                }
-            }
-        },
-        "controller.CafeCreateResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "string",
-                    "example": "uuid created cafe"
-                }
-            }
-        },
-        "controller.RefreshTokenResponse": {
-            "type": "object",
-            "properties": {
-                "access": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "UUID"
-                },
-                "refresh": {
-                    "type": "string",
-                    "example": "UUID"
-                }
-            }
-        },
-        "controller.TableCreateResponse": {
-            "type": "object",
-            "properties": {
-                "table": {
-                    "$ref": "#/definitions/table.Table"
-                }
-            }
-        },
         "controller.TableListResponse": {
             "type": "object",
             "properties": {
@@ -994,6 +1027,14 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/table.Table"
                     }
+                }
+            }
+        },
+        "createCafe.Response": {
+            "type": "object",
+            "properties": {
+                "cafe": {
+                    "$ref": "#/definitions/cafe.Cafe"
                 }
             }
         },
@@ -1029,12 +1070,94 @@ var doc = `{
         "refreshToken.Message": {
             "type": "object",
             "required": [
-                "token"
+                "refresh-token"
             ],
             "properties": {
-                "token": {
+                "refresh-token": {
                     "type": "string",
                     "example": "UUID"
+                }
+            }
+        },
+        "refreshToken.Response": {
+            "type": "object",
+            "properties": {
+                "access-token": {
+                    "type": "string"
+                },
+                "refresh-token": {
+                    "type": "string",
+                    "example": "UUID"
+                },
+                "user-id": {
+                    "type": "string",
+                    "example": "UUID"
+                }
+            }
+        },
+        "reserve.Reserve": {
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "contact-id": {
+                    "type": "string"
+                },
+                "deleted-at": {
+                    "description": "todo: check omitempty",
+                    "type": "string"
+                },
+                "from-date": {
+                    "type": "string"
+                },
+                "guest-count": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "table-id": {
+                    "type": "string"
+                },
+                "until-date": {
+                    "type": "string"
+                }
+            }
+        },
+        "reserveCreate.Message": {
+            "type": "object",
+            "required": [
+                "comment",
+                "from-data",
+                "guest-count",
+                "table-id",
+                "until-data"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "contact-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "from-data": {
+                    "type": "string"
+                },
+                "guest-count": {
+                    "type": "integer"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+71234567890"
+                },
+                "table-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "until-data": {
+                    "type": "string"
                 }
             }
         },

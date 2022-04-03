@@ -1,14 +1,14 @@
 package smsCode
 
 import (
-	"bigfood/internal/user"
+	"bigfood/internal/helpers"
 	"time"
 )
 
 // todo: code it or replace to redis
 
 type RepositoryDummy struct {
-	memory map[user.Phone]*dummy
+	memory map[helpers.Phone]*dummy
 }
 
 type dummy struct {
@@ -17,10 +17,10 @@ type dummy struct {
 }
 
 func NewRepositoryDummy() *RepositoryDummy {
-	return &RepositoryDummy{make(map[user.Phone]*dummy)}
+	return &RepositoryDummy{make(map[helpers.Phone]*dummy)}
 }
 
-func (r *RepositoryDummy) Add(code SmsCode, phone user.Phone, ttl time.Duration) error {
+func (r *RepositoryDummy) Add(code SmsCode, phone helpers.Phone, ttl time.Duration) error {
 	d := r.memory[phone]
 	if d != nil {
 		d.code = code
@@ -35,11 +35,11 @@ func (r *RepositoryDummy) Add(code SmsCode, phone user.Phone, ttl time.Duration)
 	return nil
 }
 
-func (r *RepositoryDummy) Get(phone user.Phone) (SmsCode, error) {
+func (r *RepositoryDummy) Get(phone helpers.Phone) (SmsCode, error) {
 	return "1234", nil
 }
 
-func (r *RepositoryDummy) Count(phone user.Phone) (int, error) {
+func (r *RepositoryDummy) Count(phone helpers.Phone) (int, error) {
 	d := r.memory[phone]
 	if d != nil {
 		return d.count, nil
@@ -48,6 +48,6 @@ func (r *RepositoryDummy) Count(phone user.Phone) (int, error) {
 	return 0, nil
 }
 
-func (r *RepositoryDummy) DeleteLast(user.Phone) error {
+func (r *RepositoryDummy) DeleteLast(helpers.Phone) error {
 	return nil
 }

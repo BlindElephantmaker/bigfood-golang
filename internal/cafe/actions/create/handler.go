@@ -8,19 +8,23 @@ import (
 	"bigfood/pkg/database"
 )
 
-func (h *Handler) Run(userId user.Id) (cafe.Id, error) {
+type Response struct {
+	Cafe *cafe.Cafe `json:"cafe"`
+}
+
+func (h *Handler) Run(userId user.Id) (*Response, error) {
 	newCafe := cafe.New()
 	newCafeUser := cafeUser.NewCafeUser(newCafe.Id, userId, cafeUser.NewComment())
 	now := helpers.NowTime()
 
 	tx, err := h.Transactions.Begin()
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	if err := h.cafeRepository.AddTx(tx, newCafe, now); err != nil {
 		_ = tx.Rollback()
-		return "", err
+		return nil, err
 	}
 
 	if err := h.cafeUserRepository.AddTx(tx, newCafeUser, now, cafeUser.Roles{
@@ -29,15 +33,15 @@ func (h *Handler) Run(userId user.Id) (cafe.Id, error) {
 		cafeUser.Hostess,
 	}); err != nil {
 		_ = tx.Rollback()
-		return "", err
+		return nil, err
 	}
 
 	if err := tx.Commit(); err != nil {
 		_ = tx.Rollback()
-		return "", err
+		return nil, err
 	}
 
-	return newCafe.Id, nil
+	return &Response{newCafe}, nil
 }
 
 type Handler struct {

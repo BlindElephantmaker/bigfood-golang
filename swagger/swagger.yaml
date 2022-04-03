@@ -37,6 +37,25 @@ definitions:
     - phone
     - sms-code
     type: object
+  auth.Response:
+    properties:
+      access-token:
+        type: string
+      is-new:
+        type: boolean
+      refresh-token:
+        example: UUID
+        type: string
+      user-id:
+        example: UUID
+        type: string
+    type: object
+  cafe.Cafe:
+    properties:
+      id:
+        example: uuid
+        type: string
+    type: object
   cafeUserCreate.Message:
     properties:
       cafe-id:
@@ -99,47 +118,17 @@ definitions:
           $ref: '#/definitions/actions.Response'
         type: array
     type: object
-  controller.AuthResponse:
-    properties:
-      access-token:
-        type: string
-      is-new:
-        type: boolean
-      refresh-token:
-        example: UUID
-        type: string
-      user-id:
-        example: UUID
-        type: string
-    type: object
-  controller.CafeCreateResponse:
-    properties:
-      id:
-        example: uuid created cafe
-        type: string
-    type: object
-  controller.RefreshTokenResponse:
-    properties:
-      access:
-        type: string
-      id:
-        example: UUID
-        type: string
-      refresh:
-        example: UUID
-        type: string
-    type: object
-  controller.TableCreateResponse:
-    properties:
-      table:
-        $ref: '#/definitions/table.Table'
-    type: object
   controller.TableListResponse:
     properties:
       tables:
         items:
           $ref: '#/definitions/table.Table'
         type: array
+    type: object
+  createCafe.Response:
+    properties:
+      cafe:
+        $ref: '#/definitions/cafe.Cafe'
     type: object
   createMass.Message:
     properties:
@@ -163,11 +152,68 @@ definitions:
     type: object
   refreshToken.Message:
     properties:
-      token:
+      refresh-token:
         example: UUID
         type: string
     required:
-    - token
+    - refresh-token
+    type: object
+  refreshToken.Response:
+    properties:
+      access-token:
+        type: string
+      refresh-token:
+        example: UUID
+        type: string
+      user-id:
+        example: UUID
+        type: string
+    type: object
+  reserve.Reserve:
+    properties:
+      comment:
+        type: string
+      contact-id:
+        type: string
+      deleted-at:
+        description: 'todo: check omitempty'
+        type: string
+      from-date:
+        type: string
+      guest-count:
+        type: integer
+      id:
+        type: string
+      table-id:
+        type: string
+      until-date:
+        type: string
+    type: object
+  reserveCreate.Message:
+    properties:
+      comment:
+        type: string
+      contact-id:
+        example: uuid
+        type: string
+      from-data:
+        type: string
+      guest-count:
+        type: integer
+      phone:
+        example: "+71234567890"
+        type: string
+      table-id:
+        example: uuid
+        type: string
+      until-data:
+        type: string
+    required:
+    - comment
+    - from-data
+    - guest-count
+    - table-id
+    - until-data
     type: object
   sendSmsCode.Message:
     properties:
@@ -278,7 +324,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.AuthResponse'
+            $ref: '#/definitions/auth.Response'
         "422":
           description: SMS code not confirmed
           schema:
@@ -308,7 +354,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.RefreshTokenResponse'
+            $ref: '#/definitions/refreshToken.Response'
         "400":
           description: Invalid refresh token format
           schema:
@@ -361,7 +407,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.CafeCreateResponse'
+            $ref: '#/definitions/createCafe.Response'
         "500":
           description: Internal Server Error
           schema:
@@ -517,6 +563,42 @@ paths:
       summary: Get cafe user list
       tags:
       - cafe user
+  /reserve:
+    post:
+      consumes:
+      - application/json
+      description: Create reserve
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/reserveCreate.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/reserve.Reserve'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Create reserve
+      tags:
+      - reserve
   /table:
     delete:
       consumes:
@@ -566,7 +648,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.TableCreateResponse'
+            $ref: '#/definitions/table.Table'
         "400":
           description: Invalid data
           schema:
@@ -613,6 +695,42 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Edit table
+      tags:
+      - table
+  /table/create-mass:
+    post:
+      consumes:
+      - application/json
+      description: Create N-quantity of tables
+      parameters:
+      - description: Body
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/createMass.Message'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/controller.TableListResponse'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Mass creation
       tags:
       - table
   /table/delete-all:
@@ -681,42 +799,6 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get table list
-      tags:
-      - table
-  /table/mass-create:
-    post:
-      consumes:
-      - application/json
-      description: Create N-quantity of tables
-      parameters:
-      - description: Body
-        in: body
-        name: input
-        required: true
-        schema:
-          $ref: '#/definitions/createMass.Message'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Success
-          schema:
-            $ref: '#/definitions/controller.TableListResponse'
-        "400":
-          description: Invalid data
-          schema:
-            $ref: '#/definitions/server.ResponseError'
-        "401":
-          description: Access Denied
-          schema:
-            $ref: '#/definitions/server.ResponseError'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ResponseError'
-      security:
-      - ApiKeyAuth: []
-      summary: Mass creation
       tags:
       - table
   /user:

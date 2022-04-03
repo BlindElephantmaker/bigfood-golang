@@ -1,7 +1,6 @@
-package user
+package helpers
 
 import (
-	"bigfood/internal/helpers"
 	"encoding/json"
 	"regexp"
 )
@@ -10,7 +9,7 @@ type Phone string
 
 const pattern = `^\+\d{11}$` // todo: phone number is not always 11 digits
 
-var errorPhoneNumberIsInvalid = helpers.ErrorBadRequest("phone number is invalid")
+var errorPhoneNumberIsInvalid = ErrorBadRequest("phone number is invalid")
 
 func (p *Phone) UnmarshalJSON(data []byte) error {
 	var value string

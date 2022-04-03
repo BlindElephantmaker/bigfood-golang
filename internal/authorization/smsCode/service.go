@@ -1,7 +1,7 @@
 package smsCode
 
-import "bigfood/internal/user"
+import "bigfood/internal/helpers"
 
 type Service interface {
-	Send(text string, phone user.Phone) error
+	Send(text string, phone helpers.Phone) error
 }

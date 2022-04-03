@@ -1,16 +1,11 @@
 package controller
 
 import (
-	"bigfood/internal/table"
 	"bigfood/internal/table/actions/tableCreate"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
-
-type TableCreateResponse struct {
-	Table *table.Table `json:"table"`
-}
 
 // tableCreate
 // @Summary      Create table
@@ -20,7 +15,7 @@ type TableCreateResponse struct {
 // @Accept       json
 // @Produce      json
 // @Param        input  body      tableCreate.Message   true  "Body"
-// @Success      200    {object}  TableCreateResponse   "Success"
+// @Success      200    {object}  table.Table           "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid data"
 // @Failure      401    {object}  server.ResponseError  "Access Denied"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
@@ -37,11 +32,11 @@ func (controller *Controller) tableCreate(c *gin.Context) {
 	//	return
 	//}
 
-	t, err := controller.handlers.TableCreateHandler.Run(&message)
+	response, err := controller.handlers.TableCreateHandler.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, &TableCreateResponse{t})
+	c.JSON(http.StatusOK, response)
 }

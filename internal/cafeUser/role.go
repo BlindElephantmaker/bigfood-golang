@@ -1,6 +1,6 @@
 package cafeUser
 
-import "errors"
+import "bigfood/internal/helpers"
 
 const (
 	Owner   Role = "owner"
@@ -11,7 +11,7 @@ const (
 type Role string
 type Roles []Role
 
-var ErrorUserRoleInvalid = errors.New("user role invalid")
+var errorUserRoleInvalid = helpers.ErrorBadRequest("user role invalid")
 
 func parseRole(value string) (Role, error) {
 	role := Role(value)
@@ -20,7 +20,7 @@ func parseRole(value string) (Role, error) {
 		return role, nil
 	}
 
-	return "", ErrorUserRoleInvalid
+	return "", errorUserRoleInvalid
 }
 
 func ParseRoles(values []string) (Roles, error) {

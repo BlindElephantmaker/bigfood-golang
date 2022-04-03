@@ -7,10 +7,6 @@ import (
 	"net/http"
 )
 
-type TableDeleteAllResponse struct {
-	Success bool `json:"success" example:"true"`
-}
-
 // tableDeleteAll
 // @Summary      Delete all tables
 // @Security     ApiKeyAuth

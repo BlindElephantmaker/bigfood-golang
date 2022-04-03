@@ -1,4 +1,4 @@
-package table
+package reserve
 
 import (
 	"bigfood/internal/helpers"
@@ -7,16 +7,16 @@ import (
 
 type Id helpers.Uuid
 
-var errorTableIdIsInvalidFormat = errors.New("table id is invalid format")
+var errorReserveIdIsInvalidFormat = errors.New("reserve id is invalid format")
 
-func NewId() Id {
+func newId() Id {
 	return Id(helpers.NewUuid())
 }
 
 func (i *Id) UnmarshalJSON(data []byte) error {
 	uuid, err := helpers.UnmarshalUuid(data)
 	if err != nil {
-		return errorTableIdIsInvalidFormat
+		return errorReserveIdIsInvalidFormat
 	}
 	*i = Id(*uuid)
 	return nil

@@ -1,6 +1,8 @@
 package user
 
 import (
+	"bigfood/internal/helpers"
+	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 )
@@ -23,17 +25,25 @@ func (r *RepositoryPsql) Add(u *User) error {
 func (r *RepositoryPsql) Get(id Id) (*User, error) {
 	var user User
 	query := fmt.Sprintf("SELECT id, name, phone FROM %s WHERE id = $1", table)
-	if err := r.db.Get(&user, query, id); err != nil {
+	err := r.db.Get(&user, query, id)
+	if err == sql.ErrNoRows {
+		return nil, NotExist
+	}
+	if err != nil {
 		return nil, err
 	}
 
 	return &user, nil
 }
 
-func (r *RepositoryPsql) GetByPhone(phone Phone) (*User, error) {
+func (r *RepositoryPsql) GetByPhone(phone helpers.Phone) (*User, error) {
 	var user User
 	query := fmt.Sprintf("SELECT id, name, phone FROM %s WHERE phone = $1", table)
-	if err := r.db.Get(&user, query, phone); err != nil {
+	err := r.db.Get(&user, query, phone)
+	if err == sql.ErrNoRows {
+		return nil, NotExist
+	}
+	if err != nil {
 		return nil, err
 	}
 
@@ -48,13 +58,4 @@ func (r *RepositoryPsql) Update(u *User) error {
 	})
 
 	return err
-}
-
-func (r *RepositoryPsql) IsExistByPhone(phone Phone) (bool, error) {
-	isExist := false
-	query := fmt.Sprintf("SELECT EXISTS(SELECT id, name, phone FROM %s WHERE phone = $1)", table)
-	row := r.db.QueryRow(query, phone)
-	err := row.Scan(&isExist)
-
-	return isExist, err
 }
