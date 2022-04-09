@@ -612,12 +612,85 @@ var doc = `{
                 "tags": [
                     "reserve"
                 ],
-                "summary": "Get reserve list by table",
+                "summary": "Get reserve list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "table-id",
+                        "name": "table-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "schema": {
                             "$ref": "#/definitions/reserveListByTable.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/reserve/table/{table-id}/history": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get reserve history list by table",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Get reserve history",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "table-id",
+                        "name": "table-id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/reserveHistoryByTable.Response"
                         }
                     },
                     "400": {
@@ -707,6 +780,15 @@ var doc = `{
                     "reserve"
                 ],
                 "summary": "Get reserve",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "reserve-id",
+                        "name": "reserve-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Success",
@@ -722,12 +804,6 @@ var doc = `{
                     },
                     "401": {
                         "description": "Access Denied",
-                        "schema": {
-                            "$ref": "#/definitions/server.ResponseError"
-                        }
-                    },
-                    "422": {
-                        "description": "Not exist",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseError"
                         }
@@ -1490,6 +1566,17 @@ var doc = `{
                 "until-data": {
                     "type": "string",
                     "example": "RFC3339"
+                }
+            }
+        },
+        "reserveHistoryByTable.Response": {
+            "type": "object",
+            "properties": {
+                "reserves": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reserve.Reserve"
+                    }
                 }
             }
         },

@@ -8,15 +8,16 @@ import (
 )
 
 // reserveListByTable
-// @Summary      Get reserve list by table
+// @Summary      Get reserve list
 // @Security     ApiKeyAuth
 // @Description  Get reserve list by table
 // @Tags         reserve
 // @Produce      json
-// @Success      200  {object}  reserveListByTable.Response  "Success"
-// @Failure      400  {object}  server.ResponseError         "Invalid data"
-// @Failure      401  {object}  server.ResponseError         "Access Denied"
-// @Failure      500  {object}  server.ResponseError         "Internal Server Error"
+// @Param        table-id  path      string                       true  "table-id"
+// @Success      200       {object}  reserveListByTable.Response  "Success"
+// @Failure      400       {object}  server.ResponseError         "Invalid data"
+// @Failure      401       {object}  server.ResponseError         "Access Denied"
+// @Failure      500       {object}  server.ResponseError         "Internal Server Error"
 // @Router       /reserve/table/{table-id} [get]
 func (controller *Controller) reserveListByTable(c *gin.Context) {
 	tableId, err := table.ParseId(c.Param("table-id"))

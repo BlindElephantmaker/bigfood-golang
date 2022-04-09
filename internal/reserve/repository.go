@@ -16,6 +16,7 @@ type Repository interface {
 	Get(Id) (*Reserve, error)
 	GetActualByTableId(table.Id) ([]*Reserve, error)
 	GetDeletedByTableId(table.Id) ([]*Reserve, error)
+	GetHistoryByTableId(tableId table.Id, limit int, offset int) ([]*Reserve, error)
 	Update(*Reserve) error
 	Delete(Id) error
 	Undelete(Id) error

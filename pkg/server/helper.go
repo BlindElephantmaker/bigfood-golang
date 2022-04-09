@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
+	"strconv"
 )
 
 type ResponseError struct {
@@ -46,4 +47,13 @@ func ParseJsonRequestToMessage(c *gin.Context, message interface{}) error {
 		NewResponseError(c, http.StatusBadRequest, ErrorParseJsonRequestToMessage) // todo: show validation error
 	}
 	return err
+}
+
+func GetQueryParamInt(c *gin.Context, key string, def int) int {
+	valStr := c.Request.URL.Query().Get(key)
+	valInt, err := strconv.Atoi(valStr)
+	if err != nil {
+		return def
+	}
+	return valInt
 }

@@ -13,7 +13,8 @@ import (
 	"bigfood/internal/reserve/actions/delete"
 	"bigfood/internal/reserve/actions/edit"
 	"bigfood/internal/reserve/actions/get"
-	reserveListByTable "bigfood/internal/reserve/actions/listByTable"
+	"bigfood/internal/reserve/actions/historyByTable"
+	"bigfood/internal/reserve/actions/listByTable"
 	"bigfood/internal/reserve/actions/undelete"
 	"bigfood/internal/table/actions/createMass"
 	"bigfood/internal/table/actions/getList"
@@ -25,27 +26,28 @@ import (
 )
 
 type Handlers struct {
-	SendSmsCode               *sendSmsCode.Handler
-	UserAuthHandler           *auth.Handler
-	RefreshTokenHandler       *refreshToken.Handler
-	UserEditHandler           *userEdit.Handler
-	CafeCreateHandler         *createCafe.Handler
-	TableCreateHandler        *tableCreate.Handler
-	TableCreateMassHandler    *createMass.Handler
-	TableGetListHandler       *getList.Handler
-	TableEditHandler          *tableEdit.Handler
-	TableDeleteHandler        *tableDelete.Handler
-	TableDeleteAllHandler     *tableDeleteAll.Handler
-	CafeUserCreateHandler     *cafeUserCreate.Handler
-	CafeUserListHandler       *cafeUserList.Handler
-	CafeUserDeleteHandler     *cafeUserDelete.Handler
-	CafeUserEditHandler       *cafeUserEdit.Handler
-	ReserveCreateHandler      *reserveCreate.Handler
-	ReserveGetHandler         *reserveGet.Handler
-	ReserveDeleteHandler      *reserveDelete.Handler
-	ReserveUndeleteHandler    *reserveUndelete.Handler
-	ReserveEditHandler        *reserveEdit.Handler
-	ReserveListByTableHandler *reserveListByTable.Handler
+	SendSmsCode                  *sendSmsCode.Handler
+	UserAuthHandler              *auth.Handler
+	RefreshTokenHandler          *refreshToken.Handler
+	UserEditHandler              *userEdit.Handler
+	CafeCreateHandler            *createCafe.Handler
+	TableCreateHandler           *tableCreate.Handler
+	TableCreateMassHandler       *createMass.Handler
+	TableGetListHandler          *getList.Handler
+	TableEditHandler             *tableEdit.Handler
+	TableDeleteHandler           *tableDelete.Handler
+	TableDeleteAllHandler        *tableDeleteAll.Handler
+	CafeUserCreateHandler        *cafeUserCreate.Handler
+	CafeUserListHandler          *cafeUserList.Handler
+	CafeUserDeleteHandler        *cafeUserDelete.Handler
+	CafeUserEditHandler          *cafeUserEdit.Handler
+	ReserveCreateHandler         *reserveCreate.Handler
+	ReserveGetHandler            *reserveGet.Handler
+	ReserveDeleteHandler         *reserveDelete.Handler
+	ReserveUndeleteHandler       *reserveUndelete.Handler
+	ReserveEditHandler           *reserveEdit.Handler
+	ReserveListByTableHandler    *reserveListByTable.Handler
+	ReserveHistoryByTableHandler *reserveHistoryByTable.Handler
 }
 
 func NewHandlers(repositories *Repositories, services *Services) *Handlers {
@@ -122,6 +124,9 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 			services.reserveActionHelper,
 		),
 		ReserveListByTableHandler: reserveListByTable.New(
+			repositories.ReserveRepository,
+		),
+		ReserveHistoryByTableHandler: reserveHistoryByTable.New(
 			repositories.ReserveRepository,
 		),
 	}

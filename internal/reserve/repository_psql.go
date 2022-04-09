@@ -39,16 +39,21 @@ WHERE id = $1
 }
 
 func (r *RepositoryPsql) GetActualByTableId(tableId table.Id) ([]*Reserve, error) {
-	conditions := "table_id = $1 AND from_date > $2 AND deleted_at IS NULL"
-	return r.getList(tableId, conditions)
+	conditions := "table_id = $1 AND until_date > $2 AND deleted_at IS NULL ORDER BY from_date"
+	return r.getList(conditions, tableId, helpers.NowTime())
 }
 
 func (r *RepositoryPsql) GetDeletedByTableId(tableId table.Id) ([]*Reserve, error) {
-	conditions := "table_id = $1 AND from_date > $2 AND deleted_at IS NOT NULL"
-	return r.getList(tableId, conditions)
+	conditions := "table_id = $1 AND until_date > $2 AND deleted_at IS NOT NULL ORDER BY from_date"
+	return r.getList(conditions, tableId, helpers.NowTime())
 }
 
-func (r *RepositoryPsql) getList(tableId table.Id, conditions string) ([]*Reserve, error) {
+func (r *RepositoryPsql) GetHistoryByTableId(tableId table.Id, limit int, offset int) ([]*Reserve, error) {
+	conditions := "table_id = $1 AND until_date < $2 ORDER BY until_date DESC LIMIT $3 OFFSET $4"
+	return r.getList(conditions, tableId, helpers.NowTime(), limit, limit*offset)
+}
+
+func (r *RepositoryPsql) getList(conditions string, args ...interface{}) ([]*Reserve, error) {
 	var reserves []*Reserve
 	query := fmt.Sprintf(`
 SELECT id
@@ -60,10 +65,9 @@ SELECT id
      , until_date
 FROM %s
 WHERE %s
-ORDER BY from_date
 `, tableReserve, conditions)
 
-	if err := r.db.Select(&reserves, query, tableId, helpers.NowTime()); err != nil {
+	if err := r.db.Select(&reserves, query, args...); err != nil {
 		return nil, err
 	}
 
