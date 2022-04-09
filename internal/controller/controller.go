@@ -63,6 +63,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 			apiReserve.POST("/", controller.reserveCreate)
 			apiReserve.DELETE("/", controller.reserveDelete)
 			apiReserve.PUT("/undelete", controller.reserveUndelete)
+			apiReserve.GET("/table/:table-id", controller.reserveListByTable)
 		}
 	}
 

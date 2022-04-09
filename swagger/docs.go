@@ -598,6 +598,49 @@ var doc = `{
                 }
             }
         },
+        "/reserve/table/{table-id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get reserve list by table",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Get reserve list by table",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/reserveListByTable.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/reserve/undelete": {
             "put": {
                 "security": [
@@ -1447,6 +1490,23 @@ var doc = `{
                 "until-data": {
                     "type": "string",
                     "example": "RFC3339"
+                }
+            }
+        },
+        "reserveListByTable.Response": {
+            "type": "object",
+            "properties": {
+                "actual": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reserve.Reserve"
+                    }
+                },
+                "deleted": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reserve.Reserve"
+                    }
                 }
             }
         },

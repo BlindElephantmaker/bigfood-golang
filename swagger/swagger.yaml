@@ -270,6 +270,17 @@ definitions:
     - table-id
     - until-data
     type: object
+  reserveListByTable.Response:
+    properties:
+      actual:
+        items:
+          $ref: '#/definitions/reserve.Reserve'
+        type: array
+      deleted:
+        items:
+          $ref: '#/definitions/reserve.Reserve'
+        type: array
+    type: object
   reserveUndelete.Message:
     properties:
       reserve-id:
@@ -766,6 +777,33 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get reserve
+      tags:
+      - reserve
+  /reserve/table/{table-id}:
+    get:
+      description: Get reserve list by table
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/reserveListByTable.Response'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get reserve list by table
       tags:
       - reserve
   /reserve/undelete:

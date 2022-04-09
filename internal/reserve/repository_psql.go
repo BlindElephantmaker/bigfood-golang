@@ -2,6 +2,7 @@ package reserve
 
 import (
 	"bigfood/internal/helpers"
+	"bigfood/internal/table"
 	"database/sql"
 	"fmt"
 	"github.com/jmoiron/sqlx"
@@ -35,6 +36,42 @@ WHERE id = $1
 		return nil, notExist
 	}
 	return &reserve, err
+}
+
+func (r *RepositoryPsql) GetActualByTableId(tableId table.Id) ([]*Reserve, error) {
+	conditions := "table_id = $1 AND from_date > $2 AND deleted_at IS NULL"
+	return r.getList(tableId, conditions)
+}
+
+func (r *RepositoryPsql) GetDeletedByTableId(tableId table.Id) ([]*Reserve, error) {
+	conditions := "table_id = $1 AND from_date > $2 AND deleted_at IS NOT NULL"
+	return r.getList(tableId, conditions)
+}
+
+func (r *RepositoryPsql) getList(tableId table.Id, conditions string) ([]*Reserve, error) {
+	var reserves []*Reserve
+	query := fmt.Sprintf(`
+SELECT id
+     , table_id
+     , contact_id
+     , comment
+     , guest_count
+     , from_date
+     , until_date
+FROM %s
+WHERE %s
+ORDER BY from_date
+`, tableReserve, conditions)
+
+	if err := r.db.Select(&reserves, query, tableId, helpers.NowTime()); err != nil {
+		return nil, err
+	}
+
+	if len(reserves) == 0 {
+		return []*Reserve{}, nil
+	}
+
+	return reserves, nil
 }
 
 func (r *RepositoryPsql) Add(reserve *Reserve, createdAt time.Time) error {
