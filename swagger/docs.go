@@ -426,6 +426,67 @@ var doc = `{
             }
         },
         "/reserve": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Reserve edit",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "reserve"
+                ],
+                "summary": "Reserve edit",
+                "parameters": [
+                    {
+                        "description": "Body",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reserveEdit.Message"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/reserve.Reserve"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            },
             "post": {
                 "security": [
                     {
@@ -450,7 +511,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/reserveCreate.Message"
+                            "$ref": "#/definitions/reserveAction.Message"
                         }
                     }
                 ],
@@ -474,7 +535,7 @@ var doc = `{
                         }
                     },
                     "422": {
-                        "description": "Not exist",
+                        "description": "Unprocessable Entity",
                         "schema": {
                             "$ref": "#/definitions/server.ResponseError"
                         }
@@ -1286,7 +1347,7 @@ var doc = `{
                 }
             }
         },
-        "reserveCreate.Message": {
+        "reserveAction.Message": {
             "type": "object",
             "required": [
                 "comment",
@@ -1334,6 +1395,50 @@ var doc = `{
                 "reserve-id": {
                     "type": "string",
                     "example": "uuid"
+                }
+            }
+        },
+        "reserveEdit.Message": {
+            "type": "object",
+            "required": [
+                "comment",
+                "from-data",
+                "guest-count",
+                "reserve-id",
+                "table-id",
+                "until-data"
+            ],
+            "properties": {
+                "comment": {
+                    "type": "string"
+                },
+                "contact-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "from-data": {
+                    "type": "string",
+                    "example": "RFC3339"
+                },
+                "guest-count": {
+                    "type": "integer",
+                    "example": 4
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "+71234567890"
+                },
+                "reserve-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "table-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "until-data": {
+                    "type": "string",
+                    "example": "RFC3339"
                 }
             }
         },

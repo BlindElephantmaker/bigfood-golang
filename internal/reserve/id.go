@@ -9,7 +9,7 @@ type Id helpers.Uuid
 
 var errorReserveIdIsInvalidFormat = errors.New("reserve id is invalid format")
 
-func newId() Id {
+func NewId() Id {
 	return Id(helpers.NewUuid())
 }
 

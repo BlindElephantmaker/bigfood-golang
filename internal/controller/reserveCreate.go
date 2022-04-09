@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/reserve/actions/create"
+	"bigfood/internal/reserve/actions"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -14,24 +14,20 @@ import (
 // @Tags         reserve
 // @Accept       json
 // @Produce      json
-// @Param        input  body      reserveCreate.Message  true  "Body"
+// @Param        input  body      reserveAction.Message  true  "Body"
 // @Success      200    {object}  reserve.Reserve        "Success"
 // @Failure      400    {object}  server.ResponseError   "Invalid data"
 // @Failure      401    {object}  server.ResponseError   "Access Denied"
-// @Failure      422    {object}  server.ResponseError   "Not exist"
+// @Failure      422    {object}  server.ResponseError   "Unprocessable Entity"
 // @Failure      500    {object}  server.ResponseError   "Internal Server Error"
 // @Router       /reserve [post]
 func (controller *Controller) reserveCreate(c *gin.Context) {
-	var message reserveCreate.Message
+	var message reserveAction.Message
 	err := server.ParseJsonRequestToMessage(c, &message)
 	if err != nil {
 		return
 	}
 	//todo: permissions
-	//if !true {
-	//	server.AccessDenied(c)
-	//	return
-	//}
 
 	response, err := controller.handlers.ReserveCreateHandler.Run(&message)
 	if err != nil {

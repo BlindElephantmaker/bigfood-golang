@@ -22,6 +22,7 @@ type Reserve struct {
 }
 
 func NewReserve(
+	id Id,
 	tableId table.Id,
 	contactId contact.Id,
 	comment Comment,
@@ -36,7 +37,7 @@ func NewReserve(
 	}
 
 	return &Reserve{
-		Id:         newId(),
+		Id:         id,
 		TableId:    tableId,
 		ContactId:  contactId,
 		Comment:    comment,
