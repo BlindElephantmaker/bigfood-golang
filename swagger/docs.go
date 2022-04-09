@@ -1068,16 +1068,8 @@ var doc = `{
         "actions.Response": {
             "type": "object",
             "properties": {
-                "cafe-id": {
-                    "type": "string",
-                    "example": "uuid"
-                },
-                "comment": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string",
-                    "example": "uuid"
+                "cafeUser": {
+                    "$ref": "#/definitions/cafeUser.CafeUser"
                 },
                 "roles": {
                     "description": "todo: get list or roles from const",
@@ -1091,11 +1083,7 @@ var doc = `{
                         "hostess"
                     ]
                 },
-                "user-id": {
-                    "type": "string",
-                    "example": "uuid"
-                },
-                "user.Name": {
+                "user-name": {
                     "type": "string"
                 }
             }
@@ -1140,6 +1128,26 @@ var doc = `{
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "string",
+                    "example": "uuid"
+                }
+            }
+        },
+        "cafeUser.CafeUser": {
+            "type": "object",
+            "properties": {
+                "cafe-id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string",
+                    "example": "uuid"
+                },
+                "user-id": {
                     "type": "string",
                     "example": "uuid"
                 }
@@ -1514,7 +1522,8 @@ var doc = `{
                     "type": "string"
                 },
                 "seats": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 4
                 },
                 "title": {
                     "type": "string"

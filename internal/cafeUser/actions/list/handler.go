@@ -38,7 +38,7 @@ func (h *Handler) Run(m *Message) (*Response, error) {
 		response = append(response, &actions.Response{
 			CafeUser: cafeUsr,
 			Roles:    *roles,
-			Name:     usr.Name,
+			UserName: usr.Name,
 		})
 	}
 

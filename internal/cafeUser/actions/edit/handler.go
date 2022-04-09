@@ -46,7 +46,7 @@ func (h *Handler) Run(m *Message) (*actions.Response, error) {
 	return &actions.Response{
 		CafeUser: cafeUsr,
 		Roles:    *roles,
-		Name:     usr.Name,
+		UserName: usr.Name,
 	}, nil
 }
 

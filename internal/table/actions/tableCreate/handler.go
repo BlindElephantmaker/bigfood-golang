@@ -10,7 +10,7 @@ type Message struct {
 	CafeId  cafe.Id        `json:"cafe-id" binding:"required" example:"uuid"`
 	Title   *table.Title   `json:"title"`
 	Comment *table.Comment `json:"comment"`
-	Seats   *table.Seats   `json:"seats"`
+	Seats   *table.Seats   `json:"seats" example:"4"`
 }
 
 func (h *Handler) Run(m *Message) (*table.Table, error) {

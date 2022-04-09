@@ -2,14 +2,8 @@ basePath: /
 definitions:
   actions.Response:
     properties:
-      cafe-id:
-        example: uuid
-        type: string
-      comment:
-        type: string
-      id:
-        example: uuid
-        type: string
+      cafeUser:
+        $ref: '#/definitions/cafeUser.CafeUser'
       roles:
         description: 'todo: get list or roles from const'
         example:
@@ -19,10 +13,7 @@ definitions:
         items:
           type: string
         type: array
-      user-id:
-        example: uuid
-        type: string
-      user.Name:
+      user-name:
         type: string
     type: object
   auth.Message:
@@ -53,6 +44,20 @@ definitions:
   cafe.Cafe:
     properties:
       id:
+        example: uuid
+        type: string
+    type: object
+  cafeUser.CafeUser:
+    properties:
+      cafe-id:
+        example: uuid
+        type: string
+      comment:
+        type: string
+      id:
+        example: uuid
+        type: string
+      user-id:
         example: uuid
         type: string
     type: object
@@ -313,6 +318,7 @@ definitions:
       comment:
         type: string
       seats:
+        example: 4
         type: integer
       title:
         type: string

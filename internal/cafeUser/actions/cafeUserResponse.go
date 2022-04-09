@@ -6,7 +6,7 @@ import (
 )
 
 type Response struct {
-	*cafeUser.CafeUser
-	Roles     cafeUser.Roles `json:"roles" example:"owner,admin,hostess"` // todo: get list or roles from const
-	user.Name `json:"name"`
+	CafeUser *cafeUser.CafeUser
+	Roles    cafeUser.Roles `json:"roles" example:"owner,admin,hostess"` // todo: get list or roles from const
+	UserName user.Name      `json:"user-name"`
 }
