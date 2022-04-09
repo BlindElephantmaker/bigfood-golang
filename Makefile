@@ -23,4 +23,8 @@ swag-fmt:
 swag:
 	make swag-fmt && make swag-init
 
-# todo: build for deploy
+migrate-up-test:
+	migrate -path ./migrations -database 'postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@185.246.64.66:32075/$(POSTGRES_DB)?sslmode=disable' up
+
+#build: # todo: build for deploy
+#    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bigfood ./cmd/app/

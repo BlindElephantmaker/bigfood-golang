@@ -32,7 +32,7 @@ func main() {
 	}
 
 	// todo: test server can't read config, fix it
-	//initConfig()
+	//initConfigDeploy()
 
 	if err := godotenv.Load(); err != nil { // todo: it is use global. How move to local?
 		log.Fatalf("failed to load env variables: %s", err.Error())
@@ -80,10 +80,10 @@ func initConfig() error {
 }
 
 // todo: test server can't read config, fix it
-//func initConfig() {
-//	viper.Set("server.port", "8000")
-//	viper.Set("server.log-level", "debug")
-//}
+func initConfigDeploy() {
+	viper.Set("server.port", "8000")
+	viper.Set("server.log-level", "debug")
+}
 
 // todo: it is use global. How move to local?
 func initLogger(logLevel string) error {
