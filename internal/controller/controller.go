@@ -41,8 +41,8 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 			{
 				apiCafeUser.GET("list", controller.cafeUserList)
 				apiCafeUser.POST("", controller.cafeUserCreate)
-				apiCafeUser.DELETE("", controller.cafeUserDelete)
 				apiCafeUser.PUT("", controller.cafeUserEdit)
+				apiCafeUser.DELETE("", controller.cafeUserDelete)
 			}
 		}
 
@@ -50,9 +50,9 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		{
 			apiTable.GET("/list/:cafe-id", controller.tableList)
 			apiTable.GET("/list/:cafe-id/available", controller.tableListAvailable)
-			apiTable.PUT("/", controller.tableEdit)
 			apiTable.POST("/", controller.tableCreate)
 			apiTable.POST("/create-mass", controller.tableCreateMass)
+			apiTable.PUT("/", controller.tableEdit)
 			apiTable.DELETE("/", controller.tableDelete)
 			apiTable.DELETE("/delete-all", controller.tableDeleteAll)
 		}
@@ -60,12 +60,12 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 		apiReserve := api.Group("reserve")
 		{
 			apiReserve.GET("/:reserve-id", controller.reserveGet)
-			apiReserve.PUT("/", controller.reserveEdit)
-			apiReserve.POST("/", controller.reserveCreate)
-			apiReserve.DELETE("/", controller.reserveDelete)
-			apiReserve.PUT("/undelete", controller.reserveUndelete)
 			apiReserve.GET("/table/:table-id", controller.reserveListByTable)
 			apiReserve.GET("/table/:table-id/history", controller.reserveHistoryByTable)
+			apiReserve.POST("/", controller.reserveCreate)
+			apiReserve.PUT("/", controller.reserveEdit)
+			apiReserve.PUT("/undelete", controller.reserveUndelete)
+			apiReserve.DELETE("/", controller.reserveDelete)
 		}
 	}
 
