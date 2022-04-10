@@ -25,7 +25,7 @@ func (controller *Controller) reserveListByTable(c *gin.Context) {
 		server.StatusBadRequest(c, err)
 		return
 	}
-	// todo: permissions
+	// todo permission
 
 	response, err := controller.handlers.ReserveListByTable.Run(tableId)
 	if err != nil {

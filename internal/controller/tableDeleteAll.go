@@ -25,11 +25,7 @@ func (controller *Controller) tableDeleteAll(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo
-	//if !userIsAdmin(c, message.CafeId) {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
 	err = controller.handlers.TableDeleteAll.Run(&message)
 	if err != nil {

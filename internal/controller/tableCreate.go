@@ -26,11 +26,7 @@ func (controller *Controller) tableCreate(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo
-	//if !userIsAdmin(c, message.CafeId) {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
 	response, err := controller.handlers.TableCreate.Run(&message)
 	if err != nil {

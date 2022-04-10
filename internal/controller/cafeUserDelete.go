@@ -25,7 +25,7 @@ func (controller *Controller) cafeUserDelete(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo: permissions role and cafeUserId
+	// todo permission
 
 	err = controller.handlers.CafeUserDelete.Run(&message)
 	if err != nil {

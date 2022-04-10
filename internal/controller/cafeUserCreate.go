@@ -27,11 +27,7 @@ func (controller *Controller) cafeUserCreate(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo
-	//if !userIsAdmin(c, message.CafeId) {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
 	response, err := controller.handlers.CafeUserCreate.Run(&message)
 	if err != nil {

@@ -25,7 +25,7 @@ func (controller *Controller) tableDelete(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo: permission Admin and table id
+	// todo permission
 
 	err = controller.handlers.TableDelete.Run(&message)
 	if err != nil {

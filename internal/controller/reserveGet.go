@@ -25,11 +25,7 @@ func (controller *Controller) reserveGet(c *gin.Context) {
 		server.StatusBadRequest(c, err)
 		return
 	}
-	// todo: permissions
-	//if !true {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
 	response, err := controller.handlers.ReserveGet.Run(reserveId)
 	if err != nil {

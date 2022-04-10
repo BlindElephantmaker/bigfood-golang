@@ -27,7 +27,7 @@ func (controller *Controller) cafeUserEdit(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo: permissions role and cafeUserId
+	// todo permission
 
 	response, err := controller.handlers.CafeUserEdit.Run(&message)
 	if err != nil {

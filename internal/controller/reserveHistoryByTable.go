@@ -29,7 +29,7 @@ func (controller *Controller) reserveHistoryByTable(c *gin.Context) {
 	}
 	limit := server.GetQueryParamInt(c, "limit", 20)
 	offset := server.GetQueryParamInt(c, "offset", 0)
-	// todo: permissions
+	// todo permission
 
 	response, err := controller.handlers.ReserveHistoryByTable.Run(tableId, limit, offset)
 	if err != nil {

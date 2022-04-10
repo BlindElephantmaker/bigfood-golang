@@ -25,7 +25,7 @@ func (controller *Controller) tableEdit(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo: permission Admin and table id
+	// todo permission
 
 	err = controller.handlers.TableEdit.Run(&message)
 	if err != nil {

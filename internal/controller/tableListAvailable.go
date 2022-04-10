@@ -37,7 +37,7 @@ func (controller *Controller) tableListAvailable(c *gin.Context) {
 		server.StatusBadRequest(c, err)
 		return
 	}
-	// todo: permissions
+	// todo permission
 
 	response, err := controller.handlers.TableListAvailable.Run(cafeId, from, until)
 	if err != nil {

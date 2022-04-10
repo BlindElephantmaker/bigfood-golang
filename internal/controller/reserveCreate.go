@@ -27,7 +27,7 @@ func (controller *Controller) reserveCreate(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	//todo: permissions
+	// todo permission
 
 	response, err := controller.handlers.ReserveCreate.Run(&message)
 	if err != nil {

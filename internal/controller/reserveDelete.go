@@ -25,11 +25,7 @@ func (controller *Controller) reserveDelete(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo: permissions
-	//if !true {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
 	if err := controller.handlers.ReserveDelete.Run(&message); err != nil {
 		server.InternalServerError(c, err)
