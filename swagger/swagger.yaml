@@ -47,6 +47,11 @@ definitions:
         example: uuid
         type: string
     type: object
+  cafeCreate.Response:
+    properties:
+      cafe:
+        $ref: '#/definitions/cafe.Cafe'
+    type: object
   cafeUser.CafeUser:
     properties:
       cafe-id:
@@ -114,11 +119,6 @@ definitions:
         items:
           $ref: '#/definitions/actions.Response'
         type: array
-    type: object
-  createCafe.Response:
-    properties:
-      cafe:
-        $ref: '#/definitions/cafe.Cafe'
     type: object
   createMass.Message:
     properties:
@@ -487,7 +487,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/createCafe.Response'
+            $ref: '#/definitions/cafeCreate.Response'
         "500":
           description: Internal Server Error
           schema:

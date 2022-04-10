@@ -183,7 +183,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/createCafe.Response"
+                            "$ref": "#/definitions/cafeCreate.Response"
                         }
                     },
                     "500": {
@@ -1311,6 +1311,14 @@ var doc = `{
                 }
             }
         },
+        "cafeCreate.Response": {
+            "type": "object",
+            "properties": {
+                "cafe": {
+                    "$ref": "#/definitions/cafe.Cafe"
+                }
+            }
+        },
         "cafeUser.CafeUser": {
             "type": "object",
             "properties": {
@@ -1406,14 +1414,6 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/actions.Response"
                     }
-                }
-            }
-        },
-        "createCafe.Response": {
-            "type": "object",
-            "properties": {
-                "cafe": {
-                    "$ref": "#/definitions/cafe.Cafe"
                 }
             }
         },

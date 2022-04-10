@@ -169,7 +169,7 @@
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/createCafe.Response"
+                            "$ref": "#/definitions/cafeCreate.Response"
                         }
                     },
                     "500": {
@@ -1297,6 +1297,14 @@
                 }
             }
         },
+        "cafeCreate.Response": {
+            "type": "object",
+            "properties": {
+                "cafe": {
+                    "$ref": "#/definitions/cafe.Cafe"
+                }
+            }
+        },
         "cafeUser.CafeUser": {
             "type": "object",
             "properties": {
@@ -1392,14 +1400,6 @@
                     "items": {
                         "$ref": "#/definitions/actions.Response"
                     }
-                }
-            }
-        },
-        "createCafe.Response": {
-            "type": "object",
-            "properties": {
-                "cafe": {
-                    "$ref": "#/definitions/cafe.Cafe"
                 }
             }
         },
