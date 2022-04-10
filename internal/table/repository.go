@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-const table = "tables"
-
 type Repository interface {
 	AddSlice(tables []*Table, createdAt time.Time) error
 	Get(Id) (*Table, error)

@@ -18,6 +18,7 @@ import (
 	"bigfood/internal/reserve/actions/undelete"
 	"bigfood/internal/table/actions/createMass"
 	"bigfood/internal/table/actions/getList"
+	"bigfood/internal/table/actions/getListAvailable"
 	"bigfood/internal/table/actions/tableCreate"
 	"bigfood/internal/table/actions/tableDelete"
 	"bigfood/internal/table/actions/tableDeleteAll"
@@ -34,6 +35,7 @@ type Handlers struct {
 	TableCreateHandler           *tableCreate.Handler
 	TableCreateMassHandler       *createMass.Handler
 	TableGetListHandler          *getList.Handler
+	TableGetListAvailableHandler *tableGetListAvailable.Handler
 	TableEditHandler             *tableEdit.Handler
 	TableDeleteHandler           *tableDelete.Handler
 	TableDeleteAllHandler        *tableDeleteAll.Handler
@@ -128,6 +130,9 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		),
 		ReserveHistoryByTableHandler: reserveHistoryByTable.New(
 			repositories.ReserveRepository,
+		),
+		TableGetListAvailableHandler: tableGetListAvailable.New(
+			repositories.TableGetListAvailableRepository,
 		),
 	}
 }

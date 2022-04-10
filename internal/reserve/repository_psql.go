@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const PsqlReserve = "reserve"
+
 type RepositoryPsql struct {
 	db *sqlx.DB
 }
@@ -30,7 +32,7 @@ SELECT id
      , deleted_at
 FROM %s
 WHERE id = $1
-`, tableReserve)
+`, PsqlReserve)
 	err := r.db.Get(&reserve, query, reserveId)
 	if err == sql.ErrNoRows {
 		return nil, notExist
@@ -65,7 +67,7 @@ SELECT id
      , until_date
 FROM %s
 WHERE %s
-`, tableReserve, conditions)
+`, PsqlReserve, conditions)
 
 	if err := r.db.Select(&reserves, query, args...); err != nil {
 		return nil, err
@@ -86,7 +88,7 @@ func (r *RepositoryPsql) Add(reserve *Reserve, createdAt time.Time) error {
 	query := fmt.Sprintf(`
 INSERT INTO %s (id, table_id, contact_id, comment, guest_count, from_date, until_date, created_at)
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-`, tableReserve)
+`, PsqlReserve)
 
 	_, err := r.db.Exec(
 		query,
@@ -117,7 +119,7 @@ SET table_id    = :table_id
   , from_date   = :from_date
   , until_date  = :until_date
 WHERE id = :id
-`, tableReserve)
+`, PsqlReserve)
 
 	result, err := r.db.NamedExec(query, map[string]interface{}{
 		"id":          reserve.Id,
@@ -140,7 +142,7 @@ WHERE id = :id
 
 func (r *RepositoryPsql) Delete(reserveId Id) error {
 	now := helpers.NowTime()
-	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", tableReserve)
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", PsqlReserve)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"id":         reserveId,
 		"deleted_at": now,
@@ -150,7 +152,7 @@ func (r *RepositoryPsql) Delete(reserveId Id) error {
 }
 
 func (r *RepositoryPsql) Undelete(reserveId Id) error {
-	query := fmt.Sprintf("UPDATE %s SET deleted_at = NULL WHERE id = :id", tableReserve)
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = NULL WHERE id = :id", PsqlReserve)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"id": reserveId,
 	})
@@ -166,6 +168,7 @@ WHERE table_id = :table_id
   AND id != :reserve_id
   AND :from_date < until_date
   AND :until_date > from_date
+  AND deleted_at IS NULL
 `
 	rows, err := r.db.NamedQuery(query, map[string]interface{}{
 		"table_id":   reserve.TableId,

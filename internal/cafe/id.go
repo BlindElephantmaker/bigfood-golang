@@ -21,3 +21,12 @@ func (i *Id) UnmarshalJSON(data []byte) error {
 	*i = Id(*uuid)
 	return nil
 }
+
+func ParseId(value string) (Id, error) {
+	uuid, err := helpers.ParseUuid(value)
+	if err != nil {
+		return "", errorCafeIdIsInvalidFormat
+	}
+
+	return Id(uuid), nil
+}

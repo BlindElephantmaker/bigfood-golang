@@ -373,6 +373,13 @@ definitions:
     required:
     - table-id
     type: object
+  tableGetListAvailable.Response:
+    properties:
+      tables:
+        items:
+          $ref: '#/definitions/table.Table'
+        type: array
+    type: object
   userEdit.Message:
     properties:
       name:
@@ -1094,6 +1101,49 @@ paths:
       security:
       - ApiKeyAuth: []
       summary: Get table list
+      tags:
+      - table
+  /table/list/{cafe-id}/available:
+    get:
+      description: Get list available tables
+      parameters:
+      - description: cafe-id
+        in: path
+        name: cafe-id
+        required: true
+        type: string
+      - description: from
+        in: query
+        name: from-date
+        required: true
+        type: string
+      - description: until
+        in: query
+        name: until-date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: '#/definitions/tableGetListAvailable.Response'
+        "400":
+          description: Invalid data
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "401":
+          description: Access Denied
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ResponseError'
+      security:
+      - ApiKeyAuth: []
+      summary: Get list available tables
       tags:
       - table
   /user:

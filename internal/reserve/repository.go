@@ -6,8 +6,6 @@ import (
 	"time"
 )
 
-const tableReserve = "reserve"
-
 var notExist = helpers.ErrorUnprocessableEntity("reserve not exist")
 var errorReservedTimeIsBusy = helpers.ErrorBadRequest("table already reserved")
 

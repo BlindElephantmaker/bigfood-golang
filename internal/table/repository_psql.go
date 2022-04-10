@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const PsqlTables = "tables"
+
 type RepositoryPsql struct {
 	db *sqlx.DB
 }
@@ -54,7 +56,7 @@ func createInsertQuery(batchSize int) string {
 	}
 
 	query := fmt.Sprintf("INSERT INTO %s (id, cafe_id, title, comment, seats, created_at) VALUES %s",
-		table,
+		PsqlTables,
 		strings.Join(buffer, ","),
 	)
 
@@ -63,7 +65,7 @@ func createInsertQuery(batchSize int) string {
 
 func (r *RepositoryPsql) Get(tableId Id) (*Table, error) {
 	var t Table
-	query := fmt.Sprintf("SELECT id, cafe_id, title, comment, seats FROM %s WHERE id = $1", table)
+	query := fmt.Sprintf("SELECT id, cafe_id, title, comment, seats FROM %s WHERE id = $1", PsqlTables)
 	err := r.db.Get(&t, query, tableId)
 	if err != nil {
 		return nil, err
@@ -76,7 +78,7 @@ func (r *RepositoryPsql) GetByCafe(cafeId cafe.Id) ([]*Table, error) {
 	var tables []*Table
 	query := fmt.Sprintf(
 		"SELECT id, cafe_id, title, comment, seats FROM %s WHERE cafe_id = $1 AND deleted_at IS NULL ORDER BY title",
-		table,
+		PsqlTables,
 	)
 	err := r.db.Select(&tables, query, cafeId)
 	if err != nil {
@@ -87,7 +89,7 @@ func (r *RepositoryPsql) GetByCafe(cafeId cafe.Id) ([]*Table, error) {
 }
 
 func (r *RepositoryPsql) Update(t *Table) error {
-	query := fmt.Sprintf("UPDATE %s SET title = :title, comment = :comment, seats = :seats WHERE id = :id", table)
+	query := fmt.Sprintf("UPDATE %s SET title = :title, comment = :comment, seats = :seats WHERE id = :id", PsqlTables)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"id":      t.Id,
 		"title":   t.Title,
@@ -100,7 +102,7 @@ func (r *RepositoryPsql) Update(t *Table) error {
 
 func (r *RepositoryPsql) Delete(tableId Id) error {
 	now := helpers.NowTime()
-	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", table)
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND id = :id", PsqlTables)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"id":         tableId,
 		"deleted_at": now,
@@ -111,7 +113,7 @@ func (r *RepositoryPsql) Delete(tableId Id) error {
 
 func (r *RepositoryPsql) DeleteAll(cafeId cafe.Id) error {
 	now := helpers.NowTime()
-	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND cafe_id = :cafe_id", table)
+	query := fmt.Sprintf("UPDATE %s SET deleted_at = :deleted_at WHERE deleted_at IS NULL AND cafe_id = :cafe_id", PsqlTables)
 	_, err := r.db.NamedExec(query, map[string]interface{}{
 		"cafe_id":    cafeId,
 		"deleted_at": now,

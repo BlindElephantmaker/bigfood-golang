@@ -1,11 +1,13 @@
 package server
 
 import (
+	"bigfood/internal/helpers"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type ResponseError struct {
@@ -56,4 +58,9 @@ func GetQueryParamInt(c *gin.Context, key string, def int) int {
 		return def
 	}
 	return valInt
+}
+
+func GetQueryParamTime(c *gin.Context, key string) (time.Time, error) {
+	valStr := c.Request.URL.Query().Get(key)
+	return helpers.ParseTime(valStr) // todo: message for this error
 }
