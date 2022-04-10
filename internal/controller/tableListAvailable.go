@@ -7,21 +7,21 @@ import (
 	"net/http"
 )
 
-// tableGetListAvailable
+// tableListAvailable
 // @Summary      Get list available tables
 // @Security     ApiKeyAuth
 // @Description  Get list available tables
 // @Tags         table
 // @Produce      json
-// @Param        cafe-id     path      string                          true  "cafe-id"
-// @Param        from-date   query     string                          true  "from"
-// @Param        until-date  query     string                          true  "until"
-// @Success      200         {object}  tableGetListAvailable.Response  "Success"
-// @Failure      400         {object}  server.ResponseError            "Invalid data"
-// @Failure      401         {object}  server.ResponseError            "Access Denied"
-// @Failure      500         {object}  server.ResponseError            "Internal Server Error"
+// @Param        cafe-id     path      string                       true  "cafe-id"
+// @Param        from-date   query     string                       true  "from"
+// @Param        until-date  query     string                       true  "until"
+// @Success      200         {object}  tableListAvailable.Response  "Success"
+// @Failure      400         {object}  server.ResponseError         "Invalid data"
+// @Failure      401         {object}  server.ResponseError         "Access Denied"
+// @Failure      500         {object}  server.ResponseError         "Internal Server Error"
 // @Router       /table/list/{cafe-id}/available [get]
-func (controller *Controller) tableGetListAvailable(c *gin.Context) {
+func (controller *Controller) tableListAvailable(c *gin.Context) {
 	cafeId, err := cafe.ParseId(c.Param("cafe-id"))
 	if err != nil {
 		server.StatusBadRequest(c, err)
@@ -39,7 +39,7 @@ func (controller *Controller) tableGetListAvailable(c *gin.Context) {
 	}
 	// todo: permissions
 
-	response, err := controller.handlers.TableGetListAvailableHandler.Run(cafeId, from, until)
+	response, err := controller.handlers.TableListAvailable.Run(cafeId, from, until)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

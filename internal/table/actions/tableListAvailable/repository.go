@@ -1,4 +1,4 @@
-package tableGetListAvailable
+package tableListAvailable
 
 import (
 	"bigfood/internal/cafe"

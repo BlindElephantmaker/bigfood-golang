@@ -1,16 +1,16 @@
-package getList
+package tableList
 
 import (
 	"bigfood/internal/cafe"
 	"bigfood/internal/table"
 )
 
-type Message struct {
-	CafeId cafe.Id `json:"cafe-id" binding:"required" example:"uuid"`
+type Response struct {
+	Tables []*table.Table `json:"tables"`
 }
 
-func (h *Handler) Run(m *Message) ([]*table.Table, error) {
-	tables, err := h.TableRepository.GetByCafe(m.CafeId)
+func (h *Handler) Run(cafeId cafe.Id) (*Response, error) {
+	tables, err := h.TableRepository.GetByCafe(cafeId)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +18,7 @@ func (h *Handler) Run(m *Message) ([]*table.Table, error) {
 		tables = []*table.Table{}
 	}
 
-	return tables, nil
+	return &Response{tables}, nil
 }
 
 type Handler struct {

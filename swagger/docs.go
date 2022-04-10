@@ -1005,7 +1005,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.TableListResponse"
+                            "$ref": "#/definitions/createMass.Response"
                         }
                     },
                     "400": {
@@ -1080,17 +1080,14 @@ var doc = `{
                 }
             }
         },
-        "/table/list": {
+        "/table/list/{cafe-id}": {
             "get": {
                 "security": [
                     {
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Get table list of cafe",
-                "consumes": [
-                    "application/json"
-                ],
+                "description": "Get table list by cafe",
                 "produces": [
                     "application/json"
                 ],
@@ -1100,20 +1097,18 @@ var doc = `{
                 "summary": "Get table list",
                 "parameters": [
                     {
-                        "description": "Body",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/getList.Message"
-                        }
+                        "type": "string",
+                        "description": "cafe-id",
+                        "name": "cafe-id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/controller.TableListResponse"
+                            "$ref": "#/definitions/tableList.Response"
                         }
                     },
                     "400": {
@@ -1179,7 +1174,7 @@ var doc = `{
                     "200": {
                         "description": "Success",
                         "schema": {
-                            "$ref": "#/definitions/tableGetListAvailable.Response"
+                            "$ref": "#/definitions/tableListAvailable.Response"
                         }
                     },
                     "400": {
@@ -1428,17 +1423,6 @@ var doc = `{
                 }
             }
         },
-        "controller.TableListResponse": {
-            "type": "object",
-            "properties": {
-                "tables": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/table.Table"
-                    }
-                }
-            }
-        },
         "createCafe.Response": {
             "type": "object",
             "properties": {
@@ -1464,15 +1448,14 @@ var doc = `{
                 }
             }
         },
-        "getList.Message": {
+        "createMass.Response": {
             "type": "object",
-            "required": [
-                "cafe-id"
-            ],
             "properties": {
-                "cafe-id": {
-                    "type": "string",
-                    "example": "uuid"
+                "tables": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/table.Table"
+                    }
                 }
             }
         },
@@ -1788,7 +1771,18 @@ var doc = `{
                 }
             }
         },
-        "tableGetListAvailable.Response": {
+        "tableList.Response": {
+            "type": "object",
+            "properties": {
+                "tables": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/table.Table"
+                    }
+                }
+            }
+        },
+        "tableListAvailable.Response": {
             "type": "object",
             "properties": {
                 "tables": {

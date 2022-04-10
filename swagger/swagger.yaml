@@ -123,13 +123,6 @@ definitions:
           $ref: '#/definitions/actions.Response'
         type: array
     type: object
-  controller.TableListResponse:
-    properties:
-      tables:
-        items:
-          $ref: '#/definitions/table.Table'
-        type: array
-    type: object
   createCafe.Response:
     properties:
       cafe:
@@ -147,13 +140,12 @@ definitions:
     - cafe-id
     - quantity
     type: object
-  getList.Message:
+  createMass.Response:
     properties:
-      cafe-id:
-        example: uuid
-        type: string
-    required:
-    - cafe-id
+      tables:
+        items:
+          $ref: '#/definitions/table.Table'
+        type: array
     type: object
   refreshToken.Message:
     properties:
@@ -373,7 +365,14 @@ definitions:
     required:
     - table-id
     type: object
-  tableGetListAvailable.Response:
+  tableList.Response:
+    properties:
+      tables:
+        items:
+          $ref: '#/definitions/table.Table'
+        type: array
+    type: object
+  tableListAvailable.Response:
     properties:
       tables:
         items:
@@ -1017,7 +1016,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.TableListResponse'
+            $ref: '#/definitions/createMass.Response'
         "400":
           description: Invalid data
           schema:
@@ -1067,25 +1066,22 @@ paths:
       summary: Delete all tables
       tags:
       - table
-  /table/list:
+  /table/list/{cafe-id}:
     get:
-      consumes:
-      - application/json
-      description: Get table list of cafe
+      description: Get table list by cafe
       parameters:
-      - description: Body
-        in: body
-        name: input
+      - description: cafe-id
+        in: path
+        name: cafe-id
         required: true
-        schema:
-          $ref: '#/definitions/getList.Message'
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/controller.TableListResponse'
+            $ref: '#/definitions/tableList.Response'
         "400":
           description: Invalid data
           schema:
@@ -1128,7 +1124,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: '#/definitions/tableGetListAvailable.Response'
+            $ref: '#/definitions/tableListAvailable.Response'
         "400":
           description: Invalid data
           schema:

@@ -12,7 +12,11 @@ type Message struct {
 	Quantity Quantity `json:"quantity" binding:"required" example:"10"`
 }
 
-func (h *Handler) Run(m *Message) ([]*table.Table, error) {
+type Response struct {
+	Tables []*table.Table `json:"tables"`
+}
+
+func (h *Handler) Run(m *Message) (*Response, error) {
 	var tables []*table.Table
 	for i := 1; i <= int(m.Quantity); i++ {
 		title, _ := table.ParseTitle(fmt.Sprint(i))
@@ -24,7 +28,7 @@ func (h *Handler) Run(m *Message) ([]*table.Table, error) {
 		return nil, err
 	}
 
-	return tables, nil
+	return &Response{tables}, nil
 }
 
 type Handler struct {

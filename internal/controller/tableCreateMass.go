@@ -15,7 +15,7 @@ import (
 // @Accept       json
 // @Produce      json
 // @Param        input  body      createMass.Message    true  "Body"
-// @Success      200    {object}  TableListResponse     "Success"
+// @Success      200    {object}  createMass.Response   "Success"
 // @Failure      400    {object}  server.ResponseError  "Invalid data"
 // @Failure      401    {object}  server.ResponseError  "Access Denied"
 // @Failure      500    {object}  server.ResponseError  "Internal Server Error"
@@ -26,17 +26,13 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	// todo
-	//if !userIsAdmin(c, message.CafeId) {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
-	tables, err := controller.handlers.TableCreateMassHandler.Run(&message)
+	response, err := controller.handlers.TableCreateMassHandler.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, &TableListResponse{tables})
+	c.JSON(http.StatusOK, response)
 }
