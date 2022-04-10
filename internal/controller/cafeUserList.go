@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/cafeUser/actions/list"
+	"bigfood/internal/cafe"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -14,25 +14,21 @@ import (
 // @Tags         cafe user
 // @Accept       json
 // @Produce      json
-// @Param        input  body      cafeUserList.Message   true  "Body"
+// @Param        cafe-id  path      string                true  "cafe-id"
 // @Success      200    {object}  cafeUserList.Response  "Success"
 // @Failure      400    {object}  server.ResponseError   "Invalid data"
 // @Failure      401    {object}  server.ResponseError   "Access Denied"
 // @Failure      500    {object}  server.ResponseError   "Internal Server Error"
-// @Router       /cafe/user/list [get]
+// @Router       /cafe/user/list/{cafe-id} [get]
 func (controller *Controller) cafeUserList(c *gin.Context) {
-	var message cafeUserList.Message
-	err := server.ParseJsonRequestToMessage(c, &message)
+	cafeId, err := cafe.ParseId(c.Param("cafe-id"))
 	if err != nil {
+		server.StatusBadRequest(c, err)
 		return
 	}
-	// todo
-	//if !userIsHostess(c, message.CafeId) {
-	//	server.AccessDenied(c)
-	//	return
-	//}
+	// todo permission
 
-	response, err := controller.handlers.CafeUserList.Run(&message)
+	response, err := controller.handlers.CafeUserList.Run(cafeId)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

@@ -39,7 +39,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 
 			apiCafeUser := apiCafe.Group("user")
 			{
-				apiCafeUser.GET("list", controller.cafeUserList)
+				apiCafeUser.GET("list/:cafe-id", controller.cafeUserList)
 				apiCafeUser.POST("", controller.cafeUserCreate)
 				apiCafeUser.PUT("", controller.cafeUserEdit)
 				apiCafeUser.DELETE("", controller.cafeUserDelete)

@@ -7,18 +7,14 @@ import (
 	"bigfood/internal/user"
 )
 
-type Message struct {
-	CafeId cafe.Id `json:"cafe-id" binding:"required" example:"uuid"`
-}
-
 type Response struct {
 	CafeUsers []*actions.Response `json:"cafe-users"`
 }
 
-func (h *Handler) Run(m *Message) (*Response, error) {
+func (h *Handler) Run(cafeId cafe.Id) (*Response, error) {
 	responseEmpty := &Response{[]*actions.Response{}}
 
-	cafeUsers, err := h.CafeUserRepository.GetByCafe(m.CafeId)
+	cafeUsers, err := h.CafeUserRepository.GetByCafe(cafeId)
 	if err != nil {
 		return responseEmpty, err
 	}
