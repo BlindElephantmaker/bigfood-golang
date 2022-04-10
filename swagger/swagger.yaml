@@ -108,14 +108,6 @@ definitions:
     required:
     - cafe-user-id
     type: object
-  cafeUserList.Message:
-    properties:
-      cafe-id:
-        example: uuid
-        type: string
-    required:
-    - cafe-id
-    type: object
   cafeUserList.Response:
     properties:
       cafe-users:
@@ -615,18 +607,17 @@ paths:
       summary: Edit cafe user
       tags:
       - cafe user
-  /cafe/user/list:
+  /cafe/user/list/{cafe-id}:
     get:
       consumes:
       - application/json
       description: Get cafe user list
       parameters:
-      - description: Body
-        in: body
-        name: input
+      - description: cafe-id
+        in: path
+        name: cafe-id
         required: true
-        schema:
-          $ref: '#/definitions/cafeUserList.Message'
+        type: string
       produces:
       - application/json
       responses:

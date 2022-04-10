@@ -368,7 +368,7 @@ var doc = `{
                 }
             }
         },
-        "/cafe/user/list": {
+        "/cafe/user/list/{cafe-id}": {
             "get": {
                 "security": [
                     {
@@ -388,13 +388,11 @@ var doc = `{
                 "summary": "Get cafe user list",
                 "parameters": [
                     {
-                        "description": "Body",
-                        "name": "input",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/cafeUserList.Message"
-                        }
+                        "type": "string",
+                        "description": "cafe-id",
+                        "name": "cafe-id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -1397,18 +1395,6 @@ var doc = `{
                     "items": {
                         "type": "string"
                     }
-                }
-            }
-        },
-        "cafeUserList.Message": {
-            "type": "object",
-            "required": [
-                "cafe-id"
-            ],
-            "properties": {
-                "cafe-id": {
-                    "type": "string",
-                    "example": "uuid"
                 }
             }
         },
