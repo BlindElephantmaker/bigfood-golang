@@ -27,7 +27,7 @@ func (controller *Controller) reserveListByTable(c *gin.Context) {
 	}
 	// todo: permissions
 
-	response, err := controller.handlers.ReserveListByTableHandler.Run(tableId)
+	response, err := controller.handlers.ReserveListByTable.Run(tableId)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

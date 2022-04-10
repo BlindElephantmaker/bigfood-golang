@@ -25,7 +25,7 @@ func (controller *Controller) refreshToken(c *gin.Context) {
 		return
 	}
 
-	response, err := controller.handlers.RefreshTokenHandler.Run(&message)
+	response, err := controller.handlers.RefreshToken.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

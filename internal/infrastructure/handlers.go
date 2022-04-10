@@ -27,109 +27,109 @@ import (
 )
 
 type Handlers struct {
-	SendSmsCode                  *sendSmsCode.Handler
-	UserAuthHandler              *auth.Handler
-	RefreshTokenHandler          *refreshToken.Handler
-	UserEditHandler              *userEdit.Handler
-	CafeCreateHandler            *createCafe.Handler
-	TableCreateHandler           *tableCreate.Handler
-	TableCreateMassHandler       *createMass.Handler
-	TableList                    *tableList.Handler
-	TableListAvailable           *tableListAvailable.Handler
-	TableEditHandler             *tableEdit.Handler
-	TableDeleteHandler           *tableDelete.Handler
-	TableDeleteAllHandler        *tableDeleteAll.Handler
-	CafeUserCreateHandler        *cafeUserCreate.Handler
-	CafeUserListHandler          *cafeUserList.Handler
-	CafeUserDeleteHandler        *cafeUserDelete.Handler
-	CafeUserEditHandler          *cafeUserEdit.Handler
-	ReserveCreateHandler         *reserveCreate.Handler
-	ReserveGetHandler            *reserveGet.Handler
-	ReserveDeleteHandler         *reserveDelete.Handler
-	ReserveUndeleteHandler       *reserveUndelete.Handler
-	ReserveEditHandler           *reserveEdit.Handler
-	ReserveListByTableHandler    *reserveListByTable.Handler
-	ReserveHistoryByTableHandler *reserveHistoryByTable.Handler
+	SendSmsCode           *sendSmsCode.Handler
+	UserAuth              *auth.Handler
+	RefreshToken          *refreshToken.Handler
+	UserEdit              *userEdit.Handler
+	CafeCreate            *createCafe.Handler
+	TableCreate           *tableCreate.Handler
+	TableCreateMass       *createMass.Handler
+	TableList             *tableList.Handler
+	TableListAvailable    *tableListAvailable.Handler
+	TableEdit             *tableEdit.Handler
+	TableDelete           *tableDelete.Handler
+	TableDeleteAll        *tableDeleteAll.Handler
+	CafeUserCreate        *cafeUserCreate.Handler
+	CafeUserList          *cafeUserList.Handler
+	CafeUserDelete        *cafeUserDelete.Handler
+	CafeUserEdit          *cafeUserEdit.Handler
+	ReserveCreate         *reserveCreate.Handler
+	ReserveGet            *reserveGet.Handler
+	ReserveDelete         *reserveDelete.Handler
+	ReserveUndelete       *reserveUndelete.Handler
+	ReserveEdit           *reserveEdit.Handler
+	ReserveListByTable    *reserveListByTable.Handler
+	ReserveHistoryByTable *reserveHistoryByTable.Handler
 }
 
 func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 	return &Handlers{
 		SendSmsCode: sendSmsCode.New(
-			services.SmsCodeService,
-			repositories.SmsCodeRepository,
+			services.SmsCode,
+			repositories.SmsCode,
 		),
-		UserAuthHandler: auth.New(
-			repositories.SmsCodeRepository,
-			services.UserService,
-			services.UserTokenService,
+		UserAuth: auth.New(
+			repositories.SmsCode,
+			services.User,
+			services.UserToken,
 		),
-		RefreshTokenHandler: refreshToken.New(
-			repositories.UserTokenRepository,
-			services.UserTokenService,
+		RefreshToken: refreshToken.New(
+			repositories.UserToken,
+			services.UserToken,
 		),
-		UserEditHandler: userEdit.New(
-			repositories.UserRepository,
+		UserEdit: userEdit.New(
+			repositories.User,
 		),
-		CafeCreateHandler: createCafe.New(
-			repositories.CafeRepository,
-			repositories.CafeUserRepository,
+		CafeCreate: createCafe.New(
+			repositories.Cafe,
+			repositories.CafeUser,
 			services.Transactions,
 		),
-		TableCreateMassHandler: createMass.New(
-			repositories.TableRepository,
+		TableCreateMass: createMass.New(
+			repositories.Table,
 		),
-		TableCreateHandler: tableCreate.New(
-			repositories.TableRepository,
+		TableCreate: tableCreate.New(
+			repositories.Table,
 		),
 		TableList: tableList.New(
-			repositories.TableRepository,
+			repositories.Table,
 		),
-		TableEditHandler: tableEdit.New(
-			repositories.TableRepository,
+		TableEdit: tableEdit.New(
+			repositories.Table,
 		),
-		TableDeleteHandler: tableDelete.New(
-			repositories.TableRepository,
+		TableDelete: tableDelete.New(
+			repositories.Table,
 		),
-		TableDeleteAllHandler: tableDeleteAll.New(
-			repositories.TableRepository,
+		TableDeleteAll: tableDeleteAll.New(
+			repositories.Table,
 		),
-		CafeUserCreateHandler: cafeUserCreate.New(
-			repositories.CafeUserRepository,
-			services.UserService,
+		CafeUserCreate: cafeUserCreate.New(
+			repositories.CafeUser,
+			services.User,
 		),
-		CafeUserListHandler: cafeUserList.New(
-			repositories.UserRepository,
-			repositories.CafeUserRepository,
+		CafeUserList: cafeUserList.New(
+			repositories.User,
+			repositories.CafeUser,
 		),
-		CafeUserDeleteHandler: cafeUserDelete.New(
-			repositories.CafeUserRepository,
+		CafeUserDelete: cafeUserDelete.New(
+			repositories.CafeUser,
 		),
-		CafeUserEditHandler: cafeUserEdit.New(
-			repositories.UserRepository,
-			repositories.CafeUserRepository,
+		CafeUserEdit: cafeUserEdit.New(
+			repositories.User,
+			repositories.CafeUser,
 		),
-		ReserveCreateHandler: reserveCreate.New(
-			repositories.ReserveRepository,
+		ReserveCreate: reserveCreate.New(
+			repositories.Reserve,
 			services.reserveActionHelper,
 		),
-		ReserveGetHandler: reserveGet.New(
-			repositories.ReserveRepository,
+		ReserveGet: reserveGet.New(
+			repositories.Reserve,
 		),
-		ReserveDeleteHandler: reserveDelete.New(
-			repositories.ReserveRepository,
+		ReserveDelete: reserveDelete.New(
+			repositories.Reserve,
 		),
-		ReserveUndeleteHandler: reserveUndelete.New(
-			repositories.ReserveRepository,
+		ReserveUndelete: reserveUndelete.New(
+			repositories.Reserve,
 		),
-		ReserveEditHandler: reserveEdit.New(
-			repositories.ReserveRepository,
+		ReserveEdit: reserveEdit.New(
+			repositories.Reserve,
 			services.reserveActionHelper,
 		),
-		ReserveListByTableHandler: reserveListByTable.New(
-			repositories.ReserveRepository,
+		ReserveListByTable: reserveListByTable.New(
+			repositories.Reserve,
 		),
-		ReserveHistoryByTableHandler: reserveHistoryByTable.New(
-			repositories.ReserveRepository,
+		ReserveHistoryByTable: reserveHistoryByTable.New(
+			repositories.Reserve,
 		),
 		TableListAvailable: tableListAvailable.New(
 			repositories.TableListAvailable,

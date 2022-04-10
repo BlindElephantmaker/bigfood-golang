@@ -32,7 +32,7 @@ func (controller *Controller) tableCreate(c *gin.Context) {
 	//	return
 	//}
 
-	response, err := controller.handlers.TableCreateHandler.Run(&message)
+	response, err := controller.handlers.TableCreate.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

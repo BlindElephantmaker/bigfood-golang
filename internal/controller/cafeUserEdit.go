@@ -29,7 +29,7 @@ func (controller *Controller) cafeUserEdit(c *gin.Context) {
 	}
 	// todo: permissions role and cafeUserId
 
-	response, err := controller.handlers.CafeUserEditHandler.Run(&message)
+	response, err := controller.handlers.CafeUserEdit.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

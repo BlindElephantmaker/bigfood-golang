@@ -29,7 +29,7 @@ func (controller *Controller) reserveCreate(c *gin.Context) {
 	}
 	//todo: permissions
 
-	response, err := controller.handlers.ReserveCreateHandler.Run(&message)
+	response, err := controller.handlers.ReserveCreate.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

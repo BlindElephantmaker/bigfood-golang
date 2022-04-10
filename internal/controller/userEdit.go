@@ -27,7 +27,7 @@ func (controller *Controller) userEdit(c *gin.Context) {
 
 	message.UserId = getUserId(c)
 
-	err = controller.handlers.UserEditHandler.Run(&message)
+	err = controller.handlers.UserEdit.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

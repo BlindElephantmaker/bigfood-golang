@@ -25,7 +25,7 @@ func (controller *Controller) auth(c *gin.Context) {
 		return
 	}
 
-	response, err := controller.handlers.UserAuthHandler.Run(&message)
+	response, err := controller.handlers.UserAuth.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

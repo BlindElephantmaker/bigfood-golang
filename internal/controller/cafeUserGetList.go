@@ -32,7 +32,7 @@ func (controller *Controller) cafeUserList(c *gin.Context) {
 	//	return
 	//}
 
-	response, err := controller.handlers.CafeUserListHandler.Run(&message)
+	response, err := controller.handlers.CafeUserList.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

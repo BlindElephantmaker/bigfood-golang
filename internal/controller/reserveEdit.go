@@ -29,7 +29,7 @@ func (controller *Controller) reserveEdit(c *gin.Context) {
 	}
 	// todo: permissions
 
-	response, err := controller.handlers.ReserveEditHandler.Run(&message)
+	response, err := controller.handlers.ReserveEdit.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

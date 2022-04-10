@@ -31,7 +31,7 @@ func (controller *Controller) reserveGet(c *gin.Context) {
 	//	return
 	//}
 
-	response, err := controller.handlers.ReserveGetHandler.Run(reserveId)
+	response, err := controller.handlers.ReserveGet.Run(reserveId)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

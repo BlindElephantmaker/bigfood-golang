@@ -28,7 +28,7 @@ func (controller *Controller) tableCreateMass(c *gin.Context) {
 	}
 	// todo permission
 
-	response, err := controller.handlers.TableCreateMassHandler.Run(&message)
+	response, err := controller.handlers.TableCreateMass.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

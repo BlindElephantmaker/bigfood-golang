@@ -10,22 +10,22 @@ import (
 )
 
 type Services struct {
-	SmsCodeService      smsCode.Service
-	UserService         *user.Service
-	UserTokenService    *userToken.Service
+	SmsCode             smsCode.Service
+	User                *user.Service
+	UserToken           *userToken.Service
 	Transactions        *database.TransactionFactory
 	reserveActionHelper *reserveAction.Helper
 }
 
 func NewServices(repositories *Repositories, db *sqlx.DB) *Services {
 	return &Services{
-		SmsCodeService:   smsCode.NewServiceDummy(),
-		UserService:      user.NewService(repositories.UserRepository),
-		UserTokenService: userToken.NewService(repositories.UserTokenRepository),
-		Transactions:     database.NewTransactionFactory(db),
+		SmsCode:      smsCode.NewServiceDummy(),
+		User:         user.NewService(repositories.User),
+		UserToken:    userToken.NewService(repositories.UserToken),
+		Transactions: database.NewTransactionFactory(db),
 		reserveActionHelper: reserveAction.NewHelper(
-			repositories.ContactRepository,
-			repositories.TableRepository,
+			repositories.Contact,
+			repositories.Table,
 		),
 	}
 }

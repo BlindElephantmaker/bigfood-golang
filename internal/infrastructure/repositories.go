@@ -14,27 +14,27 @@ import (
 )
 
 type Repositories struct {
-	SmsCodeRepository   smsCode.Repository
-	UserRepository      user.Repository
-	UserTokenRepository userToken.Repository
-	CafeRepository      cafe.Repository
-	CafeUserRepository  cafeUser.Repository
-	TableRepository     table.Repository
-	ContactRepository   contact.Repository
-	ReserveRepository   reserve.Repository
-	TableListAvailable  tableListAvailable.Repository
+	SmsCode            smsCode.Repository
+	User               user.Repository
+	UserToken          userToken.Repository
+	Cafe               cafe.Repository
+	CafeUser           cafeUser.Repository
+	Table              table.Repository
+	TableListAvailable tableListAvailable.Repository
+	Contact            contact.Repository
+	Reserve            reserve.Repository
 }
 
 func NewRepositories(db *sqlx.DB) *Repositories {
 	return &Repositories{
-		SmsCodeRepository:   smsCode.NewRepositoryDummy(),
-		UserRepository:      user.NewRepositoryPsql(db),
-		UserTokenRepository: userToken.NewRepositoryPsql(db),
-		CafeRepository:      cafe.NewRepositoryPsql(db),
-		CafeUserRepository:  cafeUser.NewRepositoryPsql(db),
-		TableRepository:     table.NewRepositoryPsql(db),
-		ContactRepository:   contact.NewRepositoryPsql(db),
-		ReserveRepository:   reserve.NewRepositoryPsql(db),
-		TableListAvailable:  tableListAvailable.NewRepositoryPsql(db),
+		SmsCode:            smsCode.NewRepositoryDummy(),
+		User:               user.NewRepositoryPsql(db),
+		UserToken:          userToken.NewRepositoryPsql(db),
+		Cafe:               cafe.NewRepositoryPsql(db),
+		CafeUser:           cafeUser.NewRepositoryPsql(db),
+		Table:              table.NewRepositoryPsql(db),
+		TableListAvailable: tableListAvailable.NewRepositoryPsql(db),
+		Contact:            contact.NewRepositoryPsql(db),
+		Reserve:            reserve.NewRepositoryPsql(db),
 	}
 }

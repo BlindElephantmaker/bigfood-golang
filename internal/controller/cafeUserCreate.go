@@ -33,7 +33,7 @@ func (controller *Controller) cafeUserCreate(c *gin.Context) {
 	//	return
 	//}
 
-	response, err := controller.handlers.CafeUserCreateHandler.Run(&message)
+	response, err := controller.handlers.CafeUserCreate.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

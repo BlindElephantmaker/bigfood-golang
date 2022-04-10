@@ -27,7 +27,7 @@ func (controller *Controller) tableDelete(c *gin.Context) {
 	}
 	// todo: permission Admin and table id
 
-	err = controller.handlers.TableDeleteHandler.Run(&message)
+	err = controller.handlers.TableDelete.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

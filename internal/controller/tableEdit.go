@@ -27,7 +27,7 @@ func (controller *Controller) tableEdit(c *gin.Context) {
 	}
 	// todo: permission Admin and table id
 
-	err = controller.handlers.TableEditHandler.Run(&message)
+	err = controller.handlers.TableEdit.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

@@ -31,7 +31,7 @@ func (controller *Controller) tableDeleteAll(c *gin.Context) {
 	//	return
 	//}
 
-	err = controller.handlers.TableDeleteAllHandler.Run(&message)
+	err = controller.handlers.TableDeleteAll.Run(&message)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

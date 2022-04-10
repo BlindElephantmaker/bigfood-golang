@@ -31,7 +31,7 @@ func (controller *Controller) reserveUndelete(c *gin.Context) {
 	//	return
 	//}
 
-	if err := controller.handlers.ReserveUndeleteHandler.Run(&message); err != nil {
+	if err := controller.handlers.ReserveUndelete.Run(&message); err != nil {
 		server.InternalServerError(c, err)
 		return
 	}

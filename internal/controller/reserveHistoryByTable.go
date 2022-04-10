@@ -31,7 +31,7 @@ func (controller *Controller) reserveHistoryByTable(c *gin.Context) {
 	offset := server.GetQueryParamInt(c, "offset", 0)
 	// todo: permissions
 
-	response, err := controller.handlers.ReserveHistoryByTableHandler.Run(tableId, limit, offset)
+	response, err := controller.handlers.ReserveHistoryByTable.Run(tableId, limit, offset)
 	if err != nil {
 		server.InternalServerError(c, err)
 		return

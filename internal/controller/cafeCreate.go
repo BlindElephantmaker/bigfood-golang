@@ -16,7 +16,7 @@ import (
 // @Failure      500  {object}  server.ResponseError  "Internal Server Error"
 // @Router       /cafe [post]
 func (controller *Controller) cafeCreate(c *gin.Context) {
-	response, err := controller.handlers.CafeCreateHandler.Run(getUserId(c))
+	response, err := controller.handlers.CafeCreate.Run(getUserId(c))
 	if err != nil {
 		server.InternalServerError(c, err)
 		return
