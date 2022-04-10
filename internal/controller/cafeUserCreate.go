@@ -1,7 +1,7 @@
 package controller
 
 import (
-	"bigfood/internal/cafeUser/actions/create"
+	"bigfood/internal/cafeUser/actions/cafeUserCreate"
 	"bigfood/pkg/server"
 	"github.com/gin-gonic/gin"
 	"net/http"

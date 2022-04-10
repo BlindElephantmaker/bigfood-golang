@@ -1,4 +1,4 @@
-package createCafe
+package cafeCreate
 
 import (
 	"bigfood/internal/cafe"

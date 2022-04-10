@@ -4,9 +4,9 @@ import (
 	"bigfood/internal/authorization/action/auth"
 	"bigfood/internal/authorization/action/refreshToken"
 	"bigfood/internal/authorization/action/sendSmsCode"
-	"bigfood/internal/cafe/actions/create"
+	"bigfood/internal/cafe/actions/cafeCreate"
+	"bigfood/internal/cafeUser/actions/cafeUserCreate"
 	"bigfood/internal/cafeUser/actions/cafeUserList"
-	"bigfood/internal/cafeUser/actions/create"
 	"bigfood/internal/cafeUser/actions/delete"
 	"bigfood/internal/cafeUser/actions/edit"
 	"bigfood/internal/reserve/actions/create"
@@ -31,7 +31,7 @@ type Handlers struct {
 	UserAuth              *auth.Handler
 	RefreshToken          *refreshToken.Handler
 	UserEdit              *userEdit.Handler
-	CafeCreate            *createCafe.Handler
+	CafeCreate            *cafeCreate.Handler
 	TableCreate           *tableCreate.Handler
 	TableCreateMass       *createMass.Handler
 	TableList             *tableList.Handler
@@ -70,7 +70,7 @@ func NewHandlers(repositories *Repositories, services *Services) *Handlers {
 		UserEdit: userEdit.New(
 			repositories.User,
 		),
-		CafeCreate: createCafe.New(
+		CafeCreate: cafeCreate.New(
 			repositories.Cafe,
 			repositories.CafeUser,
 			services.Transactions,

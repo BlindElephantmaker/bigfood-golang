@@ -12,7 +12,7 @@ import (
 // @Description  Create new cafe
 // @Tags         cafe
 // @Produce      json
-// @Success      200  {object}  createCafe.Response   "Success"
+// @Success      200  {object}  cafeCreate.Response   "Success"
 // @Failure      500  {object}  server.ResponseError  "Internal Server Error"
 // @Router       /cafe [post]
 func (controller *Controller) cafeCreate(c *gin.Context) {
