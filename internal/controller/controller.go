@@ -55,6 +55,7 @@ func (controller *Controller) InitRoutes() *gin.Engine {
 			apiTable.PUT("/", controller.tableEdit)
 			apiTable.DELETE("/", controller.tableDelete)
 			apiTable.DELETE("/delete-all", controller.tableDeleteAll)
+			apiTable.GET(":table-id", controller.tableGet)
 		}
 
 		apiReserve := api.Group("reserve")

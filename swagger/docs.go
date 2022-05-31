@@ -1196,6 +1196,58 @@ var doc = `{
                 }
             }
         },
+        "/table/{table-id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Get table by table id",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "table"
+                ],
+                "summary": "Get table",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "table-id",
+                        "name": "table-id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/table.Table"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid data",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "401": {
+                        "description": "Access Denied",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/server.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "put": {
                 "security": [
