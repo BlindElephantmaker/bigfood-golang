@@ -2,7 +2,7 @@ POSTGRES_DB = bigfood
 POSTGRES_USER = bigfood
 POSTGRES_PASSWORD = bigfood
 
-migrate-create: # usage: make migration-create name=migration_name
+migrate-create: # usage: make migrate-create name=migration_name
 	migrate create -ext sql -dir ./migrations -seq $(name)
 
 migrate-up:
